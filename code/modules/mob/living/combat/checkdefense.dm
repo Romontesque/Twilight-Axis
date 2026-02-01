@@ -28,6 +28,8 @@
 			success = attempt_parry(intenty, user)
 		if(INTENT_DODGE)
 			success = attempt_dodge(intenty, user)
+			if(success)
+				ronin_on_dodge_success(src)
 
 	if(success)
 		soundbreaker_riff_defense_success(src)

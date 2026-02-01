@@ -31,4 +31,9 @@
 /// Args: (note_id, damage_mult, damage_type, note_name)
 #define COMSIG_SOUNDBREAKER_PRIME_NOTE "soundbreaker_prime_note"
 #define COMPONENT_SOUNDBREAKER_PRIMED (1<<0)
-//SOUNDBREAKER - BEGIN//
+//SOUNDBREAKER - END//
+
+//RONIN - BEGIN//
+#define COMSIG_LIVING_TAKE_DAMAGE "living_take_damage"
+#define COMSIG_MOB_DODGE_SUCCESS "mob_dodge_success"
+//RONIN - END//
