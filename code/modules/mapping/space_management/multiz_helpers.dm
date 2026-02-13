@@ -1,10 +1,15 @@
 /proc/get_step_multiz(ref, dir)
+	var/turf/T = get_turf(ref)  //TA EDIT
+	if(!T) return null
+	if(SSmapping && T.z > SSmapping.z_list.len)
+		return get_step(ref, dir)
+
 	if(dir & UP)
 		dir &= ~UP
-		return get_step(GET_TURF_ABOVE(get_turf(ref)), dir)
+		return get_step(GET_TURF_ABOVE(T), dir)
 	if(dir & DOWN)
 		dir &= ~DOWN
-		return get_step(GET_TURF_BELOW(get_turf(ref)), dir)
+		return get_step(GET_TURF_BELOW(T), dir)
 	return get_step(ref, dir)
 
 /proc/get_multiz_accessible_levels(center_z)

@@ -18,10 +18,18 @@ SUBSYSTEM_DEF(dungeon_generator)
 	var/created_since_entry = 0
 	var/unlinked_dungeon_length = 0
 	var/repetition_penalty = 2 
+	
+	var/initial_room_spawned = FALSE 
 
 /datum/controller/subsystem/dungeon_generator/Initialize(start_timeofday)
 	unlinked_dungeon_length = length(GLOB.unlinked_dungeon_entries)
 	
+	
+	var/target_z = 6 
+	for(var/i in target_z to (target_z + 1))
+		if(i > SSmapping.z_list.len)
+			SSmapping.add_new_zlevel("Dungeon Layer [i]", list(ZTRAIT_AWAY = TRUE))
+
 	for(var/path in subtypesof(/datum/map_template/dungeon))
 		var/datum/map_template/dungeon/path_type = path
 		if(initial(path_type.abstract_type) == path) 
@@ -30,7 +38,6 @@ SUBSYSTEM_DEF(dungeon_generator)
 		var/datum/map_template/dungeon/T = new path
 		if(!T || !T.mappath) 
 			continue
-
 		
 		if(istype(T, /datum/map_template/dungeon/entry))
 			if(!templates_by_category[/datum/map_template/dungeon/entry])
@@ -38,12 +45,10 @@ SUBSYSTEM_DEF(dungeon_generator)
 			templates_by_category[/datum/map_template/dungeon/entry] += T
 			continue 
 
-		
 		var/weight = initial(path_type.type_weight)
 		if(weight) 
 			parent_types[path] = weight
 
-		
 		if(!templates_by_category[/datum/map_template/dungeon])
 			templates_by_category[/datum/map_template/dungeon] = list()
 		templates_by_category[/datum/map_template/dungeon] += T
@@ -76,6 +81,8 @@ SUBSYSTEM_DEF(dungeon_generator)
 			generation_stage = STAGE_EXPANSION 
 
 /datum/controller/subsystem/dungeon_generator/proc/spawn_initial_room()
+	if(initial_room_spawned) return 
+	
 	var/target_z = 6
 	var/turf/center = locate(world.maxx / 2, world.maxy / 2, target_z)
 	if(!center) return
@@ -91,6 +98,7 @@ SUBSYSTEM_DEF(dungeon_generator)
 	var/turf/start_turf = locate(spawn_x, spawn_y, target_z)
 	
 	if(start_turf && entry_tile.load(start_turf))
+		initial_room_spawned = TRUE
 		on_template_placed(entry_tile)
 
 /datum/controller/subsystem/dungeon_generator/proc/process_markers(limit)
@@ -126,6 +134,7 @@ SUBSYSTEM_DEF(dungeon_generator)
 			return TRUE
 		return FALSE
 
+	
 	if(prob(50))
 		if(istype(target_turf, /turf/closed/wall/mineral/rogue) || istype(target_turf, /turf/closed/wall/mineral/rogue/decostone))
 			target_turf.ChangeTurf(/turf/open/floor/rogue/hexstone)
@@ -142,12 +151,13 @@ SUBSYSTEM_DEF(dungeon_generator)
 	
 	var/list/weighted_candidates = list()
 	for(var/datum/map_template/dungeon/T in candidates)
-		if(!T) continue 
 		var/count = placed_count[T.type] || 0
 		weighted_candidates[T] = T.rarity / (count * repetition_penalty + 1)
 
 	var/list/checking_list = weighted_candidates.Copy()
 	while(length(checking_list))
+		CHECK_TICK 
+
 		var/datum/map_template/dungeon/T = pickweight(checking_list)
 		if(!T) 
 			checking_list.Remove(null)
@@ -166,8 +176,9 @@ SUBSYSTEM_DEF(dungeon_generator)
 		else if(direction == EAST) spawn_y -= offset
 		else if(direction == WEST) { spawn_x -= (T.width - 1); spawn_y -= offset; }
 
-		spawn_x = clamp(spawn_x, 1, world.maxx - T.width)
-		spawn_y = clamp(spawn_y, 1, world.maxy - T.height)
+		
+		if(spawn_x < 1 || spawn_y < 1 || (spawn_x + T.width) > world.maxx || (spawn_y + T.height) > world.maxy)
+			continue
 
 		var/turf/start_turf = locate(spawn_x, spawn_y, target_z)
 		if(can_place(T, start_turf))
@@ -193,8 +204,9 @@ SUBSYSTEM_DEF(dungeon_generator)
 		else if(direction == EAST) spawn_y -= offset
 		else if(direction == WEST) { spawn_x -= (T.width - 1); spawn_y -= offset; }
 
-		spawn_x = clamp(spawn_x, 1, world.maxx - T.width)
-		spawn_y = clamp(spawn_y, 1, world.maxy - T.height)
+		
+		if(spawn_x < 1 || spawn_y < 1 || (spawn_x + T.width) > world.maxx || (spawn_y + T.height) > world.maxy)
+			continue
 
 		var/turf/start_turf = locate(spawn_x, spawn_y, target_turf.z)
 		if(can_place(T, start_turf))
@@ -208,13 +220,14 @@ SUBSYSTEM_DEF(dungeon_generator)
 	var/tz = start_T.z
 	var/ex = start_T.x + T.width - 1
 	var/ey = start_T.y + T.height - 1
-	var/turf/upper_right = locate(ex, ey, tz)
-	if(!upper_right || upper_right.z != tz) return FALSE
-
+	
+	
 	for(var/z_off in 0 to 1)
 		var/cz = tz + z_off
-		if(cz > world.maxz) break
+		if(cz > world.maxz) return FALSE
+		
 		for(var/turf/test in block(locate(start_T.x, start_T.y, cz), locate(ex, ey, cz)))
+			
 			if(!is_strictly_void(test)) return FALSE
 			for(var/obj/O in test)
 				if(istype(O, /obj/effect/dungeon_directional_helper) || O.density) return FALSE
@@ -232,7 +245,6 @@ SUBSYSTEM_DEF(dungeon_generator)
 	if(!T) return
 	placed_count[T.type]++
 	if(istype(T, /datum/map_template/dungeon/entry))
-		placed_count[/datum/map_template/dungeon/entry]++
 		created_since_entry = 0
 	else
 		created_since_entry++
@@ -244,10 +256,6 @@ SUBSYSTEM_DEF(dungeon_generator)
 		if(EAST)  return WEST
 		if(WEST)  return EAST
 	return dir
-
-/proc/cmp_dungeon_size_desc(datum/map_template/dungeon/A, datum/map_template/dungeon/B)
-	if(!A || !B) return 0
-	return (B.width * B.height) - (A.width * A.height)
 
 /datum/map_template/dungeon/proc/get_dir_offset(dir)
 	switch(dir)
