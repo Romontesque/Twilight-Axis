@@ -15,10 +15,11 @@ type Data = {
   atoms?: TileAtom[];
 };
 
-const truncate20 = (s: string) => {
-  if (!s) return '';
-  return s.length > 20 ? `${s.slice(0, 19)}…` : s;
-};
+const TRUNCATE_LENGTH = 20;  
+const truncate20 = (s: string) => {  
+  if (!s) return '';  
+  return s.length > TRUNCATE_LENGTH ? `${s.slice(0, TRUNCATE_LENGTH - 1)}…` : s;  
+};  
 
 export const TilePanel = () => {
   const { act, data } = useBackend<Data>();

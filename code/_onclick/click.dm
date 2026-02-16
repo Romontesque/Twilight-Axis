@@ -718,7 +718,6 @@ GLOBAL_LIST_EMPTY(reach_dummy_pool)
 		var/mob/M = user
 		var/datum/tile_panel/P = M.get_tile_panel()
 		P.open(T)
-		M.tile_panel_notify_changed(src)
 
 /mob/proc/CtrlRightClickOn(atom/A, params)
 	pointed(A)

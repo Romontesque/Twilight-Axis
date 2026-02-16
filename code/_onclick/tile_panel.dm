@@ -2,7 +2,7 @@
 #define TILE_PANEL_UI_NAME "TilePanel"
 #define TILEPANEL_ACT_CLOSE "close"
 #define TILEPANEL_ACT_INTERACT "interact"
-#define TILEPANEL_REFRESH_THROTTLE_DS 5
+#define TILEPANEL_REFRESH_THROTTLE_DS 10
 
 /mob
 	var/datum/tile_panel/tile_panel
@@ -25,9 +25,13 @@
 	var/refresh_queued = FALSE
 	var/last_context_ref
 	var/refresh_throttle_ds = TILEPANEL_REFRESH_THROTTLE_DS
+	var/list/icon_cache
+	var/icon_cache_ttl_ds = 100
+	var/max_icon_renders_per_update = 12
 
 /datum/tile_panel/New(mob/user)
 	owner = user
+	icon_cache = list()
 	..()
 
 /datum/tile_panel/Destroy()
@@ -70,7 +74,7 @@
 /datum/tile_panel/ui_status(mob/user, datum/ui_state/state)
 	if(!user || !user.client)
 		return UI_CLOSE
-	if(user != owner)
+	if(user != owner || !user.TurfAdjacent(target_turf))
 		return UI_CLOSE
 	return UI_INTERACTIVE
 
@@ -91,6 +95,7 @@
 	.["name"] = target_turf.name
 
 	var/list/atoms = list()
+	var/renders_left = max_icon_renders_per_update
 
 	for(var/atom/A in target_turf)
 		if(QDELETED(A))
@@ -100,11 +105,22 @@
 		if(ismob(owner) && A.invisibility > owner.see_invisible)
 			continue
 
-		var/icon_base64 = _atom_icon2base64(A)
+		var/icon_b64 = null
+		var/refid = REF(A)
+		var/entry = icon_cache[refid]
+		if(islist(entry))
+			var/at = entry["at"]
+			if(isnum(at) && (world.time - at) <= icon_cache_ttl_ds)
+				icon_b64 = entry["b64"]
+
+		if(isnull(icon_b64) && renders_left > 0)
+			icon_b64 = _get_cached_icon_b64(A)
+			renders_left--
+
 		atoms += list(list(
 			"name" = A.name,
-			"ref" = REF(A),
-			"img64" = icon_base64
+			"ref" = refid,
+			"img64" = icon_b64
 		))
 
 	.["atoms"] = atoms
@@ -119,17 +135,17 @@
 			close()
 			return TRUE
 
-		if(TILEPANEL_ACT_INTERACT)
-			var/ref_text = params["ref"]
-			if(!ref_text)
-				return TRUE
+		if(TILEPANEL_ACT_INTERACT)  
+			var/ref_text = params["ref"]  
+			if(!ref_text)  
+				return TRUE  
 
-			var/atom/target = locate(ref_text)
-			if(!target || QDELETED(target))
-				return TRUE
+			var/atom/target = locate(ref_text)  
+			if(!istype(target) || QDELETED(target))  
+				return TRUE  
 
-			if(target_turf && (target.loc != target_turf))
-				return TRUE
+			if(!owner.TurfAdjacent(target_turf) || (target.loc != target_turf))  
+				return TRUE  
 
 			var/button = text2num(params["button"])
 			var/shift = text2num(params["shift"])
@@ -144,11 +160,11 @@
 				else
 					click_params["left"] = "1"
 
-			if(shift) 
+			if(shift)
 				click_params["shift"] = "1"
-			if(ctrl)  
+			if(ctrl)
 				click_params["ctrl"] = "1"
-			if(alt)   
+			if(alt)
 				click_params["alt"] = "1"
 
 			owner.ClickOn(target, click_params)
@@ -219,6 +235,22 @@
 		icon_base64 = null
 
 	return icon_base64
+
+/datum/tile_panel/proc/_get_cached_icon_b64(atom/A)
+	if(!A || QDELETED(A))
+		return null
+
+	var/refid = REF(A)
+	var/now = world.time
+	var/entry = icon_cache[refid]
+	if(islist(entry))
+		var/at = entry["at"]
+		if(isnum(at) && (now - at) <= icon_cache_ttl_ds)
+			return entry["b64"]
+
+	var/b64 = _atom_icon2base64(A)
+	icon_cache[refid] = list("b64" = b64, "at" = now)
+	return b64
 
 #undef TILE_PANEL_UI_ID
 #undef TILE_PANEL_UI_NAME
