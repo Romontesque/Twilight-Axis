@@ -752,6 +752,8 @@ GLOBAL_VAR_INIT(mobids, 1)
 		return
 
 	var/datum/controller/subsystem/statpanel/SS = SSstatpanel
+	if(!client.statpanel)
+		client.statpanel = "RoundInfo"
 
 	if(statpanel("RoundInfo"))
 		for(var/line in SS.base_roundinfo_text)

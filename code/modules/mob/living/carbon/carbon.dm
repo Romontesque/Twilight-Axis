@@ -506,8 +506,18 @@
 		if(has_status_effect(/datum/status_effect/debuff/netted))
 			remove_status_effect(/datum/status_effect/debuff/netted)
 
-	if(cuff_break)
-		. = !((I == handcuffed) || (I == legcuffed))
+	if(cuff_break) //TA EDIT
+		if(I == handcuffed)
+			handcuffed = null
+			update_handcuffed()
+			
+		if(I == legcuffed)
+			legcuffed = null
+			update_inv_legcuffed()
+
+			if(has_status_effect(/datum/status_effect/debuff/netted))
+				remove_status_effect(/datum/status_effect/debuff/netted)
+		
 		qdel(I)
 		return TRUE
 
@@ -573,13 +583,13 @@
 /mob/living/Stat()
 	..()
 	if(statpanel("Stats"))
-		stat("STR: \Roman [STASTR]")
-		stat("PER: \Roman [STAPER]")
-		stat("INT: \Roman [STAINT]")
-		stat("CON: \Roman [STACON]")
-		stat("WIL: \Roman [STAWIL]")
-		stat("SPD: \Roman [STASPD]")
-		stat("FOR: \Roman [STALUC]")
+		stat("STR: [ROMAN(STASTR)]")
+		stat("PER: [ROMAN(STAPER)]")
+		stat("INT: [ROMAN(STAINT)]")
+		stat("CON: [ROMAN(STACON)]")
+		stat("WIL: [ROMAN(STAWIL)]")
+		stat("SPD: [ROMAN(STASPD)]")
+		stat("FOR: [ROMAN(STALUC)]")
 		stat("PATRON: [patron]")
 
 /mob/living/carbon/Stat()
