@@ -806,27 +806,6 @@ GLOBAL_VAR_INIT(mobids, 1)
 					var/datum/SDQL2_query/Q = i
 					Q.generate_stat()
 
-	if(listed_turf && client)
-		if(!TurfAdjacent(listed_turf))
-			listed_turf = null
-		else
-			statpanel(listed_turf.name, null, listed_turf)
-
-			var/list/overrides = list()
-			for(var/image/I in client.images)
-				if(I.loc && I.loc.loc == listed_turf && I.override)
-					overrides += I.loc
-
-			for(var/atom/A in listed_turf)
-				if(!A.mouse_opacity)
-					continue
-				if(A.invisibility > see_invisible)
-					continue
-				if(overrides.len && (A in overrides))
-					continue
-
-				statpanel(listed_turf.name, null, A)
-
 //	if(mind)
 //		add_spells_to_statpanel(mind.spell_list)
 //	add_spells_to_statpanel(mob_spell_list)

@@ -1,0 +1,227 @@
+#define TILE_PANEL_UI_ID "TilePanel"
+#define TILE_PANEL_UI_NAME "TilePanel"
+#define TILEPANEL_ACT_CLOSE "close"
+#define TILEPANEL_ACT_INTERACT "interact"
+#define TILEPANEL_REFRESH_THROTTLE_DS 5
+
+/mob
+	var/datum/tile_panel/tile_panel
+
+/mob/proc/get_tile_panel()
+	if(!tile_panel)
+		tile_panel = new(src)
+	return tile_panel
+
+/mob/proc/tile_panel_notify_changed(atom/context = null)
+	if(!tile_panel)
+		return
+	tile_panel.request_refresh(context)
+
+
+/datum/tile_panel
+	var/mob/owner
+	var/turf/target_turf
+	var/last_refresh_at = 0
+	var/refresh_queued = FALSE
+	var/last_context_ref
+	var/refresh_throttle_ds = TILEPANEL_REFRESH_THROTTLE_DS
+
+/datum/tile_panel/New(mob/user)
+	owner = user
+	..()
+
+/datum/tile_panel/Destroy()
+	if(owner?.tile_panel == src)
+		owner.tile_panel = null
+	owner = null
+	target_turf = null
+	return ..()
+
+/datum/tile_panel/proc/set_target(turf/T)
+	if(!T)
+		return FALSE
+	target_turf = T
+	return TRUE
+
+/datum/tile_panel/proc/open(turf/T)
+	if(!owner || !owner.client)
+		return FALSE
+	if(T)
+		set_target(T)
+	if(!target_turf)
+		return FALSE
+
+	ui_interact(owner)
+	request_refresh()
+	return TRUE
+
+/datum/tile_panel/proc/close()
+	if(owner)
+		SStgui.close_uis(src)
+
+/datum/tile_panel/proc/_is_open()
+	if(!owner || !owner.client)
+		return FALSE
+	return !!SStgui.get_open_ui(owner, src)
+
+/datum/tile_panel/ui_state(mob/user)
+	return GLOB.default_state
+
+/datum/tile_panel/ui_status(mob/user, datum/ui_state/state)
+	if(!user || !user.client)
+		return UI_CLOSE
+	if(user != owner)
+		return UI_CLOSE
+	return UI_INTERACTIVE
+
+/datum/tile_panel/ui_interact(mob/user, datum/tgui/ui)
+	ui = SStgui.try_update_ui(user, src, ui)
+	if(!ui)
+		ui = new(user, src, TILE_PANEL_UI_ID, TILE_PANEL_UI_NAME)
+		ui.open()
+
+/datum/tile_panel/ui_data(mob/user)
+	. = list()
+
+	if(!target_turf)
+		.["has_target"] = FALSE
+		return
+
+	.["has_target"] = TRUE
+	.["name"] = target_turf.name
+
+	var/list/atoms = list()
+
+	for(var/atom/A in target_turf)
+		if(QDELETED(A))
+			continue
+		if(!A.mouse_opacity)
+			continue
+		if(ismob(owner) && A.invisibility > owner.see_invisible)
+			continue
+
+		var/icon_base64 = _atom_icon2base64(A)
+		atoms += list(list(
+			"name" = A.name,
+			"ref" = REF(A),
+			"img64" = icon_base64
+		))
+
+	.["atoms"] = atoms
+
+/datum/tile_panel/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	. = ..()
+	if(.)
+		return
+
+	switch(action)
+		if(TILEPANEL_ACT_CLOSE)
+			close()
+			return TRUE
+
+		if(TILEPANEL_ACT_INTERACT)
+			var/ref_text = params["ref"]
+			if(!ref_text)
+				return TRUE
+
+			var/atom/target = locate(ref_text)
+			if(!target || QDELETED(target))
+				return TRUE
+
+			if(target_turf && (target.loc != target_turf))
+				return TRUE
+
+			var/button = text2num(params["button"])
+			var/shift = text2num(params["shift"])
+			var/ctrl = text2num(params["ctrl"])
+			var/alt = text2num(params["alt"])
+			var/list/click_params = list()
+			switch(button)
+				if(2)
+					click_params["right"] = "1"
+				if(1)
+					click_params["middle"] = "1"
+				else
+					click_params["left"] = "1"
+
+			if(shift) 
+				click_params["shift"] = "1"
+			if(ctrl)  
+				click_params["ctrl"] = "1"
+			if(alt)   
+				click_params["alt"] = "1"
+
+			owner.ClickOn(target, click_params)
+			return TRUE
+
+	return TRUE
+
+/datum/tile_panel/proc/request_refresh(atom/context = null)
+	if(!owner || !owner.client)
+		return FALSE
+	if(!_is_open())
+		return FALSE
+
+	if(context)
+		last_context_ref = REF(context)
+
+	var/now = world.time
+	var/next_allowed = last_refresh_at + refresh_throttle_ds
+	if(now >= next_allowed)
+		last_refresh_at = now
+		refresh_queued = FALSE
+		SStgui.try_update_ui(owner, src, null)
+		return TRUE
+
+	if(!refresh_queued)
+		refresh_queued = TRUE
+		addtimer(CALLBACK(src, PROC_REF(_queued_refresh)), next_allowed - now)
+
+	return TRUE
+
+/datum/tile_panel/proc/_queued_refresh()
+	refresh_queued = FALSE
+	if(!owner || !owner.client)
+		return
+	if(!_is_open())
+		return
+	last_refresh_at = world.time
+	SStgui.try_update_ui(owner, src, null)
+
+/datum/tile_panel/proc/_atom_icon2base64(atom/A)
+	if(!A || QDELETED(A))
+		return null
+
+	var/icon/icon_obj = null
+	try
+		icon_obj = getFlatIcon(A)
+	catch
+		icon_obj = null
+
+	if(!icon_obj)
+		var/ap = A.appearance
+		var/icon/ap_icon = ap?["icon"]
+		if(ap_icon)
+			var/ap_state = ap?["icon_state"]
+			var/ap_dir = ap?["dir"]
+			icon_obj = icon(ap_icon, ap_state, ap_dir)
+
+	if(!icon_obj && A.icon)
+		icon_obj = icon(A.icon, A.icon_state, A.dir)
+
+	if(!icon_obj)
+		return null
+
+	var/icon_base64 = null
+	try
+		icon_base64 = icon2base64(icon_obj)
+	catch
+		icon_base64 = null
+
+	return icon_base64
+
+#undef TILE_PANEL_UI_ID
+#undef TILE_PANEL_UI_NAME
+#undef TILEPANEL_ACT_CLOSE
+#undef TILEPANEL_ACT_INTERACT
+#undef TILEPANEL_REFRESH_THROTTLE_DS

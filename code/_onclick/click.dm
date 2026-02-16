@@ -715,8 +715,10 @@ GLOBAL_LIST_EMPTY(reach_dummy_pool)
 //	SEND_SIGNAL(src, COMSIG_CLICK_ALT, user)
 	var/turf/T = get_turf(src)
 	if(T && (isturf(loc) || isturf(src)) && user.TurfAdjacent(T))
-		user.listed_turf = T
-		user.client.statpanel = T.name
+		var/mob/M = user
+		var/datum/tile_panel/P = M.get_tile_panel()
+		P.open(T)
+		M.tile_panel_notify_changed(src)
 
 /mob/proc/CtrlRightClickOn(atom/A, params)
 	pointed(A)

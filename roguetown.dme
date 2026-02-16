@@ -295,6 +295,7 @@
 #include "code\_js\menus.dm"
 #include "code\_onclick\adjacent.dm"
 #include "code\_onclick\click.dm"
+#include "code\_onclick\tile_panel.dm"
 #include "code\_onclick\drag_drop.dm"
 #include "code\_onclick\item_attack.dm"
 #include "code\_onclick\observer.dm"
