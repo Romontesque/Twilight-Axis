@@ -17,7 +17,6 @@
 		return
 	tile_panel.request_refresh(context)
 
-
 /datum/tile_panel
 	var/mob/owner
 	var/turf/target_turf
@@ -97,7 +96,6 @@
 	var/list/atoms = list()
 	var/renders_left = max_icon_renders_per_update
 
-	// TURF ALWAYS FIRST
 	var/turf_icon_b64 = null
 	if(renders_left > 0)
 		turf_icon_b64 = _get_cached_icon_b64(target_turf)
@@ -111,6 +109,10 @@
 	))
 
 	for(var/atom/A in target_turf)
+		if(istype(A, /obj/effect))
+			continue
+		if(istype(A, /atom/movable/lighting_object))
+			continue
 		if(QDELETED(A))
 			continue
 		if(!A.mouse_opacity)
@@ -160,7 +162,6 @@
 			if(!owner.TurfAdjacent(target_turf))
 				return TRUE
 
-			// Allow clicking the turf itself; otherwise ensure target is on the turf
 			if(target != target_turf)
 				if(target.loc != target_turf)
 					return TRUE
@@ -228,32 +229,37 @@
 		return null
 
 	var/icon/icon_obj = null
-	try
+
+	if(ismob(A) || isturf(A))
 		icon_obj = getFlatIcon(A)
-	catch
-		icon_obj = null
+	else
+		var/icon/i = A.icon
+		var/state = A.icon_state
+		var/d = A.dir || SOUTH
 
-	if(!icon_obj)
-		var/ap = A.appearance
-		var/icon/ap_icon = ap?["icon"]
-		if(ap_icon)
+		if(i && state)
+			var/list/states = icon_states(i)
+			if(islist(states) && (state in states))
+				icon_obj = icon(i, state, d, 1)
+
+		if(!icon_obj)
+			var/ap = A.appearance
+			var/icon/ap_icon = ap?["icon"]
 			var/ap_state = ap?["icon_state"]
-			var/ap_dir = ap?["dir"]
-			icon_obj = icon(ap_icon, ap_state, ap_dir)
+			var/ap_dir = ap?["dir"] || d
+			if(ap_icon && ap_state)
+				var/list/ap_states = icon_states(ap_icon)
+				if(islist(ap_states) && (ap_state in ap_states))
+					icon_obj = icon(ap_icon, ap_state, ap_dir, 1)
 
-	if(!icon_obj && A.icon)
-		icon_obj = icon(A.icon, A.icon_state, A.dir)
+		if(!icon_obj)
+			icon_obj = getFlatIcon(A)
 
 	if(!icon_obj)
 		return null
 
-	var/icon_base64 = null
-	try
-		icon_base64 = icon2base64(icon_obj)
-	catch
-		icon_base64 = null
+	return icon2base64(icon_obj)
 
-	return icon_base64
 
 /datum/tile_panel/proc/_get_cached_icon_b64(atom/A)
 	if(!A || QDELETED(A))
@@ -268,6 +274,10 @@
 			return entry["b64"]
 
 	var/b64 = _atom_icon2base64(A)
+	if(!b64)
+		icon_cache -= refid
+		return null
+
 	icon_cache[refid] = list("b64" = b64, "at" = now)
 	return b64
 
