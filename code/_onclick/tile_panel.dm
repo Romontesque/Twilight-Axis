@@ -243,14 +243,15 @@
 				icon_obj = icon(i, state, d, 1)
 
 		if(!icon_obj)
-			var/ap = A.appearance
-			var/icon/ap_icon = ap?["icon"]
-			var/ap_state = ap?["icon_state"]
-			var/ap_dir = ap?["dir"] || d
-			if(ap_icon && ap_state)
-				var/list/ap_states = icon_states(ap_icon)
-				if(islist(ap_states) && (ap_state in ap_states))
-					icon_obj = icon(ap_icon, ap_state, ap_dir, 1)
+			var/mutable_appearance/ap = A.appearance
+			if(ap)
+				var/icon/ap_icon = ap.icon
+				var/ap_state = ap.icon_state
+				var/ap_dir = ap.dir || d
+				if(ap_icon && ap_state)
+					var/list/ap_states = icon_states(ap_icon)
+					if(islist(ap_states) && (ap_state in ap_states))
+						icon_obj = icon(ap_icon, ap_state, ap_dir, 1)
 
 		if(!icon_obj)
 			icon_obj = getFlatIcon(A)
@@ -259,7 +260,6 @@
 		return null
 
 	return icon2base64(icon_obj)
-
 
 /datum/tile_panel/proc/_get_cached_icon_b64(atom/A)
 	if(!A || QDELETED(A))
