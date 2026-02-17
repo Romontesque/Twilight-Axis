@@ -1,3 +1,5 @@
+// TilePanel.tsx
+
 import { useMemo, useState } from 'react';
 import { useBackend } from 'tgui/backend';
 import { Window } from 'tgui/layouts';
@@ -7,6 +9,7 @@ type TileAtom = {
   name: string;
   ref: string;
   img64?: string | null;
+  is_turf?: boolean;
 };
 
 type Data = {
@@ -15,11 +18,11 @@ type Data = {
   atoms?: TileAtom[];
 };
 
-const TRUNCATE_LENGTH = 20;  
-const truncate20 = (s: string) => {  
-  if (!s) return '';  
-  return s.length > TRUNCATE_LENGTH ? `${s.slice(0, TRUNCATE_LENGTH - 1)}…` : s;  
-};  
+const TRUNCATE_LENGTH = 20;
+const truncate20 = (s: string) => {
+  if (!s) return '';
+  return s.length > TRUNCATE_LENGTH ? `${s.slice(0, TRUNCATE_LENGTH - 1)}…` : s;
+};
 
 export const TilePanel = () => {
   const { act, data } = useBackend<Data>();
@@ -27,11 +30,14 @@ export const TilePanel = () => {
 
   const atoms = data.atoms || [];
 
+  const turfAtom = useMemo(() => atoms.find((a) => a.is_turf), [atoms]);
+  const otherAtoms = useMemo(() => atoms.filter((a) => !a.is_turf), [atoms]);
+
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    if (!q) return atoms;
-    return atoms.filter((a) => (a.name || '').toLowerCase().includes(q));
-  }, [atoms, query]);
+    if (!q) return otherAtoms;
+    return otherAtoms.filter((a) => (a.name || '').toLowerCase().includes(q));
+  }, [otherAtoms, query]);
 
   const title = data.has_target ? (data.name || 'Tile') : 'Tile Panel';
 
@@ -49,13 +55,71 @@ export const TilePanel = () => {
     });
   };
 
+  const renderCard = (a: TileAtom) => (
+    <div
+      key={a.ref}
+      role="button"
+      tabIndex={0}
+      onContextMenu={(e) => e.preventDefault()}
+      onMouseDown={(e) => sendInteract(a.ref, e)}
+      style={{
+        width: '86px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        padding: '6px',
+        border: '1px solid rgba(255,255,255,0.12)',
+        borderRadius: '4px',
+        background: 'rgba(0,0,0,0.15)',
+        cursor: 'pointer',
+        userSelect: 'none',
+      }}
+      title={a.name}
+    >
+      <div
+        style={{
+          width: '64px',
+          height: '64px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        {a.img64 ? (
+          <img
+            src={`data:image/png;base64,${a.img64}`}
+            style={{
+              maxWidth: '64px',
+              maxHeight: '64px',
+              imageRendering: 'pixelated',
+            }}
+          />
+        ) : (
+          <Icon name="cube" />
+        )}
+      </div>
+      <div
+        style={{
+          marginTop: '6px',
+          width: '100%',
+          textAlign: 'center',
+          fontSize: '11px',
+          lineHeight: '12px',
+          overflow: 'hidden',
+          whiteSpace: 'nowrap',
+          textOverflow: 'ellipsis',
+        }}
+      >
+        {truncate20(a.name)}
+      </div>
+    </div>
+  );
+
   return (
     <Window width={330} height={400} title={title}>
       <Window.Content>
         {!data.has_target ? (
-          <NoticeBox>
-            No turf selected.
-          </NoticeBox>
+          <NoticeBox>No turf selected.</NoticeBox>
         ) : (
           <Stack vertical fill>
             <Stack align="center">
@@ -68,6 +132,7 @@ export const TilePanel = () => {
                 />
               </Stack.Item>
             </Stack>
+
             <div
               style={{
                 marginTop: '6px',
@@ -80,70 +145,13 @@ export const TilePanel = () => {
                 padding: '6px',
               }}
             >
+              {/* TURF ALWAYS FIRST (not affected by search) */}
+              {turfAtom && renderCard(turfAtom)}
+
               {filtered.length === 0 ? (
-                <NoticeBox>
-                  Nothing to show.
-                </NoticeBox>
+                <NoticeBox>Nothing to show.</NoticeBox>
               ) : (
-                filtered.map((a) => (
-                  <div
-                    key={a.ref}
-                    role="button"
-                    tabIndex={0}
-                    onContextMenu={(e) => e.preventDefault()}
-                    onMouseDown={(e) => sendInteract(a.ref, e)}
-                    style={{
-                      width: '86px',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'center',
-                      padding: '6px',
-                      border: '1px solid rgba(255,255,255,0.12)',
-                      borderRadius: '4px',
-                      background: 'rgba(0,0,0,0.15)',
-                      cursor: 'pointer',
-                      userSelect: 'none',
-                    }}
-                    title={a.name}
-                  >
-                    <div
-                      style={{
-                        width: '64px',
-                        height: '64px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}
-                    >
-                      {a.img64 ? (
-                        <img
-                          src={`data:image/png;base64,${a.img64}`}
-                          style={{
-                            maxWidth: '64px',
-                            maxHeight: '64px',
-                            imageRendering: 'pixelated',
-                          }}
-                        />
-                      ) : (
-                        <Icon name="cube" />
-                      )}
-                    </div>
-                    <div
-                      style={{
-                        marginTop: '6px',
-                        width: '100%',
-                        textAlign: 'center',
-                        fontSize: '11px',
-                        lineHeight: '12px',
-                        overflow: 'hidden',
-                        whiteSpace: 'nowrap',
-                        textOverflow: 'ellipsis',
-                      }}
-                    >
-                      {truncate20(a.name)}
-                    </div>
-                  </div>
-                ))
+                filtered.map((a) => renderCard(a))
               )}
             </div>
           </Stack>

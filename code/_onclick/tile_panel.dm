@@ -97,6 +97,19 @@
 	var/list/atoms = list()
 	var/renders_left = max_icon_renders_per_update
 
+	// TURF ALWAYS FIRST
+	var/turf_icon_b64 = null
+	if(renders_left > 0)
+		turf_icon_b64 = _get_cached_icon_b64(target_turf)
+		renders_left--
+
+	atoms += list(list(
+		"name" = "[target_turf.name] (floor)",
+		"ref" = REF(target_turf),
+		"img64" = turf_icon_b64,
+		"is_turf" = TRUE
+	))
+
 	for(var/atom/A in target_turf)
 		if(QDELETED(A))
 			continue
@@ -135,23 +148,29 @@
 			close()
 			return TRUE
 
-		if(TILEPANEL_ACT_INTERACT)  
-			var/ref_text = params["ref"]  
-			if(!ref_text)  
-				return TRUE  
+		if(TILEPANEL_ACT_INTERACT)
+			var/ref_text = params["ref"]
+			if(!ref_text)
+				return TRUE
 
-			var/atom/target = locate(ref_text)  
-			if(!istype(target) || QDELETED(target))  
-				return TRUE  
+			var/atom/target = locate(ref_text)
+			if(!istype(target) || QDELETED(target))
+				return TRUE
 
-			if(!owner.TurfAdjacent(target_turf) || (target.loc != target_turf))  
-				return TRUE  
+			if(!owner.TurfAdjacent(target_turf))
+				return TRUE
+
+			// Allow clicking the turf itself; otherwise ensure target is on the turf
+			if(target != target_turf)
+				if(target.loc != target_turf)
+					return TRUE
 
 			var/button = text2num(params["button"])
 			var/shift = text2num(params["shift"])
 			var/ctrl = text2num(params["ctrl"])
 			var/alt = text2num(params["alt"])
 			var/list/click_params = list()
+
 			switch(button)
 				if(2)
 					click_params["right"] = "1"
