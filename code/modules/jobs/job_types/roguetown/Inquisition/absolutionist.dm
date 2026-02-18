@@ -108,6 +108,7 @@
 		)
 	var/datum/devotion/C = new /datum/devotion(H, H.patron)
 	C.grant_miracles(H, cleric_tier = CLERIC_T4, passive_gain = CLERIC_REGEN_ABSOLVER, start_maxed = TRUE) // PSYDONIAN MIRACLE-WORKER. LUX-MERGING FREEK.
+	change_origin(H, /datum/virtue/origin/otava, "Holy order")
 
 /obj/effect/proc_holder/spell/invoked/convert_psydon
 	name = "Return to Orthodoxy"
@@ -150,7 +151,7 @@
 
 		target.devotion.Destroy()
 		target.mind.RemoveSpell(/obj/effect/proc_holder/spell/invoked/projectile/divineblast)
-		target.mind.RemoveSpell(/obj/effect/proc_holder/spell/invoked/projectile/divineblast/unholyblast)
+		target.mind.RemoveSpell(/obj/effect/proc_holder/spell/invoked/projectile/unholyblast)
 
 	// Convert to PSYDON
 	target.patron = new user.patron.type()

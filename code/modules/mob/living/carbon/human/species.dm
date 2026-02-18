@@ -17,7 +17,13 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 	var/list/possible_ages = ALL_AGES_LIST
 	var/sexes = 1		// whether or not the race has sexual characteristics. at the moment this is only 0 for skeletons and shadows
 	var/patreon_req = 0
+	var/base_name
+	var/sub_name
+	var/psydonic = FALSE
+	var/origin = "Azuria"
+	var/origin_default = /datum/virtue/origin/azuria
 	var/max_age = 75
+	var/is_subrace = FALSE
 	var/list/offset_features = list(OFFSET_ID = list(0,0), OFFSET_GLOVES = list(0,0),\
 	OFFSET_CLOAK = list(0,0), OFFSET_FACEMASK = list(0,0), OFFSET_HEAD = list(0,0), \
 	OFFSET_FACE = list(0,0), OFFSET_BELT = list(0,0), OFFSET_BACK = list(0,0), \
@@ -104,7 +110,10 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 	var/changesource_flags = NONE
 
 	/// Wording for skin tone on examine and on character setup
-	var/skin_tone_wording = "Skin Tone"
+	var/skin_tone_wording = "Ancestry"
+
+	/// Wording for origin examines if the species skin tone is a bit too goofy for it
+	var/use_skin_tone_wording_for_examine = TRUE
 	/// Bodyparts to override base ones.
 	var/list/bodypart_overrides = list()
 	/// List of organs this species has.
@@ -170,6 +179,8 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 	var/custom_rotation_icon = null
 	var/custom_base_icon = null
 
+	var/preload = TRUE
+
 ///////////
 // PROCS //
 ///////////
@@ -200,6 +211,10 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 		limbs_id = name
 	if(!clothes_id)
 		clothes_id = id
+	if(!sub_name)
+		sub_name = name
+	if(!base_name)
+		base_name = name
 	..()
 
 /datum/species/proc/after_creation(mob/living/carbon/human/H)
@@ -352,7 +367,7 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 		else
 			var/new_type = slot_mutantorgans[slot]
 			if(new_type)
-				neworgan = new new_type()
+				neworgan = SSwardrobe.provide_type(new_type)
 				neworgan.build_colors_for_accessory(source_key_list)
 
 		var/used_neworgan = FALSE
@@ -1727,8 +1742,8 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 
 	if(!affecting)
 		return
-	var/datum/intent/effect/int = user.used_intent
-	if(istype(int, /datum/intent/effect) && selzone)
+	var/datum/intent/int = user.used_intent
+	if((int.intent_effect) && selzone)
 		var/do_effect = FALSE
 		if(length(int.target_parts))
 			if(selzone in int.target_parts)
@@ -2359,3 +2374,21 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 	var/modifier = -distance
 	if(!prob(STASPD+skill_modifier+modifier))
 		Paralyze(15)
+
+
+/// Returns a list of all organ typepaths this species probably has
+/datum/species/proc/get_organs(include_brain = TRUE)
+	var/list/preload = list()
+	for(var/slot in organs)
+		var/type_to_load = organs[slot]
+		if(!ispath(type_to_load))
+			continue
+
+		if(type_to_load == /obj/item/organ/brain && !include_brain)
+			continue
+
+		preload += type_to_load
+	return preload
+
+/datum/species/proc/get_types_to_preload()
+	return get_organs(FALSE)
