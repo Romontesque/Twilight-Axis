@@ -34,6 +34,7 @@ SUBSYSTEM_DEF(dungeon_generator)
 		parent_types[path] = initial(path_type.type_weight) || 10
 		dungeon_templates += T
 
+	
 	templates_by_category[/datum/map_template/dungeon] = dungeon_templates
 
 	addtimer(CALLBACK(src, .proc/find_initial_map_data), 50) 
@@ -41,7 +42,6 @@ SUBSYSTEM_DEF(dungeon_generator)
 
 /datum/controller/subsystem/dungeon_generator/proc/find_initial_map_data()
 	var/list/found_points = list()
-	
 	for(var/obj/effect/dungeon_directional_helper/H in world)
 		if(!target_z)
 			target_z = H.z
@@ -50,7 +50,6 @@ SUBSYSTEM_DEF(dungeon_generator)
 
 	if(!length(found_points)) return
 
-	
 	if(SSmapping.z_list.len < target_z + 1)
 		SSmapping.add_new_zlevel("Dungeon Upper Layer", list(ZTRAIT_AWAY = TRUE))
 
@@ -107,7 +106,10 @@ SUBSYSTEM_DEF(dungeon_generator)
 	if(max_dist < 4) return FALSE 
 
 	var/opp_dir = reverse_direction(direction)
-	var/list/checking_list = shuffle(templates_by_category[/datum/map_template/dungeon].Copy())
+	
+	
+	var/list/all_templates = templates_by_category[/datum/map_template/dungeon]
+	var/list/checking_list = shuffle(all_templates.Copy())
 	
 	for(var/datum/map_template/dungeon/T in checking_list)
 		if(T.width > (max_dist * 2) || T.height > (max_dist * 2)) continue
@@ -209,7 +211,12 @@ SUBSYSTEM_DEF(dungeon_generator)
 
 /datum/controller/subsystem/dungeon_generator/proc/try_spawn_filler(direction, turf/target_turf)
 	var/opp_dir = reverse_direction(direction)
-	for(var/datum/map_template/dungeon/T in shuffle(templates_by_category[/datum/map_template/dungeon].Copy()))
+	
+	
+	var/list/all_templates = templates_by_category[/datum/map_template/dungeon]
+	var/list/checking_list = shuffle(all_templates.Copy())
+	
+	for(var/datum/map_template/dungeon/T in checking_list)
 		if(T.width > 6 || T.height > 6) continue 
 		var/offset = T.get_dir_offset(opp_dir)
 		if(offset == null) continue
