@@ -86,7 +86,11 @@
 	* mob/RangedAttack(atom,params) - used only ranged, only used for tk and laser eyes but could be changed
 */
 /mob/proc/ClickOn( atom/A, params )
-	var/list/modifiers = params2list(params)
+	var/list/modifiers
+	if(islist(params))
+		modifiers = params
+	else
+		modifiers = params2list(params)
 
 	if(curplaying)
 		curplaying.on_mouse_up()
