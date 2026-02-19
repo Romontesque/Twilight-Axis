@@ -1,5 +1,6 @@
 // TilePanel.tsx
 
+import type React from 'react';
 import { useMemo, useState } from 'react';
 import { useBackend } from 'tgui/backend';
 import { Window } from 'tgui/layouts';
@@ -19,9 +20,12 @@ type Data = {
 };
 
 const TRUNCATE_LENGTH = 20;
+
 const truncate20 = (s: string) => {
   if (!s) return '';
-  return s.length > TRUNCATE_LENGTH ? `${s.slice(0, TRUNCATE_LENGTH - 1)}…` : s;
+  return s.length > TRUNCATE_LENGTH
+    ? `${s.slice(0, TRUNCATE_LENGTH - 1)}…`
+    : s;
 };
 
 export const TilePanel = () => {
@@ -36,7 +40,9 @@ export const TilePanel = () => {
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
     if (!q) return otherAtoms;
-    return otherAtoms.filter((a) => (a.name || '').toLowerCase().includes(q));
+    return otherAtoms.filter((a) =>
+      (a.name || '').toLowerCase().includes(q),
+    );
   }, [otherAtoms, query]);
 
   const title = data.has_target ? (data.name || 'Tile') : 'Tile Panel';
@@ -98,6 +104,7 @@ export const TilePanel = () => {
           <Icon name="cube" />
         )}
       </div>
+
       <div
         style={{
           marginTop: '6px',
@@ -124,23 +131,12 @@ export const TilePanel = () => {
           <Stack vertical fill>
             <Stack align="center">
               <Stack.Item grow>
-                <div
-                  onFocusCapture={() => act('focus_search', { active: 1 })}
-                  onBlurCapture={() => act('focus_search', { active: 0 })}
-                  onKeyDownCapture={(e) => {
-                    if (e.key === 'Escape' || e.key === 'Enter') {
-                      (document.activeElement as HTMLElement | null)?.blur();
-                      act('focus_search', { active: 0 });
-                    }
-                  }}
-                >
-                  <Input
-                    fluid
-                    placeholder="Search..."
-                    value={query}
-                    onChange={setQuery}
-                  />
-                </div>
+                <Input
+                  fluid
+                  placeholder="Search..."
+                  value={query}
+                  onChange={setQuery}
+                />
               </Stack.Item>
             </Stack>
 
@@ -156,7 +152,6 @@ export const TilePanel = () => {
                 padding: '6px',
               }}
             >
-              {/* TURF ALWAYS FIRST (not affected by search) */}
               {turfAtom && renderCard(turfAtom)}
 
               {filtered.length === 0 ? (

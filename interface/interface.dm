@@ -277,6 +277,12 @@ Hotkey-Mode: (hotkey-mode must be on)
 /client/proc/refocus_map()
 	winset(src, "mapwindow.map", "focus=true")
 
+/client/verb/tgui_refocus_map()
+	set name = "tgui_refocus_map"
+	set hidden = 1
+
+	refocus_map()
+
 /*
 /client/verb/set_blur()
 	set name = "AAOn"

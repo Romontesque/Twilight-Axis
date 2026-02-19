@@ -3,8 +3,6 @@
 #define TILEPANEL_ACT_CLOSE "close"
 #define TILEPANEL_ACT_INTERACT "interact"
 #define TILEPANEL_REFRESH_THROTTLE_DS 10
-#define TILEPANEL_ACT_FOCUS_SEARCH "focus_search"
-#define TILEPANEL_ACT_REFOCUS "refocus"
 
 /mob
 	var/datum/tile_panel/tile_panel
@@ -29,7 +27,6 @@
 	var/list/icon_cache
 	var/icon_cache_ttl_ds = 100
 	var/max_icon_renders_per_update = 12
-	var/search_focused = FALSE
 
 /datum/tile_panel/New(mob/user)
 	owner = user
@@ -56,7 +53,6 @@
 		set_target(T)
 	if(!target_turf)
 		return FALSE
-
 	ui_interact(owner)
 	request_refresh()
 	return TRUE
@@ -85,9 +81,6 @@
 	if(!ui)
 		ui = new(user, src, TILE_PANEL_UI_ID, TILE_PANEL_UI_NAME)
 		ui.open()
-	if(user?.client && !search_focused)
-		spawn(0)
-			user.client.refocus_map()
 
 /datum/tile_panel/ui_data(mob/user)
 	. = list()
@@ -145,7 +138,6 @@
 		))
 
 	.["atoms"] = atoms
-	.["search_focused"] = search_focused
 
 /datum/tile_panel/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
 	. = ..()
@@ -155,16 +147,6 @@
 	switch(action)
 		if(TILEPANEL_ACT_CLOSE)
 			close()
-			return TRUE
-
-		if(TILEPANEL_ACT_FOCUS_SEARCH)
-			search_focused = !!text2num(params["active"])
-			return TRUE
-
-		if(TILEPANEL_ACT_REFOCUS)
-			if(owner?.client)
-				spawn(0)
-					owner.client.refocus_map()
 			return TRUE
 
 		if(TILEPANEL_ACT_INTERACT)
@@ -205,11 +187,6 @@
 				click_params["alt"] = "1"
 
 			owner.ClickOn(target, click_params)
-
-			if(owner?.client && !search_focused)
-				spawn(0)
-					owner.client.refocus_map()
-
 			return TRUE
 
 	return TRUE
@@ -308,5 +285,3 @@
 #undef TILEPANEL_ACT_CLOSE
 #undef TILEPANEL_ACT_INTERACT
 #undef TILEPANEL_REFRESH_THROTTLE_DS
-#undef TILEPANEL_ACT_FOCUS_SEARCH
-#undef TILEPANEL_ACT_REFOCUS
