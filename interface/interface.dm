@@ -274,6 +274,9 @@ Hotkey-Mode: (hotkey-mode must be on)
 		else
 			to_chat(src, "Headshot in chat Disabled")
 
+/client/proc/refocus_map()
+	winset(src, "mapwindow.map", "focus=true")
+
 /*
 /client/verb/set_blur()
 	set name = "AAOn"

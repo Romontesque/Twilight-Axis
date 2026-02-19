@@ -124,12 +124,23 @@ export const TilePanel = () => {
           <Stack vertical fill>
             <Stack align="center">
               <Stack.Item grow>
-                <Input
-                  fluid
-                  placeholder="Search..."
-                  value={query}
-                  onChange={setQuery}
-                />
+                <div
+                  onFocusCapture={() => act('focus_search', { active: 1 })}
+                  onBlurCapture={() => act('focus_search', { active: 0 })}
+                  onKeyDownCapture={(e) => {
+                    if (e.key === 'Escape' || e.key === 'Enter') {
+                      (document.activeElement as HTMLElement | null)?.blur();
+                      act('focus_search', { active: 0 });
+                    }
+                  }}
+                >
+                  <Input
+                    fluid
+                    placeholder="Search..."
+                    value={query}
+                    onChange={setQuery}
+                  />
+                </div>
               </Stack.Item>
             </Stack>
 
