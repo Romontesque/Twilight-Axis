@@ -81,6 +81,8 @@
 	if(!ui)
 		ui = new(user, src, TILE_PANEL_UI_ID, TILE_PANEL_UI_NAME)
 		ui.open()
+	if(user?.client)
+		user.client.refocus_map()
 
 /datum/tile_panel/ui_data(mob/user)
 	. = list()
@@ -171,13 +173,13 @@
 			var/alt = text2num(params["alt"])
 			var/list/click_params = list()
 
-			switch(button)
-				if(2)
-					click_params["right"] = "1"
-				if(1)
-					click_params["middle"] = "1"
-				else
-					click_params["left"] = "1"
+			// НОРМАЛЬНО собираем кнопку
+			if(button == 2)
+				click_params["right"] = "1"
+			else if(button == 1)
+				click_params["middle"] = "1"
+			else
+				click_params["left"] = "1"
 
 			if(shift)
 				click_params["shift"] = "1"
@@ -185,6 +187,11 @@
 				click_params["ctrl"] = "1"
 			if(alt)
 				click_params["alt"] = "1"
+
+			var/obj/item/W = owner.get_active_held_item()
+			if(W && click_params["left"] && istype(target, /obj/structure/table))
+				target.attackby(W, owner, click_params)
+				return TRUE
 
 			owner.ClickOn(target, click_params)
 			return TRUE
