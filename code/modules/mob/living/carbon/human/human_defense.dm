@@ -81,7 +81,7 @@
 					protection = layers[C]
 			if(mind)
 				if(protection > 0)
-					intdamage -= intdamage * ((protection / 1.66) / 100)	//Reduces it up to 60% (100 dmg -> 40 dmg at Blunt S armor (100))
+					intdamage -= intdamage * ((protection / 1.25) / 100)	//Reduces it up to 60% (100 dmg -> 40 dmg at Blunt S armor (100)) // TA EDIT, prev. 1.66
 			if(intdamfactor != 1)
 				intdamage *= intdamfactor
         
@@ -105,10 +105,7 @@
 			var/layers_deep = 1
 			var/played_sound = FALSE
 			for(var/obj/item/clothing/C in layers)
-			//TA EDIT start, prev var/actualdmg = intdamage
-				var/reduction = min(protection, 80)
-				var/actualdmg = intdamage * (1 - reduction / 100) // so armor with good blunt defence stays longer
-			//TA EDIT end
+				var/actualdmg = intdamage
 				if(!full_dmg)
 					actualdmg /= layers_deep
 				C.take_damage(actualdmg, damage_flag = d_type, sound_effect = FALSE, armor_penetration = 100)
