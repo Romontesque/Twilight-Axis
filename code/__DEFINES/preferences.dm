@@ -98,6 +98,8 @@
 
 #define DEFAULT_CYBORG_NAME "Default Cyborg Name"
 
+//Vice limit
+#define MAX_VICES 3
 
 //Job preferences levels
 #define JP_LOW 1
@@ -139,11 +141,12 @@
 #define SHE_HER			"she/her"
 #define THEY_THEM		"they/them (Masc Clothes)"
 #define THEY_THEM_F		"they/them (Femme Clothes)"
-#define IT_ITS			"it/its"
+#define IT_ITS			"it/its (Femme Clothes)"
+#define IT_ITS_M		"it/its (Masc Clothes)"
 #define HE_HIM_F		"he/him (Femme Clothes)"
 #define SHE_HER_M		"she/her (Masc Clothes)"
 
-GLOBAL_LIST_INIT(pronouns_list, list(HE_HIM, SHE_HER, THEY_THEM, THEY_THEM_F, IT_ITS, HE_HIM_F, SHE_HER_M))
+GLOBAL_LIST_INIT(pronouns_list, list(HE_HIM, SHE_HER, THEY_THEM, THEY_THEM_F, IT_ITS, IT_ITS_M, HE_HIM_F, SHE_HER_M))
 
 // Voice types (LETHALSTONE)
 
