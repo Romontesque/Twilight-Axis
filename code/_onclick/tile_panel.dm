@@ -2,6 +2,7 @@
 #define TILE_PANEL_UI_NAME "TilePanel"
 #define TILEPANEL_ACT_CLOSE "close"
 #define TILEPANEL_ACT_INTERACT "interact"
+#define TILEPANEL_ACT_DROP "drop"
 #define TILEPANEL_REFRESH_THROTTLE_DS 10
 
 /mob
@@ -141,6 +142,33 @@
 
 	.["atoms"] = atoms
 
+/datum/tile_panel/proc/_build_mouse_params(list/params)
+	var/button = text2num(params["button"])
+	var/shift = text2num(params["shift"])
+	var/ctrl = text2num(params["ctrl"])
+	var/alt = text2num(params["alt"])
+
+	var/list/L = list()
+	if(button == 2)
+		L["right"] = "1"
+	else if(button == 1)
+		L["middle"] = "1"
+	else
+		L["left"] = "1"
+
+	if(shift) L["shift"] = "1"
+	if(ctrl)  L["ctrl"]  = "1"
+	if(alt)   L["alt"]   = "1"
+
+	var/icon_x = params["icon-x"]
+	var/icon_y = params["icon-y"]
+	if(!icon_x) icon_x = "16"
+	if(!icon_y) icon_y = "16"
+	L["icon-x"] = "[icon_x]"
+	L["icon-y"] = "[icon_y]"
+
+	return L
+
 /datum/tile_panel/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
 	. = ..()
 	if(.)
@@ -167,26 +195,7 @@
 				if(target.loc != target_turf)
 					return TRUE
 
-			var/button = text2num(params["button"])
-			var/shift = text2num(params["shift"])
-			var/ctrl = text2num(params["ctrl"])
-			var/alt = text2num(params["alt"])
-			var/list/click_params = list()
-
-			// НОРМАЛЬНО собираем кнопку
-			if(button == 2)
-				click_params["right"] = "1"
-			else if(button == 1)
-				click_params["middle"] = "1"
-			else
-				click_params["left"] = "1"
-
-			if(shift)
-				click_params["shift"] = "1"
-			if(ctrl)
-				click_params["ctrl"] = "1"
-			if(alt)
-				click_params["alt"] = "1"
+			var/list/click_params = _build_mouse_params(params)
 
 			var/obj/item/W = owner.get_active_held_item()
 			if(W && click_params["left"] && istype(target, /obj/structure/table))
@@ -194,6 +203,37 @@
 				return TRUE
 
 			owner.ClickOn(target, click_params)
+			return TRUE
+
+		if(TILEPANEL_ACT_DROP)
+			var/src_ref_text = params["src"]
+			var/over_ref_text = params["over"]
+			if(!src_ref_text || !over_ref_text)
+				return TRUE
+
+			var/atom/src_atom = locate(src_ref_text)
+			var/atom/over_atom = locate(over_ref_text)
+			if(!istype(src_atom) || QDELETED(src_atom))
+				return TRUE
+			if(!istype(over_atom) || QDELETED(over_atom))
+				return TRUE
+
+			if(!owner || !owner.client || !target_turf)
+				return TRUE
+			if(!owner.TurfAdjacent(target_turf))
+				return TRUE
+
+			if(src_atom != target_turf && src_atom.loc != target_turf)
+				return TRUE
+			if(over_atom != target_turf && over_atom.loc != target_turf)
+				return TRUE
+
+			var/list/drop_params = _build_mouse_params(params)
+
+			var/mob/old_usr = usr
+			usr = owner
+			src_atom.MouseDrop(over_atom, null, null, null, null, list2params(drop_params))
+			usr = old_usr
 			return TRUE
 
 	return TRUE
@@ -291,4 +331,5 @@
 #undef TILE_PANEL_UI_NAME
 #undef TILEPANEL_ACT_CLOSE
 #undef TILEPANEL_ACT_INTERACT
+#undef TILEPANEL_ACT_DROP
 #undef TILEPANEL_REFRESH_THROTTLE_DS

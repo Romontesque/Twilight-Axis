@@ -47,6 +47,7 @@ function setupByondMapRefocusPolicy() {
   };
 
   const scheduleRefocus = (target: Element | null) => {
+    if ((window as any).__tgui_tilepanel_dragging) return;
     if (isTextTarget(target)) return;
     queueMicrotask(refocusMap);
   };
