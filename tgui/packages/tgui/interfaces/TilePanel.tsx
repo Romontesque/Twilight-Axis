@@ -1,5 +1,5 @@
 import type React from 'react';
-import { useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useBackend } from 'tgui/backend';
 import { Window } from 'tgui/layouts';
 import { Icon, Input, NoticeBox, Stack } from 'tgui-core/components';
@@ -71,9 +71,25 @@ export const TilePanel = () => {
 
   const dragRef = useRef<DragState>({ ...defaultDrag });
 
-  const setDraggingFlag = (v: boolean) => {
-    (window as any).__tgui_tilepanel_dragging = v;
+  const refocusMap = useCallback(() => {
+    try {
+      (window as any).Byond?.command?.('tgui_refocus_map');
+    } catch {}
+  }, []);
+
+  const isTextTarget = (el: Element | null) => {
+    if (!el) return false;
+    const ht = el as HTMLElement;
+    const tag = el.tagName?.toLowerCase();
+    if (tag === 'input' || tag === 'textarea' || tag === 'select') return true;
+    if (ht.isContentEditable) return true;
+    return !!el.closest?.('input, textarea, select, [contenteditable="true"]');
   };
+
+  // (опционально) один раз после открытия панели вернуть фокус карте
+  useEffect(() => {
+    queueMicrotask(refocusMap);
+  }, [refocusMap]);
 
   const sendInteract = (atomRef: string, e: React.MouseEvent) => {
     if (e.button === 2) {
@@ -87,6 +103,9 @@ export const TilePanel = () => {
       ctrl: e.ctrlKey ? 1 : 0,
       alt: e.altKey ? 1 : 0,
     });
+
+    // после клика/интеракта — вернуть фокус карте
+    queueMicrotask(refocusMap);
   };
 
   const getOverRefFromPoint = (clientX: number, clientY: number) => {
@@ -107,6 +126,17 @@ export const TilePanel = () => {
       'icon-x': 16,
       'icon-y': 16,
     });
+
+    // после дропа — вернуть фокус карте
+    queueMicrotask(refocusMap);
+  };
+
+  const maybeRefocusFromPanelPointer = (target: Element | null) => {
+    // не рефокусим, если сейчас ввод текста
+    if (isTextTarget(target)) return;
+    // не рефокусим, если мы в процессе drag
+    if (dragRef.current.active) return;
+    queueMicrotask(refocusMap);
   };
 
   const renderCard = (a: TileAtom) => (
@@ -137,8 +167,6 @@ export const TilePanel = () => {
           pointerId: e.pointerId,
         };
 
-        setDraggingFlag(true);
-
         try {
           (e.currentTarget as any).setPointerCapture?.(e.pointerId);
         } catch {}
@@ -162,7 +190,6 @@ export const TilePanel = () => {
         const started = d.started;
 
         dragRef.current = { ...defaultDrag };
-        setDraggingFlag(false);
 
         try {
           (e.currentTarget as any).releasePointerCapture?.(e.pointerId);
@@ -182,7 +209,6 @@ export const TilePanel = () => {
       }}
       onPointerCancel={() => {
         dragRef.current = { ...defaultDrag };
-        setDraggingFlag(false);
       }}
       style={{
         width: '86px',
@@ -243,42 +269,47 @@ export const TilePanel = () => {
   return (
     <Window width={330} height={400} title={title}>
       <Window.Content>
-        {!data.has_target ? (
-          <NoticeBox>No turf selected.</NoticeBox>
-        ) : (
-          <Stack vertical fill>
-            <Stack align="center">
-              <Stack.Item grow>
-                <Input
-                  fluid
-                  placeholder="Search..."
-                  value={query}
-                  onChange={setQuery}
-                />
-              </Stack.Item>
-            </Stack>
+        <div
+          onPointerDown={(e) => maybeRefocusFromPanelPointer(e.target as Element)}
+          onPointerUp={(e) => maybeRefocusFromPanelPointer(e.target as Element)}
+        >
+          {!data.has_target ? (
+            <NoticeBox>No turf selected.</NoticeBox>
+          ) : (
+            <Stack vertical fill>
+              <Stack align="center">
+                <Stack.Item grow>
+                  <Input
+                    fluid
+                    placeholder="Search..."
+                    value={query}
+                    onChange={setQuery}
+                  />
+                </Stack.Item>
+              </Stack>
 
-            <div
-              style={{
-                marginTop: '6px',
-                flex: 1,
-                overflowY: 'auto',
-                display: 'flex',
-                flexWrap: 'wrap',
-                alignContent: 'flex-start',
-                gap: '8px',
-                padding: '6px',
-              }}
-            >
-              {turfAtom && renderCard(turfAtom)}
-              {filtered.length === 0 ? (
-                <NoticeBox>Nothing to show.</NoticeBox>
-              ) : (
-                filtered.map((a) => renderCard(a))
-              )}
-            </div>
-          </Stack>
-        )}
+              <div
+                style={{
+                  marginTop: '6px',
+                  flex: 1,
+                  overflowY: 'auto',
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  alignContent: 'flex-start',
+                  gap: '8px',
+                  padding: '6px',
+                }}
+              >
+                {turfAtom && renderCard(turfAtom)}
+                {filtered.length === 0 ? (
+                  <NoticeBox>Nothing to show.</NoticeBox>
+                ) : (
+                  filtered.map((a) => renderCard(a))
+                )}
+              </div>
+            </Stack>
+          )}
+        </div>
       </Window.Content>
     </Window>
   );

@@ -82,8 +82,8 @@
 	if(!ui)
 		ui = new(user, src, TILE_PANEL_UI_ID, TILE_PANEL_UI_NAME)
 		ui.open()
-	if(user?.client)
-		user.client.refocus_map()
+		if(user?.client)
+			user.client.refocus_map()
 
 /datum/tile_panel/ui_data(mob/user)
 	. = list()

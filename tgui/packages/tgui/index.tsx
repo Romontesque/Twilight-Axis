@@ -23,68 +23,6 @@ perf.mark('init');
 
 const store = configureStore();
 
-function setupByondMapRefocusPolicy() {
-  const ByondAny = (window as any).Byond;
-
-  const refocusMap = () => {
-    try {
-      ByondAny?.command?.('tgui_refocus_map');
-    } catch {}
-  };
-
-  const isTextTarget = (el: Element | null) => {
-    if (!el) return false;
-
-    const ht = el as HTMLElement;
-    const tag = el.tagName?.toLowerCase();
-
-    if (tag === 'input' || tag === 'textarea' || tag === 'select') return true;
-    if (ht.isContentEditable) return true;
-
-    return !!el.closest?.(
-      'input, textarea, select, [contenteditable="true"]',
-    );
-  };
-
-  const scheduleRefocus = (target: Element | null) => {
-    if ((window as any).__tgui_tilepanel_dragging) return;
-    if (isTextTarget(target)) return;
-    queueMicrotask(refocusMap);
-  };
-
-  // Любой клик по UI -> после обработки клика вернуть фокус карте
-  document.addEventListener(
-    'pointerdown',
-    (e) => {
-      scheduleRefocus(e.target as Element | null);
-    },
-    true,
-  );
-
-  // Иногда pointerup надежнее для некоторых интерактивов
-  document.addEventListener(
-    'pointerup',
-    (e) => {
-      scheduleRefocus(e.target as Element | null);
-    },
-    true,
-  );
-
-  // Escape/Enter вне ввода -> вернуть фокус карте
-  document.addEventListener(
-    'keydown',
-    (e) => {
-      if (e.key !== 'Escape' && e.key !== 'Enter') return;
-      if (isTextTarget(document.activeElement as any)) return;
-      queueMicrotask(refocusMap);
-    },
-    true,
-  );
-
-  // Один раз на старте — если tgui открылся с фокусом
-  queueMicrotask(refocusMap);
-}
-
 function setupApp() {
   // Delay setup
   if (document.readyState === 'loading') {
@@ -95,16 +33,12 @@ function setupApp() {
   setGlobalStore(store);
 
   setupGlobalEvents();
-
-  // ОСТАВЛЯЕМ: tgui всё равно шлёт KeyDown/KeyUp вербы,
-  // а фокус мапы решаем отдельной политикой (ниже).
   setupHotKeys({
     keyUpVerb: 'KeyUp',
     keyDownVerb: 'KeyDown',
+    // In the future you could send a winget here to get mousepos/size from the map here if it's necessary
     verbParamsFn: (verb, key) => `${verb} "${key}" 0 0 0 0`,
   });
-
-  setupByondMapRefocusPolicy();
   captureExternalLinks();
 
   store.subscribe(() => render(<App />));
