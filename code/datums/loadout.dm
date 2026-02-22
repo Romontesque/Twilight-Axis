@@ -1492,7 +1492,7 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 	path = /obj/item/enchantingkit/koruu_glaive
 	donatitem = TRUE
 
-/datum/loadout_item/donator_drd/lsword
+/datum/loadout_item/donator_drd_lsword
 	name = "Donator Kit - Ornate Longsword - Required: Longsword"
 	category = list("Оружие", "Донат")
 	path = /obj/item/enchantingkit/drd_lsword
@@ -1803,6 +1803,12 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 	donatitem = TRUE
 	ckeywhitelist = list("imony", "uedhighcommand")
 
+/datum/loadout_item/donat/cloak_twilight_desert
+	name = "Зибантийская накидка"
+	category = list("Плащи", "Донат")
+	path = /obj/item/clothing/cloak/twilight_desert
+	donatitem = TRUE
+
 // Маски
 
 /datum/loadout_item/donat/naledimask
@@ -1958,7 +1964,7 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 /datum/loadout_item/aria_necklace
 	name = "Aria necklace"
 	category = list("Донат")
-	path = /obj/item/clothing/neck/roguetown/leather/aria
+	path = /obj/item/clothing/mask/rogue/facemask/aria
 	donatitem = TRUE
 	ckeywhitelist = list("mrix")
 

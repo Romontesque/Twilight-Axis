@@ -1,4 +1,4 @@
-//ACCESSORIES
+/*//ACCESSORIES
 /datum/loadout_item/wrappings
 	name = "Handwraps"
 	path = /obj/item/clothing/wrists/roguetown/wrappings
@@ -117,8 +117,18 @@
 	sort_category = "Accessories"
 
 /datum/loadout_item/fauldedbelt
-	name = "Belt with faulds"
+	name = "Belt with Faulds"
 	path = /obj/item/storage/belt/rogue/leather/battleskirt/faulds
+	sort_category = "Accessories"
+
+/datum/loadout_item/breechclothbelt
+	name = "Belt with Breechcloth"
+	path = /obj/item/storage/belt/rogue/leather/battleskirt/breechcloth
+	sort_category = "Accessories"
+
+/datum/loadout_item/breechclothbeltalt
+	name = "Black Belt with Breechcloth"
+	path = /obj/item/storage/belt/rogue/leather/battleskirt/breechcloth/blackbelt
 	sort_category = "Accessories"
 
 /datum/loadout_item/psicross
@@ -274,3 +284,4 @@
 	name = "Fitted Coat"
 	path = /obj/item/clothing/cloak/cotehardie
 	sort_category = "Accessories"
+*/

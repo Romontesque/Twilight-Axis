@@ -46,7 +46,7 @@
 	if(HT.has_status_effect(/datum/status_effect/debuff/baited) || user.has_status_effect(/datum/status_effect/debuff/baitcd))
 		return	//We don't do anything if either of us is affected by bait statuses
 
-	if(!HT.can_see_cone(user) && HT.mind)
+	if(!HT.can_see_cone(user) && HT.mind && HT.get_tempo_bonus(TEMPO_TAG_FEINTBAIT_FOV))
 		newcd = 5 SECONDS
 		to_chat(user, span_notice("[HT.p_they()] didn't see me! Nothing happened!"))
 		HU.apply_status_effect(/datum/status_effect/debuff/baitcd, newcd)
@@ -145,7 +145,7 @@
 			if(user.get_skill_level(skillreq) < SKILL_LEVEL_JOURNEYMAN)
 				to_chat(user, span_info("I'm not knowledgeable enough in the arts of this weapon to use this."))
 				return
-		if(W.special.check_range(user, target))
+		if(W.special.check_range(user, target) && W.special.check_reqs(user, W))
 			if(W.special.apply_cost(user))
 				W.special.deploy(user, W, target)
 
@@ -204,7 +204,7 @@
 		perc = 0
 		special_msg = span_warning("Too soon! They were expecting it!")
 
-	if(!L.can_see_cone(user) && L.mind)
+	if(!L.can_see_cone(user) && L.mind && L.get_tempo_bonus(TEMPO_TAG_FEINTBAIT_FOV))
 		perc = 0
 		newcd = 5 SECONDS
 		special_msg = span_warning("They need to see me for me to feint them!")

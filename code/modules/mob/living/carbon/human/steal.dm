@@ -21,10 +21,10 @@
 			if(!user.Adjacent(target))
 				return to_chat(user, span_warning("They moved away!"))	
 			if(stealroll > targetperception)
-				if(target_human.cmode)
+				if(target_human.cmode && target_human.stat == CONSCIOUS)
 					to_chat(user, span_warning("[target_human] is alert. I am not getting my chance against them."))
 					return
-				if(target_human.can_see_cone(user))
+				if(target_human.can_see_cone(user) && target_human.stat == CONSCIOUS)
 					to_chat(user, span_warning("[target_human] is looking right at me. This isn't going to work."))
 					return
 				if(user_human.get_active_held_item())
@@ -55,7 +55,7 @@
 						user.put_in_active_hand(picked)
 						to_chat(user, span_green("I stole [picked]!"))
 						if(targetperception > 13)
-							to_chat(target_human, span_danger("My [picked] is gone, how could this happen!"))
+							to_chat(target_human, span_danger("[picked] is gone, how could this happen!"))
 						target_human.log_message("has had \the [picked] stolen by [key_name(user_human)]", LOG_ATTACK, color="white")
 						user_human.log_message("has stolen \the [picked] from [key_name(target_human)]", LOG_ATTACK, color="white")
 						if(target_human.client && target_human.stat != DEAD)
@@ -63,8 +63,7 @@
 							record_featured_stat(FEATURED_STATS_THIEVES, user_human)
 							record_featured_stat(FEATURED_STATS_CRIMINALS, user_human)
 							GLOB.azure_round_stats[STATS_ITEMS_PICKPOCKETED]++
-						if(user.has_flaw(/datum/charflaw/addiction/kleptomaniac))
-							user.sate_addiction()
+						user.sate_addiction(/datum/charflaw/addiction/kleptomaniac)
 					else
 						exp_to_gain /= 2 // these can be removed or changed on reviewer's discretion
 						to_chat(user, span_warning("I didn't find anything there. Perhaps I should look elsewhere."))

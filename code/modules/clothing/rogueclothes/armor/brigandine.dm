@@ -5,7 +5,7 @@
 	desc = "Composite armour made according to an Etruscan tradition. It's a high-quality arched plate cuirass sewn with dyed leather and fitted with a wide skirt at the bottom to cover the groin."
 	icon_state = "brigandine"
 	blocksound = SOFTHIT
-	body_parts_covered = COVERAGE_ALL_BUT_LEGS
+	body_parts_covered = COVERAGE_ALL_BUT_HANDLEGS
 	armor = ARMOR_PLATE
 	allowed_sex = list(MALE, FEMALE)
 	nodismemsleeves = TRUE
@@ -127,8 +127,22 @@
 	GLOB.lordcolor -= src
 	return ..()
 
+/obj/item/clothing/suit/roguetown/armor/brigandine/captain
+	name = "captain's brigandine"
+ 
 /obj/item/clothing/suit/roguetown/armor/brigandine/banneret
 	name = "knight banneret's brigandine"
+/obj/item/clothing/suit/roguetown/armor/brigandine/light/cult
+	name = "Cultistic's robe"
+	icon_state = "warlock"
+	body_parts_covered = COVERAGE_ALL_BUT_LEGS
+
+/obj/item/clothing/suit/roguetown/armor/brigandine/light/cult/Initialize(mapload, ...)
+	. = ..()
+	AddComponent(/datum/component/cursed_item, TRAIT_CABAL, "ROBE")
+
+/obj/item/clothing/suit/roguetown/armor/brigandine/captain
+	name = "captain's brigandine"
 	desc = "A resplendant coat-of-plates, gilded and veiled in dyeable silk. Only the finest of Azuria's Knights has been entrusted with this beautiful article."
 	icon_state = "capplate"
 	icon = 'icons/roguetown/clothing/special/captain.dmi'

@@ -353,6 +353,7 @@ GLOBAL_LIST_INIT(shove_disarming_types, typecacheof(list(
 #define TEMPO_TAG_DEF_INTEGFACTOR "parryinteg"
 #define TEMPO_TAG_PARRYCD_BONUS	"parrycd"
 #define TEMPO_TAG_RCLICK_CD_BONUS "rclickcd"
+#define TEMPO_TAG_FEINTBAIT_FOV "feintbaitfov"
 #define TEMPO_TAG_DEF_BONUS	"defbonus"
 
 
@@ -383,6 +384,8 @@ Medical defines
 #define PREVENT_CRITS_NONE	0
 #define PREVENT_CRITS_MOST	1
 #define PREVENT_CRITS_ALL	2
+
+#define BLOOD_RESISTANCE_EFFECTIVE_BLEEDRATE 0.5
 
 /*
 	Dullfactor Defines. These should be removed at some point.
