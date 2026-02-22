@@ -2,7 +2,7 @@ import type React from 'react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useBackend } from 'tgui/backend';
 import { Window } from 'tgui/layouts';
-import { Icon, Input, NoticeBox, Stack } from 'tgui-core/components';
+import { Icon, Input, NoticeBox } from 'tgui-core/components';
 
 type TileAtom = {
   name: string;
@@ -86,15 +86,12 @@ export const TilePanel = () => {
     return !!el.closest?.('input, textarea, select, [contenteditable="true"]');
   };
 
-  // (опционально) один раз после открытия панели вернуть фокус карте
   useEffect(() => {
     queueMicrotask(refocusMap);
   }, [refocusMap]);
 
   const sendInteract = (atomRef: string, e: React.MouseEvent) => {
-    if (e.button === 2) {
-      e.preventDefault();
-    }
+    if (e.button === 2) e.preventDefault();
 
     act('interact', {
       ref: atomRef,
@@ -104,7 +101,6 @@ export const TilePanel = () => {
       alt: e.altKey ? 1 : 0,
     });
 
-    // после клика/интеракта — вернуть фокус карте
     queueMicrotask(refocusMap);
   };
 
@@ -127,14 +123,11 @@ export const TilePanel = () => {
       'icon-y': 16,
     });
 
-    // после дропа — вернуть фокус карте
     queueMicrotask(refocusMap);
   };
 
   const maybeRefocusFromPanelPointer = (target: Element | null) => {
-    // не рефокусим, если сейчас ввод текста
     if (isTextTarget(target)) return;
-    // не рефокусим, если мы в процессе drag
     if (dragRef.current.active) return;
     queueMicrotask(refocusMap);
   };
@@ -267,37 +260,44 @@ export const TilePanel = () => {
   );
 
   return (
-    <Window width={330} height={400} title={title}>
+    <Window width={300} height={400} title={title}>
       <Window.Content>
         <div
+          style={{
+            height: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            minHeight: 0,
+          }}
           onPointerDown={(e) => maybeRefocusFromPanelPointer(e.target as Element)}
           onPointerUp={(e) => maybeRefocusFromPanelPointer(e.target as Element)}
         >
           {!data.has_target ? (
             <NoticeBox>No turf selected.</NoticeBox>
           ) : (
-            <Stack vertical fill>
-              <Stack align="center">
-                <Stack.Item grow>
-                  <Input
-                    fluid
-                    placeholder="Search..."
-                    value={query}
-                    onChange={setQuery}
-                  />
-                </Stack.Item>
-              </Stack>
+            <>
+              <div style={{ flex: '0 0 auto' }}>
+                <Input
+                  fluid
+                  placeholder="Search..."
+                  value={query}
+                  onChange={setQuery}
+                />
+              </div>
 
               <div
                 style={{
                   marginTop: '6px',
-                  flex: 1,
+                  flex: '1 1 auto',
+                  minHeight: 0,
                   overflowY: 'auto',
+                  overflowX: 'hidden',
                   display: 'flex',
                   flexWrap: 'wrap',
                   alignContent: 'flex-start',
                   gap: '8px',
                   padding: '6px',
+                  WebkitOverflowScrolling: 'touch',
                 }}
               >
                 {turfAtom && renderCard(turfAtom)}
@@ -307,7 +307,7 @@ export const TilePanel = () => {
                   filtered.map((a) => renderCard(a))
                 )}
               </div>
-            </Stack>
+            </>
           )}
         </div>
       </Window.Content>
