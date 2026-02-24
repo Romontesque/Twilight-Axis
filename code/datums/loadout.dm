@@ -91,6 +91,65 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 	category = "Головные уборы"
 	path = /obj/item/clothing/head/roguetown/eaststrawhat
 
+/datum/loadout_item/tw_d_horns
+	name = "horns helmkleinod (-20 TRI)"
+	category = "Головные уборы"
+	path = /obj/item/clothing/head/roguetown/tw_d_horns
+	triumph_cost = 20
+
+/datum/loadout_item/tw_d_basic
+	name = "helm's chaperon"
+	category = "Головные уборы"
+	path = /obj/item/clothing/head/roguetown/tw_d_basic
+
+/datum/loadout_item/tw_d_castle_red
+	name = "castle helmkleinod (-20 TRI)"
+	category = "Головные уборы"
+	path = /obj/item/clothing/head/roguetown/tw_d_castle_red
+	triumph_cost = 20
+
+/datum/loadout_item/tw_d_graggar
+	name = "bloodied star helmkleinod (-20 TRI)"
+	category = "Головные уборы"
+	path = /obj/item/clothing/head/roguetown/tw_d_graggar
+	triumph_cost = 20
+	
+/datum/loadout_item/tw_d_efreet
+	name = "afreet helmkleinod (-15 TRI)"
+	category = "Головные уборы"
+	path = /obj/item/clothing/head/roguetown/tw_d_efreet
+	triumph_cost = 15
+
+/datum/loadout_item/tw_d_feathers
+	name = "feathers accessory (-10 TRI)"
+	category = "Головные уборы"
+	path = /obj/item/clothing/head/roguetown/tw_d_feathers
+	triumph_cost = 10
+
+/datum/loadout_item/tw_d_oathtaker
+	name = "oathtaker symbol (-10 TRI)"
+	category = "Головные уборы"
+	path = /obj/item/clothing/head/roguetown/tw_d_oathtaker
+	triumph_cost = 10
+
+/datum/loadout_item/tw_d_windmill
+	name = "windmill helmkleinod (-15 TRI)"
+	category = "Головные уборы"
+	path = /obj/item/clothing/head/roguetown/tw_d_windmill
+	triumph_cost = 15
+
+/datum/loadout_item/tw_d_swan
+	name = "swan on lake (-15 TRI)"
+	category = "Головные уборы"
+	path = /obj/item/clothing/head/roguetown/tw_d_swan
+	triumph_cost = 15
+
+/datum/loadout_item/tw_d_dragon_red
+	name = "dragon's dread (-15 TRI)"
+	category = "Головные уборы"
+	path = /obj/item/clothing/head/roguetown/tw_d_dragon_red
+	triumph_cost = 15
+
 /datum/loadout_item/antlers
 	name = "Old antlers"
 	category = "Головные уборы"
@@ -155,6 +214,12 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 	name = "Buckled Hat"
 	category = "Головные уборы"
 	path = /obj/item/clothing/head/roguetown/puritan
+
+/datum/loadout_item/gdhat
+	name = "Gravedigger's Hat (-5 TRI)"
+	category = list("Головные уборы", "Триумфы")
+	path = /obj/item/clothing/head/roguetown/duelhat/pretzel
+	triumph_cost = 5
 
 /datum/loadout_item/folded_hat
 	name = "Folded Hat"
@@ -949,6 +1014,9 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 	name = "Eoran Caparison"
 	path = /obj/item/caparison/eora
 
+/datum/loadout_item/caparison/fogbeast
+	name = "Fogbeast Caparison"
+	path = /obj/item/caparison/fogbeast
 
 //////////////////
 //  TRIUMPHS !  //
@@ -1242,7 +1310,6 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 	path = /obj/item/enchantingkit/bigfoot_axe
 	donatitem = TRUE
 
-
 /datum/loadout_item/donator_zydrasiconocrown
 	name = "Donator Kit - Iconoclast Crown - Required: Barred Helmet(Only men, no small races)"
 	path = /obj/item/enchantingkit/zydrasiconocrown
@@ -1259,6 +1326,12 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 	name = "Donator Kit - Darkwood's Embrace"
 	path = /obj/item/clothing/suit/roguetown/armor/longcoat/eiren
 	category = list("Одежда", "Донат")
+	donatitem = TRUE
+
+/datum/loadout_item/gdhatsirdon
+	name = "Donator Kit - Gravedigger's Hat"
+	category = list("Головные уборы", "Донат")
+	path = /obj/item/clothing/head/roguetown/duelhat/pretzel
 	donatitem = TRUE
 
 /datum/loadout_item/donator_zydrasiconosash
@@ -1487,6 +1560,12 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 	name = "Donator Kit - Sixty Five Yils - Required: Glaive Or Naginata"
 	category = list("Оружие", "Донат")
 	path = /obj/item/enchantingkit/koruu_glaive
+	donatitem = TRUE
+
+/datum/loadout_item/donator_drd_lsword
+	name = "Donator Kit - Ornate Longsword - Required: Longsword"
+	category = list("Оружие", "Донат")
+	path = /obj/item/enchantingkit/drd_lsword
 	donatitem = TRUE
 
 // Разное
@@ -1794,6 +1873,12 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 	donatitem = TRUE
 	ckeywhitelist = list("imony", "uedhighcommand")
 
+/datum/loadout_item/donat/cloak_twilight_desert
+	name = "Зибантийская накидка"
+	category = list("Плащи", "Донат")
+	path = /obj/item/clothing/cloak/twilight_desert
+	donatitem = TRUE
+
 // Маски
 
 /datum/loadout_item/donat/naledimask
@@ -1949,7 +2034,7 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 /datum/loadout_item/aria_necklace
 	name = "Aria necklace"
 	category = list("Донат")
-	path = /obj/item/clothing/neck/roguetown/leather/aria
+	path = /obj/item/clothing/mask/rogue/facemask/aria
 	donatitem = TRUE
 	ckeywhitelist = list("mrix")
 
