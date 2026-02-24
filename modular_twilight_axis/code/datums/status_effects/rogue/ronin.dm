@@ -1,6 +1,6 @@
 #define RONIN_RYU_BLEED_TICK   (1 SECONDS)
 #define RONIN_RYU_BLEED_MAXT   8
-#define RONIN_RYU_BLEED_DMG    0.6   // базовый урон в тик (подкрути)
+#define RONIN_RYU_BLEED_DMG    0.6
 
 /datum/status_effect/debuff/ronin_ryu_bleed
 	id = "ronin_ryu_bleed"
@@ -31,7 +31,6 @@
 	if(!owner || QDELETED(owner))
 		return
 
-	// лёгкий DoT по brute. Если у вас есть отдельный “bleed” пайплайн — заменишь тут.
 	var/dmg = RONIN_RYU_BLEED_DMG * stacks
 	if(isnum(dmg) && dmg > 0)
 		owner.adjustBruteLoss(dmg)

@@ -445,7 +445,7 @@
 		var/base = base_force_cache[W]
 		if(isnum(base))
 			W.force = round(base * mult, 1)
-			W.armor_penetration = round(base_ap_cache * mult, 1)
+			W.armor_penetration = round(base_ap_cache[W] * mult, 1)
 
 /datum/component/combo_core/ronin/proc/RestoreAllBoundForces()
 	if(!islist(base_force_cache))
@@ -698,7 +698,19 @@
 	var/obj/item/rogueweapon/W = bound_blades[bound_blades.len]
 	if(!W)
 		return FALSE
-	if(!istype(W.loc, /obj/item/rogueweapon/scabbard))
+
+	// Раньше было istype(W.loc, /obj/item/rogueweapon/scabbard)
+	// Теперь: W должен лежать в предмете, на котором есть holster-компонент
+	var/obj/item/sheath_item = W.loc
+	if(!isitem(sheath_item))
+		return FALSE
+
+	var/datum/component/holster/H = get_holster_component(sheath_item)
+	if(!H)
+		return FALSE
+
+	// Важно: именно holster хранит sheathed
+	if(H.sheathed != W)
 		return FALSE
 
 	var/free_hand = 0
@@ -709,11 +721,8 @@
 	if(!free_hand)
 		return FALSE
 
-	var/obj/item/rogueweapon/scabbard/S = W.loc
-
-	if(S.sheathed == W)
-		S.sheathed = null
-	S.update_icon(owner)
+	H.sheathed = null
+	H.update_icon(sheath_item, owner)
 
 	W.forceMove(owner.loc)
 	W.pickup(owner)
@@ -721,6 +730,7 @@
 
 	active_blade = W
 	UpdateAttackSuccessListener()
+
 	if(consume_stacks)
 		ronin_stacks = 0
 		ApplyBoundForceMultiplier()
@@ -736,21 +746,26 @@
 	if(!active_blade)
 		return FALSE
 
-	var/obj/item/rogueweapon/scabbard/S = null
-	for(var/obj/item/rogueweapon/scabbard/scab in owner.contents)
-		if(weapon_check(owner, active_blade))
-			S = scab
+	var/obj/item/sheath_item = null
+	var/datum/component/holster/H = null
+	for(var/obj/item/I in owner.contents)
+		var/datum/component/holster/Hc = get_holster_component(I)
+		if(!Hc)
+			continue
+		if(Hc.weapon_check(owner, active_blade))
+			sheath_item = I
+			H = Hc
 			break
 
-	if(!S)
+	if(!H || !sheath_item)
 		return FALSE
 
 	if(active_blade.loc == owner)
 		owner.dropItemToGround(active_blade)
 
-	active_blade.forceMove(S)
-	S.sheathed = active_blade
-	S.update_icon(owner)
+	active_blade.forceMove(sheath_item)
+	H.sheathed = active_blade
+	H.update_icon(sheath_item, owner)
 
 	active_blade = null
 	return TRUE
@@ -807,19 +822,7 @@
 		return
 	M.play_overhead_indicator_flick(icon_file, icon_state, dur, ABOVE_MOB_LAYER + 0.3, null, pixel_y)
 
-/datum/component/combo_core/ronin/proc/weapon_check(mob/living/user, obj/A, obj/item/rogueweapon/scabbard/scab)
-	if(scab.sheathed)
-		to_chat(user, span_warning("The sheath is occupied!"))
-		return FALSE
-	if(scab.valid_blade && !istype(A, scab.valid_blade))
-		to_chat(user, span_warning("[A] won't fit in there."))
-		return FALSE
-	if(scab.valid_blades)
-		if(!(A.type in scab.valid_blades))
-			to_chat(user, span_warning("[A] won't fit in there."))
-			return FALSE
-	if(scab.invalid_blades)
-		if(A.type in scab.invalid_blades)
-			to_chat(user, span_warning("[A] won't fit in there."))
-			return FALSE
-	return TRUE
+/datum/component/combo_core/ronin/proc/get_holster_component(obj/item/I)
+	if(!I)
+		return null
+	return I.GetComponent(/datum/component/holster)

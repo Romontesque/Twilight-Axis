@@ -118,4 +118,4 @@
 		)
 	H.set_blindness(0)
 	if(H.mind)
-		H.AddComponent(/datum/component/combo_core/ronin, 20 SECONDS, 3)
+		H.AddComponent(/datum/component/combo_core/ronin, RONIN_GATE_DURATION, RONIN_MAX_HISTORY)
