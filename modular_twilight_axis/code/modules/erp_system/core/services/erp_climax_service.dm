@@ -104,7 +104,7 @@
 		if(!(t in list(SEX_ORGAN_PENIS, SEX_ORGAN_VAGINA, SEX_ORGAN_BREASTS)))
 			var/can_use_other = FALSE
 			if(other_org)
-				if(other_org.host == who)
+				if(other_org.get_owner() == who)
 					var/t2 = other_org.erp_organ_type
 					if(t2 in list(SEX_ORGAN_PENIS, SEX_ORGAN_VAGINA, SEX_ORGAN_BREASTS))
 						can_use_other = TRUE
