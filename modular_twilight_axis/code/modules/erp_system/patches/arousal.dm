@@ -751,5 +751,52 @@
 /datum/component/arousal/proc/is_nympho_sp_floor_active()
 	return is_lovefiend() && (world.time < nympho_sp_floor_until)
 
+/datum/component/arousal/get_force_pleasure_multiplier(passed_force, giving)
+	switch(passed_force)
+		if(SEX_FORCE_LOW)
+			if(giving)
+				return 0.8
+			else
+				return 0.8
+		if(SEX_FORCE_MID)
+			if(giving)
+				return 1.0
+			else
+				return 1.0
+		if(SEX_FORCE_HIGH)
+			if(giving)
+				return 1.25
+			else
+				return 1.2
+		if(SEX_FORCE_EXTREME)
+			if(giving)
+				return 1.55
+			else
+				return 1.5
+
+/datum/component/arousal/get_force_pain_multiplier(passed_force)
+	switch(passed_force)
+		if(SEX_FORCE_LOW)
+			return 0.5
+		if(SEX_FORCE_MID)
+			return 1.0
+		if(SEX_FORCE_HIGH)
+			return 2.0
+		if(SEX_FORCE_EXTREME)
+			return 3.0
+
+/datum/component/arousal/get_speed_pain_multiplier(passed_speed)
+	switch(passed_speed)
+		if(SEX_SPEED_LOW)
+			return 0.8
+		if(SEX_SPEED_MID)
+			return 1.0
+		if(SEX_SPEED_HIGH)
+			return 1.2
+		if(SEX_SPEED_EXTREME)
+			return 1.4
+
+
 #undef ERP_OVERLOAD_SLEEP_DECAY_INTERVAL
 #undef NYMPHO_AROUSAL_SOFT_CAP
+
