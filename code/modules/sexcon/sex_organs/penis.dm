@@ -114,7 +114,7 @@
 	penis_type = PENIS_TYPE_EQUINE_KNOTTED
 	sheath_type = SHEATH_TYPE_NORMAL
 
-/obj/item/organ/penis/tapered
+/obj/item/organ/penis/tapered_knot
 	name = "tapered penis"
 	penis_type = PENIS_TYPE_TAPERED_KNOTTED
 	sheath_type = SHEATH_TYPE_SLIT

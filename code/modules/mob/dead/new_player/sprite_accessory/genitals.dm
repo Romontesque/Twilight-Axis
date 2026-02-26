@@ -65,7 +65,7 @@
 	name = "Flared, Knotted"
 	color_key_defaults = list(KEY_CHEST_COLOR, KEY_CHEST_COLOR)
 
-/datum/sprite_accessory/penis/taperedknot
+/datum/sprite_accessory/penis/tapered_knot
 	icon_state = "taperedknot"
 	name = "Tapered, Knotted"
 	default_colors = list("C52828", "C52828")

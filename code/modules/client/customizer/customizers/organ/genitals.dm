@@ -126,6 +126,22 @@
 		/datum/sprite_accessory/penis/flared,
 		)
 
+//TA new start - NEW ERP SYSTEM
+/datum/customizer_choice/organ/penis/equine_knotted
+	name = "Equine Penis Knotted"
+	organ_type = /obj/item/organ/penis/equine_knotted
+	sprite_accessories = list(
+		/datum/sprite_accessory/penis/flared_knotted,
+		)
+
+/datum/customizer_choice/organ/penis/tapered_knot
+	name = "Tapered Penis"
+	organ_type = /obj/item/organ/penis/tapered_knot
+	sprite_accessories = list(
+		/datum/sprite_accessory/penis/tapered_knot,
+		)
+//TA new end - NEW ERP SYSTEM
+
 /datum/customizer_choice/organ/penis/tapered_mammal
 	name = "Tapered Penis (Mammal)"
 	organ_type = /obj/item/organ/penis/tapered_mammal
