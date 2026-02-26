@@ -90,7 +90,7 @@
 		/datum/skill/misc/athletics = SKILL_LEVEL_EXPERT
 	)
 
-/datum/outfit/job/roguetown/lunatic/hero/proc/sex(mob/living/carbon/human/H)
+/datum/outfit/job/roguetown/lunatic/hero/proc/skelet(mob/living/carbon/human/H)
 	H.hairstyle = "Bald"
 	H.facial_hairstyle = "Shaved"
 	H.update_body()
@@ -111,7 +111,7 @@
 	H.adjust_blindness(-3)
 	H.STAINT = 4				//Clever shkelet
 	H.STALUC = rand(3, 8)
-	sex(H)
+	skelet(H)
 	H.dna.species.soundpack_m = new /datum/voicepack/other/lich()
 	to_chat(H, span_purple("'..Что...эт где я вообще, кто я! Ах..доспехи...меч, видимо, я герой этих земель! Вперёд, в путь!..'"))
 	head = /obj/item/clothing/head/roguetown/roguehood/red
