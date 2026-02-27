@@ -195,3 +195,16 @@ SUBSYSTEM_DEF(erp)
 		if(EC.owner_client == C)
 			return EC
 	return null
+
+/datum/controller/subsystem/erp/proc/get_actor_for_mob(mob/living/M)
+	if(!M)
+		return null
+
+	for(var/datum/erp_controller/C in controllers)
+		if(!C || QDELETED(C))
+			continue
+		var/datum/erp_actor/A = C.get_actor_by_mob(M)
+		if(A && !QDELETED(A))
+			return A
+
+	return null

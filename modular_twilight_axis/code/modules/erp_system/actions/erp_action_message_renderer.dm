@@ -50,7 +50,6 @@
 	t = replacetext(t, "{force}", "[L.get_force_text()]")
 	t = replacetext(t, "{speed}", "[L.get_speed_text()]")
 	t = replacetext(t, "{zone}",  "[L.get_target_zone_text()]")
-	t = replacetext(t, "{pose}",  "[L.get_pose_text()]")
 	return t
 
 /datum/erp_action_message_renderer/proc/replace_knot_scene_keywords(text, datum/erp_sex_link/L)

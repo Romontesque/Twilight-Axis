@@ -11,7 +11,6 @@
 	var/state = LINK_STATE_ACTIVE
 	var/last_tick = 0
 	var/tick_interval = 2 SECONDS
-	var/pose_state = SEX_POSE_BOTH_STANDING
 	var/datum/erp_controller/session
 
 	var/finish_mode = "until_climax"
@@ -129,10 +128,6 @@
 /// Keyword replacement helper for templates: {speed}.
 /datum/erp_sex_link/proc/get_speed_text()
 	return SSerp?.link_presenter?.get_speed_text(speed) || "ритмично"
-
-/// Keyword replacement helper for templates: {pose}.
-/datum/erp_sex_link/proc/get_pose_text()
-	return SSerp?.link_presenter?.get_pose_text(pose_state) || "стоя"
 
 /// Minimal UI state used by UI/debug displays.
 /datum/erp_sex_link/proc/get_ui_state()

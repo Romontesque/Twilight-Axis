@@ -490,14 +490,14 @@
 		return
 	last_ejaculation_world_time = world.time
 
+	var/mob/living/carbon/human/H = parent
+	if(!istype(H))
+		return
+
 	var/list/L = get_erp_links()
 	var/datum/erp_sex_link/best = pick_best_erp_link(L)
 
 	if(best)
-		var/mob/living/carbon/human/H = parent
-		if(!istype(H))
-			return
-
 		if(best.action && best.action.inject_timing == INJECT_ON_FINISH)
 			best.action.handle_inject(best, H)
 
@@ -512,6 +512,30 @@
 		award_satisfaction_on_climax(H, partner)
 		after_ejaculation(null, H, partner)
 		return
+
+	var/datum/erp_knot_link/KL = find_active_knot_link_for_top(H)
+	if(KL)
+		var/mob/living/carbon/human/partner = KL.btm
+		if(istype(partner) && !QDELETED(partner) && partner.stat != DEAD)
+			var/datum/reagents/Rin = KL.penis_org.extract_reagents(INJECT_ON_FINISH)
+			if(Rin && Rin.total_volume > 0)
+				KL.penis_org.route_reagents(Rin, INJECT_ORGAN, KL.receiving_org)
+				qdel(Rin)
+
+				if(istype(KL.receiving_org, /datum/erp_sex_organ/vagina))
+					var/datum/erp_sex_organ/vagina/V = KL.receiving_org
+					V.on_climax(H, 0, 0)
+
+			spread_chain_orgasm(H)
+			handle_climax("inside", H, partner, null)
+			award_satisfaction_on_climax(H, partner)
+			after_ejaculation(null, H, partner)
+			return
+
+	handle_climax("self", H, H, null)
+	award_satisfaction_on_climax(H, null)
+	after_ejaculation(null, H, null)
+	return
 
 /datum/component/arousal/handle_climax(climax_type, mob/living/carbon/human/climaxer, mob/living/carbon/human/partner, action)
 	switch(climax_type)
@@ -748,6 +772,31 @@
 		return istype(M, /mob/living/carbon/human) ? M : null
 	return null
 
+/datum/component/arousal/proc/find_active_knot_link_for_top(mob/living/carbon/human/H)
+	if(!istype(H) || QDELETED(H))
+		return null
+
+	var/datum/component/erp_knotting/K = H.GetComponent(/datum/component/erp_knotting)
+	if(!K || QDELETED(K))
+		return null
+
+	if(!islist(K.active_links) || !K.active_links.len)
+		return null
+
+	for(var/datum/erp_knot_link/KL in K.active_links)
+		if(!KL || QDELETED(KL) || !KL.is_valid())
+			continue
+		if(KL.top != H)
+			continue
+		if(!KL.penis_org || QDELETED(KL.penis_org))
+			continue
+		if(!KL.receiving_org || QDELETED(KL.receiving_org))
+			continue
+
+		return KL
+
+	return null
+
 /datum/component/arousal/proc/is_nympho_sp_floor_active()
 	return is_lovefiend() && (world.time < nympho_sp_floor_until)
 
@@ -765,14 +814,14 @@
 				return 1.0
 		if(SEX_FORCE_HIGH)
 			if(giving)
-				return 1.25
-			else
-				return 1.2
-		if(SEX_FORCE_EXTREME)
-			if(giving)
-				return 1.55
+				return 1.525
 			else
 				return 1.5
+		if(SEX_FORCE_EXTREME)
+			if(giving)
+				return 2.05
+			else
+				return 2.0
 
 /datum/component/arousal/get_force_pain_multiplier(passed_force)
 	switch(passed_force)
