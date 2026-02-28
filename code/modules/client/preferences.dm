@@ -1000,77 +1000,99 @@ GLOBAL_LIST_EMPTY(chosen_names)
 		for(var/datum/job/job in sortList(SSjob.occupations, GLOBAL_PROC_REF(cmp_job_display_asc)))
 			if(!job.spawn_positions)
 				continue
+			
 			index += 1
 			if(index >= limit)
 				width += widthPerColumn
 				if((index < limit) && (lastJob != null))
 					for(var/i = 0, i < (limit - index), i += 1)
-						HTML += "<tr bgcolor='#000000'><td width='60%' align='right'>&nbsp</td><td>&nbsp</td></tr>"
+						HTML += "<tr bgcolor='#000000'><td width='60%' align='right'>&nbsp</td><td width='40%'>&nbsp</td></tr>"
 				HTML += "</table></td><td width='20%'><table width='100%' cellpadding='1' cellspacing='0'>"
 				index = 0
 
 			if(job.title in splitJobs)
-				
 				HTML += "<tr bgcolor='#000000'><td colspan='2'><hr></td></tr>"
 
-			HTML += "<tr bgcolor='#000000'><td width='60%' align='right'>"
+			HTML += "<tr bgcolor='#000000'>"
+			
 			var/rank = job.title
 			var/used_name = job.display_title || job.title
 			if((pronouns == SHE_HER || pronouns == THEY_THEM_F) && job.f_title)
 				used_name = "[job.f_title]"
 			lastJob = job
 
-			if(is_banned_from(user.ckey, rank))
-				HTML += "[used_name]</td> <td><a href='?_src_=prefs;bancheck=[rank]'> BANNED</a></td></tr>"
-				continue
-			var/required_playtime_remaining = job.required_playtime_remaining(user.client)
-			if(required_playtime_remaining)
-				HTML += "[used_name]</td> <td><font color=red> \[ [get_exp_format(required_playtime_remaining)] as [job.get_exp_req_type()] \] </font></td></tr>"
-				continue
-			if(!job.player_old_enough(user.client))
-				var/available_in_days = job.available_in_days(user.client)
-				HTML += "[used_name]</td> <td><font color=red> \[IN [(available_in_days)] DAYS\]</font></td></tr>"
-				continue
+			var/slot_button_html = ""
+			if(max_save_slots > 1)
+				var/slot_text = "Active"
+				if(job_characters[job.title])
+					slot_text = "Slot [job_characters[job.title]]"
+				slot_button_html = " | <a href='?_src_=prefs;preference=job;task=set_job_slot;text=[rank]'><font color='gray'>\[[slot_text]\]</font></a>"
 
+			var/start_font = ""
+			var/end_font = ""
+			var/job_unavailable_status = JOB_AVAILABLE
 			
-			var/datum/preferences/char_prefs = get_job_prefs(rank)
-			
-			#ifdef USES_PQ
-			if(!isnull(job.min_pq) && (get_playerquality(user.ckey) < job.min_pq))
-				HTML += "<font color=#a59461>[used_name] (Min PQ: [job.min_pq])</font></td> <td> </td></tr>"
-				continue
-			#endif
-			if(!isnull(job.max_pq) && (get_playerquality(user.ckey) > job.max_pq))
-				HTML += "<font color=#a59461>[used_name] (Max PQ: [job.max_pq])</font></td> <td> </td></tr>"
-				continue
-
-			if(!job.validate_prefs_for_job(char_prefs))
-				HTML += "<font color='#a56161'>[used_name]</font></td>"
-				HTML += "<td width='40%'><font color='#a56161'> (Disallowed)</font></td></tr>"
-				continue
-
-			var/job_unavailable = JOB_AVAILABLE
 			if(isnewplayer(parent?.mob))
 				var/mob/dead/new_player/new_player = parent.mob
-				job_unavailable = new_player.IsJobUnavailable(job.title, latejoin = FALSE)
-			var/static/list/acceptable_unavailables = list(JOB_AVAILABLE, JOB_UNAVAILABLE_SLOTFULL)
-			if(!(job_unavailable in acceptable_unavailables))
-				HTML += "<font color=#a36c63>[used_name]</font></td> <td> </td></tr>"
-				continue
+				job_unavailable_status = new_player.IsJobUnavailable(job.title, latejoin = FALSE)
 
-			var/job_display = used_name
+			var/static/list/acceptable_unavailables = list(JOB_AVAILABLE, JOB_UNAVAILABLE_SLOTFULL)
+			if(!(job_unavailable_status in acceptable_unavailables))
+				start_font = "<font color='#a36c63'>"
+				end_font = "</font>"
+			
+			HTML += "<td width='60%' align='right'>"
 			HTML += {"
 <style>
 .tutorialhover { position: relative; display: inline-block; border-bottom: 1px dotted black; }
 .tutorialhover .tutorial { visibility: hidden; width: 280px; background-color: black; color: #e3c06f; text-align: center; border-radius: 6px; padding: 5px 0; position: absolute; z-index: 1; top: 100%; left: 50%; margin-left: -140px; }
 .tutorialhover:hover .tutorial{ visibility: visible; }
 </style>
-<div class="tutorialhover"> [job.class_setup_examine ? "<a href='?src=[REF(job)];explainjob=1'><font>[job_display]</font></a>" : "<font>[job_display]</font>"]</span>
+<div class="tutorialhover"> [start_font][job.class_setup_examine ? "<a href='?src=[REF(job)];explainjob=1'>[used_name]</a>" : "[used_name]"][end_font]</span>
 <span class="tutorial">[job.tutorial]<br>Slots: [job.spawn_positions] [job.round_contrib_points ? "RCP: +[job.round_contrib_points]" : ""]</span>
 </div>
 			"}
+			HTML += "</td>"
 
-			HTML += "</td><td width='40%' style='white-space: nowrap;'>"
+			HTML += "<td width='40%' style='white-space: nowrap;'>"
+
+			if(is_banned_from(user.ckey, rank))
+				HTML += "<a href='?_src_=prefs;bancheck=[rank]'> BANNED</a></td></tr>"
+				continue
+			var/required_playtime_remaining = job.required_playtime_remaining(user.client)
+			if(required_playtime_remaining)
+				HTML += "<font color=red> \[ [get_exp_format(required_playtime_remaining)] as [job.get_exp_req_type()] \] </font></td></tr>"
+				continue
+			if(!job.player_old_enough(user.client))
+				var/available_in_days = job.available_in_days(user.client)
+				HTML += "<font color=red> \[IN [(available_in_days)] DAYS\]</font></td></tr>"
+				continue
+
+			#ifdef USES_PQ
+			if(!isnull(job.min_pq) && (get_playerquality(user.ckey) < job.min_pq))
+				HTML += "<font color=#a59461> (Min PQ: [job.min_pq])</font></td></tr>"
+				continue
+			if(!isnull(job.max_pq) && (get_playerquality(user.ckey) > job.max_pq))
+				HTML += "<font color=#a59461> (Max PQ: [job.max_pq])</font></td></tr>"
+				continue
+			#endif
+
+			var/datum/preferences/char_prefs = get_job_prefs(rank)
+			var/is_ineligible = !job.validate_prefs_for_job(char_prefs)
+
+			if(is_ineligible)
+				HTML += "<font color='#a56161'> (Ineligible) </font>"
+				HTML += slot_button_html
+				HTML += "</td></tr>"
+				continue 
+
+
+			if(!(job_unavailable_status in acceptable_unavailables))
+				HTML += slot_button_html 
+				HTML += "</td></tr>" 
+				continue
+
+		
 			var/prefLevelLabel = "ERROR"
 			var/prefLevelColor = "pink"
 			var/prefUpperLevel = -1 
@@ -1083,8 +1105,7 @@ GLOBAL_LIST_EMPTY(chosen_names)
 					prefUpperLevel = 4
 					prefLowerLevel = 2
 					var/mob/dead/new_player/P = user
-					if(istype(P))
-						P.topjob = job.title
+					if(istype(P)) P.topjob = job.title
 				if(JP_MEDIUM)
 					prefLevelLabel = "Medium"
 					prefLevelColor = "green"
@@ -1104,16 +1125,12 @@ GLOBAL_LIST_EMPTY(chosen_names)
 			HTML += "<a class='white' href='?_src_=prefs;preference=job;task=setJobLevel;level=[prefUpperLevel];text=[rank]' oncontextmenu='javascript:return setJobPrefRedirect([prefLowerLevel], \"[rank]\");'>"
 			HTML += "<font color=[prefLevelColor]>[prefLevelLabel]</font></a>"
 			
-			
-			var/slot_text = "Active"
-			if(job_characters[job.title])
-				slot_text = "Slot [job_characters[job.title]]"
-			HTML += " | <a href='?_src_=prefs;preference=job;task=set_job_slot;text=[rank]'><font color='gray'>\[[slot_text]\]</font></a>"
+			HTML += slot_button_html 
 			
 			HTML += "</td></tr>"
 
 		for(var/i = 1, i < (limit - index), i += 1) 
-			HTML += "<tr bgcolor='000000'><td width='60%' align='right'>&nbsp</td><td>&nbsp</td></tr>"
+			HTML += "<tr bgcolor='000000'><td width='60%' align='right'>&nbsp</td><td width='40%'>&nbsp</td></tr>"
 
 		HTML += "</td'></tr></table>"
 		HTML += "</center></table><br>"
