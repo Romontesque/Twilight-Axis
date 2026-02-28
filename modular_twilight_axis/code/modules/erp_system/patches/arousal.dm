@@ -494,46 +494,6 @@
 	if(!istype(H))
 		return
 
-	var/list/L = get_erp_links()
-	var/datum/erp_sex_link/best = pick_best_erp_link(L)
-
-	if(best)
-		if(best.action && best.action.inject_timing == INJECT_ON_FINISH)
-			best.action.handle_inject(best, H)
-
-		var/datum/erp_controller/C = SSerp.get_controller_for(H)
-		var/datum/erp_actor/me = C ? C.get_actor_by_mob(H) : null
-		var/list/info = me ? best.handle_climax(me) : null
-		var/climax_type = info?["type"] || "self"
-		var/mob/living/carbon/human/partner = info?["partner"]
-
-		spread_chain_orgasm(H)
-		handle_climax(climax_type, H, partner, null)
-		award_satisfaction_on_climax(H, partner)
-		after_ejaculation(null, H, partner)
-		return
-
-	var/datum/erp_knot_link/KL = find_active_knot_link_for_top(H)
-	if(KL)
-		var/mob/living/carbon/human/partner = KL.btm
-		if(istype(partner) && !QDELETED(partner) && partner.stat != DEAD)
-			var/datum/reagents/Rin = KL.penis_org.extract_reagents(INJECT_ON_FINISH)
-			if(Rin && Rin.total_volume > 0)
-				KL.penis_org.route_reagents(Rin, INJECT_ORGAN, KL.receiving_org)
-				qdel(Rin)
-
-				if(istype(KL.receiving_org, /datum/erp_sex_organ/vagina))
-					var/datum/erp_sex_organ/vagina/V = KL.receiving_org
-					V.on_climax(H, 0, 0)
-
-			spread_chain_orgasm(H)
-			handle_climax("inside", H, partner, null)
-			award_satisfaction_on_climax(H, partner)
-			after_ejaculation(null, H, partner)
-			return
-
-	handle_climax("self", H, H, null)
-	award_satisfaction_on_climax(H, null)
 	after_ejaculation(null, H, null)
 	return
 
@@ -579,10 +539,12 @@
 	return max(1, cost)
 
 /datum/component/arousal/after_ejaculation(datum/sex_action/action, mob/living/carbon/human/climaxer, mob/living/carbon/human/partner)
+	if(!istype(climaxer))
+		return
+
 	SEND_SIGNAL(climaxer, COMSIG_SEX_SET_AROUSAL, 20)
 	SEND_SIGNAL(climaxer, COMSIG_SEX_CLIMAX)
 
-	apply_climax_stress(climaxer, partner)
 	var/cost = get_charge_cost_for_climax()
 	charge = max(0, charge - cost)
 
@@ -590,19 +552,6 @@
 		try_gain_overload_point()
 
 	apply_post_climax_multiplier_gain()
-	climaxer.emote("moan", forced = TRUE)
-	climaxer.playsound_local(climaxer, 'sound/misc/mat/end.ogg', 100)
-
-	if(HAS_TRAIT(partner, TRAIT_GOODLOVER))
-		if(!climaxer.mob_timers["cumtri"])
-			climaxer.mob_timers["cumtri"] = world.time
-			climaxer.adjust_triumphs(1)
-			to_chat(climaxer, span_love("Our loving is a true TRIUMPH!"))
-		if(!partner.mob_timers["cumtri"])
-			partner.mob_timers["cumtri"] = world.time
-			partner.adjust_triumphs(1)
-			to_chat(partner, span_love("Our loving is a true TRIUMPH!"))
-
 	return
 
 /datum/component/arousal/proc/get_satisfaction_text()

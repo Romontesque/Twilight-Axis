@@ -190,7 +190,10 @@
 /// Handles climax signal and schedules effects.
 /datum/erp_controller/proc/on_arousal_climax(datum/source)
 	SIGNAL_HANDLER
-	climax_d?.on_arousal_climax(source)
+	if(!climax_d)
+		return
+
+	INVOKE_ASYNC(climax_d, TYPE_PROC_REF(/datum/erp_climax_service, on_arousal_climax), source)
 
 /// Runs delayed climax effects (async).
 /datum/erp_controller/proc/handle_arousal_climax_effects(mob/living/carbon/human/who, list/active_links)

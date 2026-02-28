@@ -61,3 +61,13 @@
 		return "[copytext(text, 1, length(text))] по самый узел[last]"
 
 	return "[text] по самый узел"
+
+/// Builds a final message for climax templates (never appends knot scene suffix).
+/datum/erp_action_message_renderer/proc/build_climax_message(template, datum/erp_sex_link/L)
+	if(!template || !L || !L.action)
+		return null
+
+	var/text = "[template]"
+	text = apply_conditionals(text, L)
+	text = replace_keywords(text, L)
+	return text
