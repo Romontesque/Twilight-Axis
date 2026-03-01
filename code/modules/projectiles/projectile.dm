@@ -735,7 +735,7 @@
 			if(L.lying)
 				return FALSE
 	return TRUE
-
+//TA EDIT
 #define BUCKLE_PENALTY 1
 
 //Spread is FORCED!
