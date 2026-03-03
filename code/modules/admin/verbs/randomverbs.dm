@@ -423,10 +423,14 @@ Traitors and the like can also be revived with the previous role mostly intact.
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Rejuvinate") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/cmd_admin_create_centcom_report()
-	set category = "-Server-"
-	set name = "Create Command Report"
+	set category = "-Special Verbs-"
+	set name = "Make IC Announc"
 
 	if(!check_rights(R_ADMIN))
+		return
+
+	var/title = input(usr, "Заголовок объявления?", "Announcement Title", "") as text|null
+	if(!title)
 		return
 
 	var/input = input(usr, "Enter a Command Report. Ensure it makes sense IC.", "What?", "") as message|null
@@ -436,7 +440,7 @@ Traitors and the like can also be revived with the previous role mostly intact.
 	var/confirm = alert(src, "Do you want to announce the contents of the report to the crew?", "Announce", "Yes", "No", "Cancel")
 	switch(confirm)
 		if("Yes")
-			priority_announce(input, null, 'sound/blank.ogg')
+			priority_announce(input, "<span class='reallybig'>[html_encode(title)]</span>", 'sound/misc/bell.ogg', sender = usr)
 		if("Cancel")
 			return
 
