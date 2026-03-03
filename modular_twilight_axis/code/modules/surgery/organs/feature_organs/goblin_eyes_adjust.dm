@@ -1,5 +1,5 @@
-#define GOBLIN_EYE_IMPLANT_PER_PENALTY 2
-#define ZOMBIE_EYE_IMPLANT_PER_PENALTY 6
+#define GOBLIN_EYE_IMPLANT_PER_PENALTY 3
+#define ZOMBIE_EYE_IMPLANT_PER_PENALTY 3
 
 /datum/status_effect/debuff/goblin_eye_implant
 	id = "goblin_eye_implant"
@@ -33,23 +33,13 @@
 	UnregisterSignal(parent, COMSIG_PARENT_EXAMINE)
 	return ..()
 
-/datum/component/goblin_eye_implant_examine/proc/on_examine(mob/living/carbon/human/source, mob/user, list/examine_list)
-	if(!source?.ckey)
-		return
+/mob/living/get_villain_text(mob/examiner)
+	. = ..()
 
-	var/skipface = (source.wear_mask && (source.wear_mask.flags_inv & HIDEFACE)) || \
-				   (source.head && (source.head.flags_inv & HIDEFACE))
-	if(skipface)
+	var/obj/item/organ/eyes/E = src.getorganslot(ORGAN_SLOT_EYES)
+	if(!E || !E.low_quality_eye)
 		return
-
-	var/obj/item/organ/eyes/E = source.getorganslot(ORGAN_SLOT_EYES)
-	if(!E || !E.status_type)
-		return
-
-	if(E.status_type == /datum/status_effect/debuff/goblin_eye_implant)
-		examine_list += span_warning("A faint crimson glint flickers in their gaze — sharp, foreign, and wrong.")
-	else if(E.status_type == /datum/status_effect/debuff/zombie_eye_implant)
-		examine_list += span_warning("A dull, corpse-like sheen clouds their eyes — as if something dead stares back from within.")
+	. += span_userdanger("Their eyes send chills down your spine...")
 
 /obj/item/organ/eyes
 	var/low_quality_eye = FALSE
