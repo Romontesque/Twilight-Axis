@@ -11,7 +11,7 @@
 	outfit = /datum/outfit/job/roguetown/wretch/hero
 	category_tags = list(CTAG_WRETCH)
 	min_pq = 30				//better RP?
-	maximum_possible_slots = 3
+	maximum_possible_slots = 2
 	extra_context = "You're a SKELETON, be ready to shackle your bones. Minimum PQ Required: 30"
 	traits_applied = list(
 		TRAIT_NOHUNGER, 
