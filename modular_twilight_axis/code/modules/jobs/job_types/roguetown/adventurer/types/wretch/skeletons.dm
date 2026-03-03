@@ -63,7 +63,7 @@
 		/obj/item/rogueweapon/huntingknife/idagger = 1,
 		/obj/item/rogueweapon/scabbard/sheath = 1
 	)
-	var/classes = list("Warrior", "Armbrustschütze", "Toter Aufrührer")
+	var/classes = list("Krieger", "Armbrustschütze", "Toter Aufrührer")
 	var/classchoice = input("Choose your archetypes", "Available archetypes") as anything in classes
 
 	switch(classchoice)
