@@ -8,7 +8,7 @@
 
 /atom/movable/screen/alert/status_effect/debuff/goblin_eye_implant
 	name = "Goblin Eyes"
-	desc = "Implanted low-quality eyes hinder your awareness."
+	desc = "These are not your eyes. They were forced into your skull by crude hands, and they do not see the world as you once did."
 	icon_state = "debuff"
 
 /datum/component/goblin_eye_implant_examine
@@ -40,7 +40,7 @@
 	   !istype(E, /obj/item/organ/eyes/night_vision/zombie))
 		return
 
-	examine_list += span_warning("Their eyes carry a strange reddish glow, as if from a crude transplant.")
+	examine_list += span_warning("A dim, unsettling red light lingers in their gaze — as if something else peers through them.")
 
 /obj/item/organ/eyes/proc/is_species_default_eye(mob/living/carbon/human/H)
 	var/default_eye_type = H?.dna?.species?.organs?[ORGAN_SLOT_EYES]
