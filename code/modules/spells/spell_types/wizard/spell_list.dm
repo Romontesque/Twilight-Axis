@@ -60,8 +60,7 @@ GLOBAL_LIST_INIT(learnable_spells, (list(/obj/effect/proc_holder/spell/invoked/p
 		/obj/effect/proc_holder/spell/invoked/arctic_breath,
 		/obj/effect/proc_holder/spell/self/frost_walker,
 		/obj/effect/proc_holder/spell/invoked/projectile/snowball_toss,
-		/obj/effect/proc_holder/spell/invoked/projectile/icicle_spear,
-		/obj/effect/proc_holder/spell/invoked/shrink,//TA EDIT END
+		/obj/effect/proc_holder/spell/invoked/projectile/icicle_spear,//TA EDIT END
 		/obj/effect/proc_holder/spell/invoked/firewalker,
 		/obj/effect/proc_holder/spell/invoked/thunderstrike,
 		/obj/effect/proc_holder/spell/invoked/sundering_lightning,
