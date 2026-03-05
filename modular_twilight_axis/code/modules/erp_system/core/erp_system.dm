@@ -248,3 +248,17 @@ SUBSYSTEM_DEF(erp)
 			return A
 
 	return null
+
+/datum/controller/subsystem/erp/proc/hard_shutdown_all(reason = "roundend")
+	if(!controllers || !controllers.len)
+		return
+
+	var/list/to_kill = controllers.Copy()
+
+	for(var/datum/erp_controller/C in to_kill)
+		if(!C)
+			continue
+		C.force_stop_all_links(reason)
+		qdel(C)
+
+	controllers.Cut()

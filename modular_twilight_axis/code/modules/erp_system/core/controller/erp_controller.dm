@@ -781,3 +781,11 @@
 		ui = new(ui_host, src)
 
 	request_ui_update()
+
+/datum/erp_controller/proc/force_stop_all_links(reason = "forced")
+	if(links && links.len)
+		var/list/ls = links.Copy()
+		for(var/datum/erp_sex_link/L in ls)
+			if(L)
+				stop_link_runtime(L)
+	links?.Cut()
