@@ -57,7 +57,6 @@
 				beltl = /obj/item/rogueweapon/sword/sabre/mulyeog
 				beltr = /obj/item/rogueweapon/scabbard/sword/kazengun
 				armor = /obj/item/clothing/suit/roguetown/armor/basiceast
-				H.adjust_skillrank_up_to(/datum/skill/combat/shields, 3, TRUE)
 				H.adjust_skillrank_up_to(/datum/skill/combat/swords, 4, TRUE)
 
 /datum/advclass/foreigner/yoruku
@@ -221,7 +220,7 @@
 	You hail from the Ranesheni Empire, where the market of flesh is ancient and unbroken, and your coin is earned in the trade of living souls."
 	allowed_races = RACES_ALL_KINDS
 	outfit = /datum/outfit/job/roguetown/adventurer/slaver
-	subclass_languages = list(/datum/language/celestial)
+	subclass_languages = list(/datum/language/raneshi)
 	cmode_music = 'sound/music/combat_desertrider.ogg'
 	traits_applied = list(TRAIT_STEELHEARTED, TRAIT_MEDIUMARMOR)
 	subclass_stats = list(
@@ -418,6 +417,7 @@
 		/datum/skill/combat/wrestling = SKILL_LEVEL_APPRENTICE,
 		/datum/skill/combat/unarmed = SKILL_LEVEL_APPRENTICE,
 		/datum/skill/misc/reading = SKILL_LEVEL_NOVICE,
+		/datum/skill/misc/medicine = SKILL_LEVEL_NOVICE,
 	)
 
 	extra_context = "This subclass can pick from a wide array of bronze weapons, armor, and origins to specialize in. Bronze armor - while easily pierced - is exceptionally durable and resistant against critical hits. A total of four Disciplines are available, each providing a different trait and armoring-tier."
@@ -535,24 +535,29 @@
 			if("Another Shortsword & Skills In Dual-Wielding")
 				ADD_TRAIT(H, TRAIT_DUALWIELDER, TRAIT_GENERIC)
 				l_hand = /obj/item/rogueweapon/sword/short/gladius
+				H.adjust_skillrank_up_to(/datum/skill/combat/swords, SKILL_LEVEL_APPRENTICE, TRUE)
 				beltl = /obj/item/rogueweapon/scabbard/sword/strap
 			if("Another Messer & Skills In Dual-Wielding")
 				ADD_TRAIT(H, TRAIT_DUALWIELDER, TRAIT_GENERIC)
 				l_hand = /obj/item/rogueweapon/sword/short/messer/bronze
+				H.adjust_skillrank_up_to(/datum/skill/combat/swords, SKILL_LEVEL_APPRENTICE, TRUE)
 				beltl = /obj/item/rogueweapon/scabbard/sword/strap
 			if("Another Khopesh & Skills In Dual-Wielding")
 				ADD_TRAIT(H, TRAIT_DUALWIELDER, TRAIT_GENERIC)
-				l_hand = /obj/item/rogueweapon/sword/short/gladius
+				l_hand = /obj/item/rogueweapon/sword/sabre/bronzekhopesh
+				H.adjust_skillrank_up_to(/datum/skill/combat/swords, SKILL_LEVEL_APPRENTICE, TRUE)
 				beltl = /obj/item/rogueweapon/scabbard/sword/strap
 			if("Another Axe & Skills In Dual-Wielding")
 				ADD_TRAIT(H, TRAIT_DUALWIELDER, TRAIT_GENERIC)
+				H.adjust_skillrank_up_to(/datum/skill/combat/axes, SKILL_LEVEL_APPRENTICE, TRUE)
 				l_hand = /obj/item/rogueweapon/stoneaxe/woodcut/bronze
 			if("A Bottle Of Medicinal Fish Vinegar.. ?")
 				beltl = /obj/item/reagent_containers/glass/bottle/rogue/healthpot/zarum
-		var/bronzediscipline = list("Gladiator - Skinarmored & Immunity To Pain","Thespian - Dodge Expert, +III SPD / -III CON","Shieldbearer - Well-Armored & Maille Training","Bulwark - Fully-Armored & Plate Training")
+				H.adjust_skillrank_up_to(/datum/skill/misc/medicine, SKILL_LEVEL_APPRENTICE, TRUE)
+		var/bronzediscipline = list("Thespian - Dodge Expert, -I CON / +I SPD","Gladiator - Skin-Armored & Immunity To Pain","Shieldbearer - Well-Armored & Maille Training","Bulwark - Fully-Armored & Plate Training")
 		var/bronzediscipline_choice = input(H, "Choose your DISCIPLINE.", "EMBRACE GLORY AND DEATH.") as anything in bronzediscipline
 		switch(bronzediscipline_choice)
-			if("Thespian - Dodge Expert, +III SPD / -III CON")
+			if("Thespian - Dodge Expert, -I CON / +I SPD")
 				ADD_TRAIT(H, TRAIT_DODGEEXPERT, TRAIT_GENERIC)
 				H.change_stat(STATKEY_SPD, 3)
 				H.change_stat(STATKEY_INT, 1)
@@ -563,7 +568,7 @@
 				pants = /obj/item/clothing/under/roguetown/skirt/red
 				wrists = /obj/item/clothing/wrists/roguetown/bracers/bronze
 				belt = /obj/item/storage/belt/rogue/leather
-			if("Gladiator - Skinarmored & Immunity To Pain")
+			if("Gladiator - Skin-Armored & Immunity To Pain")
 				ADD_TRAIT(H, TRAIT_NOPAINSTUN, TRAIT_GENERIC) //Lite!Barbarian.
 				head = /obj/item/clothing/head/roguetown/helmet/bronzegladiator
 				wrists = /obj/item/clothing/wrists/roguetown/bracers/cloth/gladiator
@@ -583,7 +588,7 @@
 			if("Bulwark - Fully-Armored & Plate Training")
 				ADD_TRAIT(H, TRAIT_HEAVYARMOR, TRAIT_GENERIC)
 				head = /obj/item/clothing/head/roguetown/helmet/bronze
-				neck = /obj/item/clothing/neck/roguetown/gorget/bronze
+				neck = /obj/item/clothing/neck/roguetown/bevor/bronze
 				wrists = /obj/item/clothing/wrists/roguetown/bracers/bronze
 				armor = /obj/item/clothing/suit/roguetown/armor/plate/full/bronze/alt
 				pants = /obj/item/clothing/under/roguetown/loincloth/brown
@@ -785,8 +790,8 @@
 	it triumphs over the katar when it comes to thawrting blows and cleaving skulls. The wooden handle used to connect its axhead to the gauntlet is fragile, however; \
 	all it takes is a precise strike to neuter such a weapon."
 	wdefense = 5 //Much higher than usual for most unarmed weapons..
-	max_integrity = 55 //..but far more fragile.
-	max_blade_int = 300
+	max_integrity = 150 //..and tougher, too.
+	max_blade_int = 150 // Reduced sharpness, however, as a result. Such a weapon is built for gladitorial combat, not the rigors of the wilderness. Keep it sharpened
 	possible_item_intents = list(/datum/intent/axe/chop/arbelos, /datum/intent/axe/cut/arbelos, /datum/intent/katar/thrust/arbelos, /datum/intent/sword/peel)
 	thrown_bclass = BCLASS_CHOP
 
@@ -842,6 +847,16 @@
 /datum/intent/rend/apophis
 	damfactor = 2.2
 	intent_intdamage_factor = 0.2
+
+/obj/item/clothing/neck/roguetown/bevor/bronze
+	name = "bronze gorgette"
+	desc = "A jutting slab of bronze, traditionally mounted atop a panoplic assembly to veil the neck from precise strikes. </br>To tip the chin up while grounded is an ancient gesture; one which willingly beckons for the 'gift of mercy'."
+	icon_state = "bbevor"
+	smeltresult = /obj/item/ingot/bronze
+	armor = ARMOR_PLATE_BRONZE
+	max_integrity = ARMOR_INT_SIDE_BRONZE
+	prevent_crits = PREVENT_CRITS_ALL
+	anvilrepair = /datum/skill/craft/armorsmithing
 
 /obj/item/clothing/suit/roguetown/armor/plate/bronze/light
 	name = "bronze cardiophylax"
@@ -914,16 +929,26 @@
 	item_state = "bronzemask_legacy"
 	desc = "Glimmering bronze, meticuliusly shaped to mimic the guise of another. One of civilization's oldest superstitions is the belief that donning such masks would impart a sliver of the mimicked facebearer's power unto its wearer."
 
+/obj/item/clothing/mask/rogue/facemask/bronze/anthro
+	name = "bronze mask"
+	icon_state = "bronzemask_snout"
+	item_state = "bronzemask_snout"
+
+/obj/item/clothing/mask/rogue/facemask/bronze/classic/anthro
+	name = "bronze death mask"
+	icon_state = "bronzemask_legacy_snout"
+	item_state = "bronzemask_legacy_snout"
+
 /obj/item/rogueweapon/shield/bronze/great
 	name = "hoplon greatshield"
 	desc = "A heavy shield, taller and thicker than most of their contemporaries. It has survived the Calamity, endured the Apotheosis, and blunted the Sundering; and for one final time, it shall ward this dying world from a crueler fate."
 	icon_state = "bronzegreatshield"
 	item_state = "bronzegreatshield"
-	max_integrity = 360 //Highest integrity and passive projectile-blocking chance of most non-unique shields. Defense is consequently reduced to Buckler levels, however. Time your blocks and take one for the team!
+	max_integrity = 360 //Highest integrity and passive projectile-blocking chance of most non-unique shields.
 	possible_item_intents = list(/datum/intent/shield/block, /datum/intent/mace/smash/shield/metal/great, /datum/intent/effect/daze) // No SHIELD_BASH. Able to inflict Daze due to its weight.
 	force = 28
 	coverage = 75 
-	wdefense = 9
+	wdefense = 10
 	minstr = 12 //Requires a natural +STR modifier or statpack to double as a melee weapon, for its given class. Note that it has a heavier charge time and active stamina drain, too, as.. well, it's quite heavy.
 
 /obj/item/rogueweapon/shield/bronze/great/get_mechanics_examine(mob/user)
@@ -975,18 +1000,21 @@
 	desc = "'We are Her soldiers, the Legion of light.' </br>'We are the center, the depth of the Sun.' </br>'Fire and flame - we are one.'"
 	icon_state = "astrata_b"
 	item_state = "astrata_b"
+	sellprice = 25 // same as a bronze psycross
 
 /obj/item/clothing/neck/roguetown/psicross/malum/bronze
 	name = "bronze amulet of Malum"
 	desc = "Stone to steel, bone to bronze, mulched to masterworked."
 	icon_state = "malum_b"
 	item_state = "malum_b"
+	sellprice = 25
 
 /obj/item/clothing/neck/roguetown/psicross/inhumen/graggar/bronze
 	name = "bronze amulet of Graggar"
 	desc = "'EVERYTHING - AND EVERYONE YOU LOVE - WILL BE GONE! WHAT WILL YOU HAVE, AFTER THE LAST FIRE'S BEEN SMOTHERED OUT?!' </br>‎  </br>'..You. I'd still have you.'"
 	icon_state = "graggar_b"
 	item_state = "graggar_b"
+	sellprice = 25
 
 //////////////////////////
 // THESPIANS - END!     //
