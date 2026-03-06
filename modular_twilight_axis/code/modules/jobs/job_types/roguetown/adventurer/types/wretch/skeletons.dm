@@ -38,6 +38,7 @@
 	H.facial_hairstyle = "Shaved"
 	ADD_TRAIT(H, TRAIT_LIMBATTACHMENT, TRAIT_GENERIC)
 	ADD_TRAIT(H, TRAIT_NOLIMBDISABLE, TRAIT_GENERIC)
+	ADD_TRAIT(H, TRAIT_ZOMBIE_IMMUNE, TRAIT_GENERIC)
 	H.dna.species.species_traits |= NOBLOOD
 	H.mob_biotypes = MOB_UNDEAD
 	for(var/obj/item/bodypart/B in H.bodyparts)
