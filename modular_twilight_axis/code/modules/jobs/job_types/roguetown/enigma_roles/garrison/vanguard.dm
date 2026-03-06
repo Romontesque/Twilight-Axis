@@ -71,11 +71,9 @@
 	category_tags = list(CTAG_VANGUARD)
 	traits_applied = list(TRAIT_MEDIUMARMOR)
 	subclass_stats = list(
-		STATKEY_STR = 2,// seems kinda lame but remember guardsman bonus!!
-		STATKEY_PER = 2,
+		STATKEY_STR = 2,// У них даётся +3 точности + 1 СПД бонусом, так что логично открутить у них точность + скорость.
 		STATKEY_CON = 1,
-		STATKEY_WIL = 2,
-		STATKEY_SPD = 1
+		STATKEY_WIL = 2
 	)
 	subclass_skills = list(
 		/datum/skill/combat/polearms = SKILL_LEVEL_JOURNEYMAN,
@@ -152,18 +150,15 @@
 	outfit = /datum/outfit/job/roguetown/vanguard/archer
 
 	category_tags = list(CTAG_VANGUARD)
-	traits_applied = list(TRAIT_MEDIUMARMOR)
 	subclass_stats = list(
-		STATKEY_STR = 1,
-		STATKEY_PER = 3,
+		STATKEY_PER = 2,
 		STATKEY_SPD = 2,
-		STATKEY_CON = 1,
 		STATKEY_WIL = 2
 	)
 	subclass_skills = list(
 		/datum/skill/combat/crossbows = SKILL_LEVEL_EXPERT,
 		/datum/skill/combat/bows = SKILL_LEVEL_EXPERT,
-		/datum/skill/combat/knives = SKILL_LEVEL_JOURNEYMAN,
+		/datum/skill/combat/knives = SKILL_LEVEL_APPRENTICE,
 		/datum/skill/combat/wrestling = SKILL_LEVEL_JOURNEYMAN,
 		/datum/skill/combat/unarmed = SKILL_LEVEL_JOURNEYMAN,
 		/datum/skill/combat/swords = SKILL_LEVEL_APPRENTICE,
@@ -188,6 +183,23 @@
 		/obj/item/storage/keyring/vanguard_enigma = 1,
 		/obj/item/rogueweapon/scabbard/sheath = 1,
 		)
+
+	H.adjust_blindness(-3)
+	if(H.mind)
+		var/weapons = list("Footman archer","Light archer")
+		var/weapon_choice = input(H, "Choose your weapon.", "TAKE UP ARMS") as anything in weapons
+		H.set_blindness(0)
+		switch(weapon_choice)
+			if("Footman archer")
+				H.change_stat(STATKEY_STR, 1) //Футману силу.
+				H.adjust_skillrank_up_to(/datum/skill/combat/swords, 3, TRUE)
+			if("Light archer")
+				ADD_TRAIT(H, TRAIT_DODGEEXPERT, TRAIT_GENERIC)
+				H.change_stat(STATKEY_PER, 1) //Стрелку точность.
+				H.adjust_skillrank_up_to(/datum/skill/combat/knives, 3, TRUE)
+	H.verbs |= /mob/proc/haltyell
+
+	if(H.mind)
 
 /datum/outfit/job/roguetown/vanguard/archer/pre_equip(mob/living/carbon/human/H)
 	..()
@@ -216,10 +228,8 @@
 	maximum_possible_slots = 1
 	subclass_stats = list(
 		STATKEY_STR = 2,
-		STATKEY_PER = 2,
 		STATKEY_CON = 1,
-		STATKEY_WIL = 2,
-		STATKEY_SPD = 1
+		STATKEY_WIL = 2
 	)
 	subclass_skills = list(
 		/datum/skill/combat/polearms = SKILL_LEVEL_EXPERT,
