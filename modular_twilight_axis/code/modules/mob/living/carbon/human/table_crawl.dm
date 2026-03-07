@@ -1,3 +1,9 @@
+#define TABLE_CRAWL_MIN_DELAY (2 SECONDS)
+#define TABLE_CRAWL_BONK_STUN (5 SECONDS)
+#define TABLE_CRAWL_BONK_COOLDOWN (1 SECONDS)
+#define TABLE_CRAWL_BONK_SOUND_VOLUME 100
+#define TABLE_CRAWL_UNDER_LAYER_OFFSET 0.1
+
 /mob/living/carbon/human
 	var/tmp/table_crawl_state_enabled = FALSE
 	var/tmp/table_crawl_under_table = FALSE
@@ -89,7 +95,7 @@
 	if(HAS_TRAIT(src, TRAIT_HANDS_BLOCKED))
 		adjusted_climb_time *= 2
 	adjusted_climb_time -= STASPD * 2
-	return max(adjusted_climb_time, 2 SECONDS)
+	return max(adjusted_climb_time, TABLE_CRAWL_MIN_DELAY)
 
 /mob/living/carbon/human/proc/can_virtual_table_climb(obj/structure/table/target_table, turf/target_turf)
 	var/turf/source_turf = get_turf(src)
@@ -178,27 +184,25 @@
 
 /mob/living/carbon/human/proc/table_crawl_head_bonk()
 	var/obj/structure/table/target_table = get_table_crawl_table()
-	var/atom/sound_source = src
+	var/atom/sound_source = target_table ? target_table : src
 	var/table_name = target_table ? "[target_table]" : "the underside of the table"
-	if(target_table)
-		sound_source = target_table
 
 	visible_message(span_warning("[src] bumps their head on [table_name]!"), span_warning("You bump your head on [table_name]!"))
-	playsound(sound_source, "genblunt", 100, TRUE)
-	Stun(5 SECONDS)
+	playsound(sound_source, "genblunt", TABLE_CRAWL_BONK_SOUND_VOLUME, TRUE)
+	Stun(TABLE_CRAWL_BONK_STUN)
 
 /mob/living/carbon/human/proc/try_table_crawl_head_bonk()
 	if(!table_crawl_under_table || !get_table_crawl_table())
 		return FALSE
 	if(world.time >= table_crawl_next_bonk)
-		table_crawl_next_bonk = world.time + 1 SECONDS
+		table_crawl_next_bonk = world.time + TABLE_CRAWL_BONK_COOLDOWN
 		table_crawl_head_bonk()
 	refresh_table_crawl()
 	return TRUE
 
 /mob/living/carbon/human/proc/apply_table_crawl_visual()
 	reset_offsets("structure_climb")
-	layer = TABLE_LAYER - 0.1
+	layer = TABLE_LAYER - TABLE_CRAWL_UNDER_LAYER_OFFSET
 	plane = GAME_PLANE_LOWER
 
 /mob/living/carbon/human/proc/clear_table_crawl_passtable()
@@ -306,7 +310,6 @@
 
 	var/obj/structure/table/target_table = obstacle
 	source.try_offer_table_crawl(target_table, get_turf(target_table))
-	return NONE
 
 /datum/element/table_crawl/proc/on_moved(mob/living/carbon/human/source, atom/old_loc, direction, forced)
 	SIGNAL_HANDLER
@@ -317,3 +320,9 @@
 			source.apply_table_crawl_visual()
 	source.clear_table_crawl_passtable()
 	source.refresh_table_crawl()
+
+#undef TABLE_CRAWL_MIN_DELAY
+#undef TABLE_CRAWL_BONK_STUN
+#undef TABLE_CRAWL_BONK_COOLDOWN
+#undef TABLE_CRAWL_BONK_SOUND_VOLUME
+#undef TABLE_CRAWL_UNDER_LAYER_OFFSET
