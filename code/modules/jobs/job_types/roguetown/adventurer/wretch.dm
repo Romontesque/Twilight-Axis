@@ -65,14 +65,14 @@
 		if(H.mind && !H.mind.has_antag_datum(/datum/antagonist/wretch))
 			var/datum/antagonist/new_antag = new /datum/antagonist/wretch()
 			H.mind.add_antag_datum(new_antag)
-
+/*
 /datum/job/roguetown/wretch/on_round_removal(mob/M)
 	// Respawn delay applies immediately
 	if(same_job_respawn_delay && M.ckey)
 		GLOB.job_respawn_delays[M.ckey] = world.time + same_job_respawn_delay
 	// Delayed slot reopen after 1 hour — subclass always reopens, global slot only if garrison criteria met
 	addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(wretch_delayed_slot_reopen), M.advjob), 1 HOURS)
-
+*/
 // Proc for wretch to select a bounty
 /proc/wretch_select_bounty(mob/living/carbon/human/H)
 	var/datum/preferences/P = H?.client?.prefs

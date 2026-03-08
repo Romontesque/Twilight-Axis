@@ -777,7 +777,7 @@ SUBSYSTEM_DEF(gamemode)
 	dat += "<BR>Active Players: [active_players]   (Royalty: [royalty], Garrison: [garrison], Town Workers: [constructor], Holy Warriors: [holy_warrior])"
 	dat += "<BR>Effective Population: [effective_pop] (Total: [active_players] + Garrison Bonus: [garrison * 2] + Holy Warrior Bonus: [holy_warrior * 2])"
 	dat += "<BR>Antagonist Count vs Maximum: [get_antag_count()] / [get_antag_cap()]"
-
+/*
 	// Job Scaling Info
 	dat += "<BR><b>--- Job Scaling ---</b>"
 	var/list/wretch_scaling = calculate_wretch_scaling()
@@ -790,6 +790,7 @@ SUBSYSTEM_DEF(gamemode)
 	var/list/adv_scaling = calculate_adventurer_scaling()
 	var/datum/job/adv_job = SSjob.GetJob("Adventurer")
 	dat += "<BR>Adventurer Slots: [adv_job?.current_positions]/[adv_job?.total_positions] (Calculated: [adv_scaling["final_slots"]])"
+*/
 	dat += "<HR>"
 	dat += "<a href='byond://?src=[REF(src)];panel=main;action=tab;tab=[GAMEMODE_PANEL_MAIN]' [panel_page == GAMEMODE_PANEL_MAIN ? "class='linkOn'" : ""]>Main</a>"
 	dat += " <a href='byond://?src=[REF(src)];panel=main;action=tab;tab=[GAMEMODE_PANEL_VARIABLES]' [panel_page == GAMEMODE_PANEL_VARIABLES ? "class='linkOn'" : ""]>Variables</a>"
