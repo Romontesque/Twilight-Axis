@@ -436,10 +436,10 @@
 	update_table_crawl_visibility()
 	update_table_crawl_spell_actions()
 
-/obj/structure/table/examine(mob/user)
+/obj/structure/table/get_mechanics_examine(mob/user)
 	. = ..()
-	. += span_notice("Use <b>\[Sneak\] + \[Lay down\]</b> and move into it to crawl under it.")
-	. += span_notice("Large creatures cannot fit under tables.")
+	. += span_info("Use <b>\[Sneak\] + \[Lay down\]</b> and move into it to crawl under it.")
+	. += span_info("Large creatures cannot fit under tables.")
 
 /datum/element/table_crawl
 	element_flags = ELEMENT_DETACH
