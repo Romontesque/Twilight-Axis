@@ -54,16 +54,21 @@
 			controller.send_message(controller.spanify_scene_climax(text), best)
 
 	INVOKE_ASYNC(controller, TYPE_PROC_REF(/datum/erp_controller, handle_arousal_climax_effects), who, active)
-	if(controller.links && controller.links.len)
-		for(var/i = controller.links.len; i >= 1; i--)
-			var/datum/erp_sex_link/Lx = controller.links[i]
-			if(!Lx || QDELETED(Lx) || !Lx.is_valid())
-				continue
-			if(Lx.finish_mode != "until_climax")
-				continue
-			if(Lx.actor_active?.physical != who)
-				continue
-			controller.stop_link_runtime(Lx)
+	for(var/datum/erp_sex_link/Lx in active)
+		if(!Lx || QDELETED(Lx) || !Lx.is_valid())
+			continue
+
+		if(Lx.finish_mode != "until_climax")
+			continue
+
+		if(Lx.actor_active?.physical != who && Lx.actor_passive?.physical != who)
+			continue
+
+		var/datum/erp_controller/link_controller = Lx.session
+		if(!istype(link_controller))
+			link_controller = controller
+
+		link_controller.stop_link_runtime(Lx)
 
 	if(who.stat != DEAD)
 		if(!controller?.hidden_mode)
@@ -126,7 +131,10 @@
 						if(istype(btm))
 							K.try_knot_link(btm, P, receiving, penis_unit_id = 0, force_level = best_link.force)
 
-			controller.handle_inject(best_link, P, INJECT_ORGAN, who)
+			//controller.handle_inject(best_link, P, INJECT_ORGAN, who)
+			if(best_link.action && best_link.action.inject_timing == INJECT_ON_FINISH)
+				best_link.action.handle_inject(best_link, who)
+
 			do_climax_effects(who, best_link)
 		else
 			var/datum/reagents/Rp = P.extract_reagents(ERP_CLIMAX_AMOUNT_SINGLE)

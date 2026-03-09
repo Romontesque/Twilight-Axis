@@ -816,7 +816,13 @@
 /datum/component/arousal/proc/is_nympho_sp_floor_active()
 	return is_lovefiend() && (world.time < nympho_sp_floor_until)
 
-
+/datum/component/arousal/check_processing()
+	SIGNAL_HANDLER
+	var/mob/parent_mob = parent
+	if(parent_mob && !QDELETED(parent_mob))
+		START_PROCESSING(SSobj, src)
+	else
+		STOP_PROCESSING(SSobj, src)
 
 /datum/component/arousal/get_force_pleasure_multiplier(passed_force, giving)
 	switch(passed_force)
