@@ -818,6 +818,9 @@
 
 /datum/component/arousal/check_processing()
 	SIGNAL_HANDLER
+	INVOKE_ASYNC(src, PROC_REF(check_processing_async))
+	
+/datum/component/arousal/proc/check_processing_async()
 	var/mob/parent_mob = parent
 	if(parent_mob && !QDELETED(parent_mob))
 		START_PROCESSING(SSobj, src)
