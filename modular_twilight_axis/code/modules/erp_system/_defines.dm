@@ -8,7 +8,7 @@
 #define SEX_ORGAN_PENIS   "penis"
 #define SEX_ORGAN_BODY    "body"
 
-#define REL_LOVE_POTION "Pidrillio"
+#define REL_LOVE_POTION (1<<0)
 
 #define SEX_POSE_BOTH_STANDING "both_standing"
 #define SEX_POSE_USER_LYING    "user_lying"
