@@ -77,9 +77,9 @@
 			if(mouth_actor)
 				var/add = 0
 				if(f >= SEX_FORCE_EXTREME)
-					add = 3
+					add = 8
 				else if(f >= SEX_FORCE_HIGH)
-					add = 2
+					add = 5
 
 				if(add > 0)
 					var/mob/living/victim = mouth_actor.get_effect_mob()

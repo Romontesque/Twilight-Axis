@@ -817,7 +817,6 @@
 	return is_lovefiend() && (world.time < nympho_sp_floor_until)
 
 /datum/component/arousal/check_processing()
-	SIGNAL_HANDLER
 	INVOKE_ASYNC(src, PROC_REF(check_processing_async))
 	
 /datum/component/arousal/proc/check_processing_async()
