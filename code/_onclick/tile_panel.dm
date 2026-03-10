@@ -18,6 +18,35 @@
 		return
 	tile_panel.request_refresh(context)
 
+/mob/proc/can_open_tile_panel_turf(turf/T)
+	if(!T || !client)
+		return FALSE
+
+	if(TurfAdjacent(T))
+		return TRUE
+
+	if(istype(src, /mob/dead/observer) && client?.holder)
+		return TRUE
+
+	return FALSE
+
+/mob/proc/open_tile_panel_for(atom/A)
+	if(!client)
+		return FALSE
+
+	var/turf/T = get_turf(A)
+	if(!T)
+		return FALSE
+
+	if(!can_open_tile_panel_turf(T))
+		return FALSE
+
+	listed_turf = T
+	client.statpanel = T.name
+
+	var/datum/tile_panel/P = get_tile_panel()
+	return P.open(T)
+
 /datum/tile_panel
 	var/mob/owner
 	var/turf/target_turf
@@ -50,10 +79,16 @@
 /datum/tile_panel/proc/open(turf/T)
 	if(!owner || !owner.client)
 		return FALSE
+
 	if(T)
 		set_target(T)
+
 	if(!target_turf)
 		return FALSE
+
+	if(!owner.can_open_tile_panel_turf(target_turf))
+		return FALSE
+
 	ui_interact(owner)
 	request_refresh()
 	return TRUE
@@ -73,8 +108,16 @@
 /datum/tile_panel/ui_status(mob/user, datum/ui_state/state)
 	if(!user || !user.client)
 		return UI_CLOSE
-	if(user != owner || !user.TurfAdjacent(target_turf))
+
+	if(user != owner)
 		return UI_CLOSE
+
+	if(!target_turf)
+		return UI_CLOSE
+
+	if(!user.can_open_tile_panel_turf(target_turf))
+		return UI_CLOSE
+
 	return UI_INTERACTIVE
 
 /datum/tile_panel/ui_interact(mob/user, datum/tgui/ui)
@@ -188,16 +231,18 @@
 			if(!istype(target) || QDELETED(target))
 				return TRUE
 
-			if(!owner.TurfAdjacent(target_turf))
+			if(!owner || !owner.client || !target_turf)
 				return TRUE
 
-			if(target != target_turf)
-				if(target.loc != target_turf)
-					return TRUE
+			if(!owner.can_open_tile_panel_turf(target_turf))
+				return TRUE
+
+			if(target != target_turf && target.loc != target_turf)
+				return TRUE
 
 			var/list/click_params = _build_mouse_params(params)
-
 			var/obj/item/W = owner.get_active_held_item()
+
 			if(W && click_params["left"] && istype(target, /obj/structure/table))
 				target.attackby(W, owner, click_params)
 				return TRUE
@@ -220,7 +265,8 @@
 
 			if(!owner || !owner.client || !target_turf)
 				return TRUE
-			if(!owner.TurfAdjacent(target_turf))
+
+			if(!owner.can_open_tile_panel_turf(target_turf))
 				return TRUE
 
 			if(src_atom != target_turf && src_atom.loc != target_turf)

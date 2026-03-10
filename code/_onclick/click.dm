@@ -727,10 +727,8 @@ GLOBAL_LIST_EMPTY(reach_dummy_pool)
 /atom/proc/AltRightClick(mob/user)
 //	SEND_SIGNAL(src, COMSIG_CLICK_ALT, user)
 	var/turf/T = get_turf(src)
-	if(T && (isturf(loc) || isturf(src)) && user.TurfAdjacent(T))
-		var/mob/M = user
-		var/datum/tile_panel/P = M.get_tile_panel()
-		P.open(T)
+	if(T && (isturf(loc) || isturf(src)))
+		user.open_tile_panel_for(T)
 
 /mob/proc/CtrlRightClickOn(atom/A, params)
 	pointed(A)
