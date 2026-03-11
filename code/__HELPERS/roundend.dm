@@ -133,6 +133,7 @@
 
 	to_chat(world, "<BR><BR><BR><span class='reallybig'>So ends this tale on [realm_name].</span>")
 	get_end_reason()
+	roundend_notify_discord()
 
 	var/round_end_music
 	if(prob(1)) 

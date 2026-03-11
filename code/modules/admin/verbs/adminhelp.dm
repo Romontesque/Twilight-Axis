@@ -706,7 +706,7 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 	to_chat(initiator, span_adminnotice("PM to-<b>Admins</b>: <font color='#FFA040'><span class='linkify'>[msg]</span></font>"))
 
 //Reopen a closed ticket
-/datum/admin_help/proc/Reopen()
+/datum/admin_help/proc/Reopen(key_name = key_name_admin(usr))
 	if(state == AHELP_ACTIVE)
 		to_chat(usr, span_warning("This ticket is already open."))
 		return
@@ -729,8 +729,8 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 	if(initiator)
 		initiator.current_ticket = src
 
-	AddInteraction("<font color='purple'>Reopened by [key_name_admin(usr)]</font>", player_message = "Ticket reopened!")
-	var/msg = span_adminhelp("Ticket [TicketHref("#[id]")] reopened by [key_name_admin(usr)].")
+	AddInteraction("<font color='purple'>Reopened by [key_name]</font>", player_message = "Ticket reopened!")
+	var/msg = span_adminhelp("Ticket [TicketHref("#[id]")] reopened by [key_name].")
 	message_admins(msg)
 	log_admin_private(msg)
 	SSblackbox.record_feedback("tally", "ahelp_stats", 1, "reopened")
