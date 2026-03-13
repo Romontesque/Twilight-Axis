@@ -1,6 +1,6 @@
 /datum/erp_action/other/hands/rubbing
 	abstract = FALSE
-	name = "ласкать тело"
+	name = "Ласкать"
 	required_target_organ = SEX_ORGAN_BODY
 	action_tags = list("race_body")
 	message_start = "{actor} касается руками {partner}."
