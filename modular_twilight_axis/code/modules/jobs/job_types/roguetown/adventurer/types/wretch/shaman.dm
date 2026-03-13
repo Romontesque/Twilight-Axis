@@ -70,4 +70,10 @@
 		/obj/item/rogueweapon/huntingknife/stoneknife = 1
 		)
 		
-	wretch_select_bounty(H)
+	var/crimes = list("I'm nobody", "They fear me")
+	var/crimeschoice = input(H, "Who is me", "How much have I done?") as anything in crimes
+	switch(crimeschoice)
+		if("I'm nobody")
+			GLOB.excommunicated_players += H.real_name
+		if("They fear me")
+			wretch_select_bounty(H)

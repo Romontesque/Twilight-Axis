@@ -82,7 +82,14 @@
 					r_hand = /obj/item/rogueweapon/spear/billhook
 		var/datum/devotion/C = new /datum/devotion(H, H.patron)
 		C.grant_miracles(H, cleric_tier = CLERIC_T2, passive_gain = CLERIC_REGEN_MINOR, start_maxed = TRUE)	//Minor regen, starts maxed out.
-		wretch_select_bounty(H)
+		var/crimes = list("I'm nobody", "They fear me")
+		var/crimeschoice = input(H, "Who is me", "How much have I done?") as anything in crimes
+		switch(crimeschoice)
+			if("I'm nobody")
+				GLOB.excommunicated_players += H.real_name
+			if("They fear me")
+				wretch_select_bounty(H)
+				H.change_stat(STATKEY_WIL, 2)
 
 	// You can convert those the church has shunned.
 	H.mind?.AddSpell(new /obj/effect/proc_holder/spell/invoked/convert_heretic)
@@ -354,7 +361,15 @@
 					l_hand = /obj/item/rogueweapon/huntingknife/idagger/steel
 		var/datum/devotion/C = new /datum/devotion(H, H.patron)
 		C.grant_miracles(H, cleric_tier = CLERIC_T2, passive_gain = CLERIC_REGEN_MINOR, start_maxed = TRUE)	//Minor regen, starts maxed out.
-		wretch_select_bounty(H)
+		var/crimes = list("I'm nobody", "They fear me")
+		var/crimeschoice = input(H, "Who is me", "How much have I done?") as anything in crimes
+		switch(crimeschoice)
+			if("I'm nobody")
+				GLOB.excommunicated_players += H.real_name
+			if("They fear me")
+				wretch_select_bounty(H)
+				H.change_stat(STATKEY_SPD, 1)
+				H.change_stat(STATKEY_INT, 1)
 
 	if (istype (H.patron, /datum/patron/inhumen/zizo))
 		if(H.mind)
