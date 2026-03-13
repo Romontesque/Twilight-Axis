@@ -78,7 +78,7 @@
 			if("JUSTICE DISPENSED THROUGH KNUCKLE AND BLADE!")
 				H.adjust_skillrank_up_to(/datum/skill/combat/unarmed, SKILL_LEVEL_EXPERT, TRUE) //No Civbarb. 
 				l_hand = /obj/item/rogueweapon/katar
-				r_hand = /obj/item/rogueweapon/knuckles
+				r_hand = /obj/item/clothing/gloves/roguetown/knuckles
 		var/crimes = list("I'm nobody", "They fear me")
 		var/crimeschoice = input(H, "Who is me", "How much have I done?") as anything in crimes
 		switch(crimeschoice)
@@ -86,6 +86,7 @@
 				return
 			if("They fear me")
 				wretch_select_bounty(H)
+
 
 /datum/outfit/job/roguetown/wretch/vigilante/proc/owl_equip(mob/living/carbon/human/H)
 	backl = /obj/item/rogueweapon/woodstaff/quarterstaff/steel //nonlethal takedowns
