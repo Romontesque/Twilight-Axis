@@ -421,9 +421,6 @@
 		if(!AM || QDELETED(AM))
 			continue
 
-		if(AM == actor || AM == initiator)
-			continue
-
 		if(!erp_can_target_atom_for_menu(actor, AM, TRUE, force))
 			continue
 
