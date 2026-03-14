@@ -8,7 +8,6 @@
 	min_pq = 30
 	maximum_possible_slots = 2
 	outfit = /datum/outfit/job/roguetown/wretch/lunacyembracer
-	class_select_category = CLASS_CAT_ROGUE
 	category_tags = list(CTAG_WRETCH)
 	extra_context = "Minimum PQ Required: 30"
 	subclass_languages = list(/datum/language/beast)
