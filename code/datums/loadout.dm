@@ -1745,6 +1745,36 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 	path = /obj/item/clothing/suit/roguetown/shirt/twilight_hammerhold/dress/robe
 	donatitem = TRUE
 
+/datum/loadout_item/donat/shirt_formal
+	name = "Строгая рубашка"
+	category = list("Одежда", "Донат")
+	path = /obj/item/clothing/suit/roguetown/shirt/undershirt/formal
+	donatitem = TRUE
+
+/datum/loadout_item/donat/tights_shorts
+	name = "Строгие короткие штаны"
+	category = list("Одежда", "Донат")
+	path = /obj/item/clothing/under/roguetown/tights/shorts
+	donatitem = TRUE
+
+/datum/loadout_item/donat/tights_fancy
+	name = "Строгие штаны"
+	category = list("Одежда", "Донат")
+	path = /obj/item/clothing/under/roguetown/tights/formalfancy
+	donatitem = TRUE
+
+/datum/loadout_item/donat/maid_dress_fancy
+	name = "Платье горничной (новое)"
+	category = list("Одежда", "Донат")
+	path = /obj/item/clothing/suit/roguetown/shirt/dress/maidfancy
+	donatitem = TRUE
+
+/datum/loadout_item/donat/maid_servant
+	name = "Servant Gown"
+	category = list("Одежда", "Донат")
+	path = /obj/item/clothing/suit/roguetown/shirt/dress/maidservant
+	donatitem = TRUE
+
 /datum/loadout_item/donat/maid_dress
 	name = "Платье горничной"
 	category = list("Одежда", "Донат")
@@ -1903,6 +1933,12 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 	path = /obj/item/clothing/cloak/apron/waist/maid
 	donatitem = TRUE
 
+/datum/loadout_item/donat/maid_apron_fancy
+	name = "Фартук горничной (новый)"
+	category = list("Плащи", "Донат")
+	path = /obj/item/clothing/cloak/apron/waist/fancymaid
+	donatitem = TRUE
+
 /datum/loadout_item/donat/scarf
 	name = "Шарф"
 	category = list("Аксессуары", "Донат")
@@ -2021,6 +2057,12 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 	path = /obj/item/clothing/head/roguetown/maidhead
 	donatitem = TRUE
 
+/datum/loadout_item/donat/maidband
+	name = "Чепчик горничной (новый)"
+	category = list("Головные уборы", "Донат")
+	path = /obj/item/clothing/head/roguetown/maidband
+	donatitem = TRUE
+
 /datum/loadout_item/donat/kokoshnik
 	name = "Кокошник"
 	category = list("Головные уборы", "Донат")
@@ -2114,6 +2156,12 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 	name = "Хаммерхолдский кушак"
 	category = list("Аксессуары", "Донат")
 	path = /obj/item/storage/belt/rogue/leather/hammerhold_sash
+	donatitem = TRUE
+
+/datum/loadout_item/donat/suspenders
+	name = "Подтяжки"
+	category = list("Аксессуары", "Донат")
+	path = /obj/item/storage/belt/rogue/leather/suspenders
 	donatitem = TRUE
 
 // Обувь
