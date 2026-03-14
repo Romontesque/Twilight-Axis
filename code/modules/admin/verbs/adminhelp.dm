@@ -44,6 +44,9 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 			admin_hide_charname = loaded
 	. = ..()
 
+/datum/admin_help_tickets/proc/IsAdminInHideCharname(ckey)
+	return (ckey in admin_hide_charname)
+
 /datum/admin_help_tickets/proc/SaveHideCharname()
 	var/path = "data/admin_hide_charname.json"
 	fdel(path)
@@ -249,7 +252,7 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 				return FALSE
 
 			// Use full key_name_admin normally; suppress the character name if the admin toggled it off
-			var/show_charname = !(user.ckey in admin_hide_charname)
+			var/show_charname = !IsAdminInHideCharname(user.ckey)
 			var/admin_name = key_name_admin(user, show_charname)
 
 			// Admin is responding
@@ -506,10 +509,11 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 			if(embed_type != "image" && embed_type != "video")
 				return FALSE
 			var/prefix = embed_type == "image" ? "EMBED_IMAGE:" : "EMBED_VIDEO:"
-			ticket.AddInteraction("<font color='blue'>PM from [key_name_admin(user)]: [prefix][url]</font>")
+			var/show_charname = !GLOB.ahelp_tickets.IsAdminInHideCharname()
+			ticket.AddInteraction("<font color='blue'>PM from [key_name_admin(user, show_charname)]: [prefix][url]</font>")
 			// Notify the player if connected
 			if(ticket.initiator)
-				to_chat(ticket.initiator, span_adminhelp("<b>Admin [key_name_admin(user)] embedded a [embed_type] in your ticket.</b>"))
+				to_chat(ticket.initiator, span_adminhelp("<b>Admin [key_name_admin(user, show_charname)] embedded a [embed_type] in your ticket.</b>"))
 			log_admin_private("Ticket #[ticket.id]: [key_name(user)] embedded [embed_type]: [url]")
 			// Notify other admins in chat with a placeholder - no raw URLs to prevent flashbanging
 			message_admins(span_adminnotice("<font color='blue'>Ticket #[ticket.id] [ticket.TicketHref("Show Ticket")] - [key_name_admin(user)] sent [ticket.initiator_key_name] an (embedded [embed_type]).</font>"))
@@ -606,7 +610,7 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 
 	if(is_bwoink)
 		// Store the admin's opening message as a full interaction so it's visible in the ticket panel
-		var/show_charname = !(usr?.ckey in GLOB.ahelp_tickets.admin_hide_charname)
+		var/show_charname = !GLOB.ahelp_tickets.IsAdminInHideCharname(usr?.ckey)
 		AddInteraction("<font color='blue'>PM from [key_name_admin(usr, show_charname)]: [msg]</font>")
 		message_admins("<font color='blue'>Ticket [TicketHref("#[id]")] created</font>")
 	else
@@ -688,7 +692,7 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 	// Truncate the displayed name in the inline notification to keep the header readable
 	var/display_name = length_char(name) > 60 ? "[copytext_char(name, 1, 61)]..." : name
 	// Simplified message to be sent to all admins, including title and action links
-	var/admin_msg = span_adminnotice("<font color='#c87941'><b>Ticket #[id]: [display_name] ([initiator_ckey]) - [TicketHref("Show Ticket", ref_src)][ClosureLinks(ref_src)]</b><br><span class='linkify' style='font-weight:normal;color:#c87941'>[msg]</span></font>")
+	var/admin_msg = span_adminnotice("<font color='#c87941'><b>Ticket #[id]: ([initiator_ckey]) - [TicketHref("Show Ticket", ref_src)]</b><br><span class='linkify' style='font-weight:normal;color:#c87941'>[msg]</span></font>")
 
 	AddInteraction("<font color='red'>[LinkedReplyName(ref_src)]: [msg]</font>", player_message = "<font color='red'>[LinkedReplyName(ref_src)]: [msg]</font>")
 
@@ -706,7 +710,11 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 	to_chat(initiator, span_adminnotice("PM to-<b>Admins</b>: <font color='#FFA040'><span class='linkify'>[msg]</span></font>"))
 
 //Reopen a closed ticket
-/datum/admin_help/proc/Reopen(key_name = key_name_admin(usr))
+/datum/admin_help/proc/Reopen(key_name = null)
+	if(!key_name)
+		var/show_charname = !GLOB.ahelp_tickets.IsAdminInHideCharname(usr?.ckey)
+		key_name = key_name_admin(usr, show_charname)
+
 	if(state == AHELP_ACTIVE)
 		to_chat(usr, span_warning("This ticket is already open."))
 		return
@@ -747,13 +755,17 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 		initiator.current_ticket = null
 
 //Mark open ticket as closed/meme
-/datum/admin_help/proc/Close(key_name = key_name_admin(usr), silent = FALSE)
+/datum/admin_help/proc/Close(key_name = null, silent = FALSE)
+	if(!key_name)
+		var/show_charname = !GLOB.ahelp_tickets.IsAdminInHideCharname(usr?.ckey)
+		key_name = key_name_admin(usr, show_charname)
+
 	if(state != AHELP_ACTIVE)
 		return
 	RemoveActive()
 	state = AHELP_CLOSED
 	GLOB.ahelp_tickets.ListInsert(src)
-	to_chat(initiator, span_adminhelp("Ticket closed by [usr?.client?.holder?.fakekey? usr.client.holder.fakekey : "an administrator"]."))
+	to_chat(initiator, span_adminhelp("Ticket closed by [key_name]."))
 	AddInteraction("<font color='red'>Closed by [key_name].</font>", player_message = "<font color='red'>Ticket closed!</font>")
 	if(!silent)
 		SSblackbox.record_feedback("tally", "ahelp_stats", 1, "closed")
@@ -762,7 +774,11 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 		log_admin_private(msg)
 
 //Resolve ticket with mentorhelp Issue message
-/datum/admin_help/proc/mentorissue(key_name = key_name_admin(usr))
+/datum/admin_help/proc/mentorissue(key_name = null)
+	if(!key_name)
+		var/show_charname = !GLOB.ahelp_tickets.IsAdminInHideCharname(usr?.ckey)
+		key_name = key_name_admin(usr, show_charname)
+		
 	if(state != AHELP_ACTIVE)
 		return
 	var/msg = "<font color='red' size='4'><b>- AdminHelp marked as ingame mechanics issue! -</b></font><br>"
@@ -778,7 +794,11 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 	Resolve(silent = TRUE)
 
 //Mark open ticket as resolved/legitimate, returns ahelp verb
-/datum/admin_help/proc/Resolve(key_name = key_name_admin(usr), silent = FALSE)
+/datum/admin_help/proc/Resolve(key_name = null, silent = FALSE)
+	if(!key_name)
+		var/show_charname = !GLOB.ahelp_tickets.IsAdminInHideCharname(usr?.ckey)
+		key_name = key_name_admin(usr, show_charname)
+		
 	if(state != AHELP_ACTIVE)
 		return
 	RemoveActive()
@@ -788,7 +808,7 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 	addtimer(CALLBACK(initiator, TYPE_PROC_REF(/client, giveadminhelpverb)), 50)
 
 	AddInteraction("<font color='green'>Resolved by [key_name].</font>", player_message = "<font color='green'>Ticket resolved!</font>")
-	to_chat(initiator, span_adminhelp("Your ticket has been resolved by [usr?.client?.holder?.fakekey? usr.client.holder.fakekey : "an administrator"]. The Adminhelp verb will be returned to you shortly."))
+	to_chat(initiator, span_adminhelp("Your ticket has been resolved by [key_name]. The Adminhelp verb will be returned to you shortly."))
 	if(!silent)
 		SSblackbox.record_feedback("tally", "ahelp_stats", 1, "resolved")
 		var/msg = "Ticket [TicketHref("#[id]")] resolved by [key_name]"
@@ -796,7 +816,11 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 		log_admin_private(msg)
 
 //Close and return ahelp verb, use if ticket is incoherent
-/datum/admin_help/proc/Reject(key_name = key_name_admin(usr))
+/datum/admin_help/proc/Reject(key_name = null)
+	if(!key_name)
+		var/show_charname = !GLOB.ahelp_tickets.IsAdminInHideCharname(usr?.ckey)
+		key_name = key_name_admin(usr, show_charname)
+		
 	if(state != AHELP_ACTIVE)
 		return
 
@@ -805,7 +829,7 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 
 		SEND_SOUND(initiator, sound('sound/adminhelp.ogg'))
 
-		to_chat(initiator, "<font color='red' size='4'><b>- AdminHelp Rejected by [usr?.client?.holder?.fakekey? usr.client.holder.fakekey : "an administrator"]! -</b></font>")
+		to_chat(initiator, "<font color='red' size='4'><b>- AdminHelp Rejected by [key_name]! -</b></font>")
 		to_chat(initiator, "<font color='red'><b>Your admin help was rejected.</b> The adminhelp verb has been returned to you so that you may try again.</font>")
 		to_chat(initiator, "Please try to be calm, clear, and descriptive in admin helps, do not assume the admin has seen any related events, and clearly state the names of anybody you are reporting.")
 
@@ -817,11 +841,15 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 	Close(silent = TRUE)
 
 //Resolve ticket with IC Issue message
-/datum/admin_help/proc/ICIssue(key_name = key_name_admin(usr))
+/datum/admin_help/proc/ICIssue(key_name = null)
+	if(!key_name)
+		var/show_charname = !GLOB.ahelp_tickets.IsAdminInHideCharname(usr?.ckey)
+		key_name = key_name_admin(usr, show_charname)
+		
 	if(state != AHELP_ACTIVE)
 		return
 
-	var/msg = "<font color='red' size='4'><b>- AdminHelp marked as IC issue by [usr?.client?.holder?.fakekey? usr.client.holder.fakekey : "an administrator"]! -</b></font><br>"
+	var/msg = "<font color='red' size='4'><b>- AdminHelp marked as IC issue by [key_name]! -</b></font><br>"
 	msg += "<font color='red'>Your ahelp is unable to be answered properly due to events occurring in the round. Your question probably has an IC answer, which means you should deal with it IC!</font>"
 	if(initiator)
 		to_chat(initiator, msg)
@@ -834,14 +862,18 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 	Resolve(silent = TRUE)
 
 //Let the initiator know their ahelp is being handled
-/datum/admin_help/proc/handle_issue(key_name = key_name_admin(usr))
+/datum/admin_help/proc/handle_issue(key_name = null)
+	if(!key_name)
+		var/show_charname = !GLOB.ahelp_tickets.IsAdminInHideCharname(usr?.ckey)
+		key_name = key_name_admin(usr, show_charname)
+		
 	if(state != AHELP_ACTIVE)
 		return FALSE
 
 	if(handler && handler == usr.ckey) // No need to handle it twice as the same person ;)
 		return TRUE
 
-	var/msg = span_adminhelp("Your ticket is now being handled by [usr?.client?.holder?.fakekey ? usr?.client?.holder?.fakekey : "an administrator"]! Please wait while they type their response and/or gather relevant information.")
+	var/msg = span_adminhelp("Your ticket is now being handled by [key_name]! Please wait while they type their response and/or gather relevant information.")
 
 	if(initiator)
 		to_chat(initiator, msg)
