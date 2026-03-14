@@ -220,12 +220,4 @@
 	var/datum/devotion/C = new /datum/devotion(H, H.patron)
 	C.grant_miracles(H, cleric_tier = CLERIC_T1, passive_gain = CLERIC_REGEN_MINOR, devotion_limit = CLERIC_REQ_1, start_maxed = TRUE)
 	//Minor regen, T1 only. Cannot progress beyond that (hah). Mostly for self healing.
-	var/crimes = list("I'm nobody", "They fear me")
-	var/crimeschoice = input(H, "Who is me", "How much have I done?") as anything in crimes
-	switch(crimeschoice)
-		if("I'm nobody")
-			GLOB.excommunicated_players += H.real_name
-		if("They fear me")
-			wretch_select_bounty(H)
-			H.change_stat(STATKEY_STR, 1)
-			H.change_stat(STATKEY_CON, 1)
+	bountychoice_spellblade(H)			//TA - EDIT

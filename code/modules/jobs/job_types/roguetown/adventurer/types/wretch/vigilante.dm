@@ -79,14 +79,7 @@
 				H.adjust_skillrank_up_to(/datum/skill/combat/unarmed, SKILL_LEVEL_EXPERT, TRUE) //No Civbarb. 
 				l_hand = /obj/item/rogueweapon/katar
 				r_hand = /obj/item/clothing/gloves/roguetown/knuckles
-		var/crimes = list("I'm nobody", "They fear me")
-		var/crimeschoice = input(H, "Who is me", "How much have I done?") as anything in crimes
-		switch(crimeschoice)
-			if("I'm nobody")
-				return
-			if("They fear me")
-				wretch_select_bounty(H)
-
+	bountychoice_vigilante(H)
 
 /datum/outfit/job/roguetown/wretch/vigilante/proc/owl_equip(mob/living/carbon/human/H)
 	backl = /obj/item/rogueweapon/woodstaff/quarterstaff/steel //nonlethal takedowns
@@ -116,13 +109,7 @@
 	H.change_stat(STATKEY_INT, 3) 
 	H.change_stat(STATKEY_WIL, 3)
 	H.change_stat(STATKEY_PER, 3)
-	var/crimes = list("I'm nobody", "They fear me")
-	var/crimeschoice = input(H, "Who is me", "How much have I done?") as anything in crimes
-	switch(crimeschoice)
-		if("I'm nobody")
-			return
-		if("They fear me")
-			wretch_select_bounty(H)
+	bountychoice_vigilante(H)
 
 /datum/outfit/job/roguetown/wretch/vigilante/proc/bullshit_equip(mob/living/carbon/human/H)
 	beltr = /obj/item/rogueweapon/stoneaxe/hurlbat
@@ -142,10 +129,4 @@
 	H.change_stat(STATKEY_SPD, 2)
 	H.change_stat(STATKEY_WIL, 1)
 	H.change_stat(STATKEY_INT, 4) //Hilarious
-	var/crimes = list("I'm nobody", "They fear me")
-	var/crimeschoice = input(H, "Who is me", "How much have I done?") as anything in crimes
-	switch(crimeschoice)
-		if("I'm nobody")
-			return
-		if("They fear me")
-			wretch_select_bounty(H)
+	bountychoice_vigilante(H)

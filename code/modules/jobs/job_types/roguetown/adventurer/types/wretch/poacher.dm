@@ -80,12 +80,4 @@
 			if ("My Bow Is Enough")
 				H.adjust_skillrank_up_to(/datum/skill/combat/bows, 5, TRUE)
 				head = /obj/item/clothing/head/roguetown/helmet/kettle
-		var/crimes = list("I'm nobody", "They fear me")
-		var/crimeschoice = input(H, "Who is me", "How much have I done?") as anything in crimes
-		switch(crimeschoice)
-			if("I'm nobody")
-				H.change_stat(STATKEY_CON, -1)
-			if("They fear me")
-				wretch_select_bounty(H)
-				H.change_stat(STATKEY_PER, 1)
-				H.change_stat(STATKEY_WIL, 1)		//MORE BONKS FO YO HEAD
+	bountychoice_poacher(H)				//TA - EDIT
