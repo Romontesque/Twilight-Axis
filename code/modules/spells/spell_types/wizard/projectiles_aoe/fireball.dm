@@ -15,10 +15,10 @@ siege variant; Greater Fireball is fireball tuned to 11 for court-mage exclusivi
 	projectile_type_arc = /obj/projectile/magic/aoe/fireball/rogue/arc
 	overlay_state = "fireball"
 	sound = list('sound/magic/fireball.ogg')
-	releasedrain = 30
+	releasedrain = SPELLCOST_MAJOR_PROJECTILE
 	chargedrain = 1
 	chargetime = 15
-	recharge_time = 20 SECONDS
+	recharge_time = 16 SECONDS
 	warnie = "spellwarning"
 	no_early_release = TRUE
 	movement_interrupt = FALSE
