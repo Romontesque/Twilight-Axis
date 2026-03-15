@@ -1,3 +1,4 @@
+/*
 /obj/item/recipe_book/zizo
 	name = "The Tome: ???"
 	icon = 'modular_twilight_axis/lore/icons/books.dmi'
@@ -437,3 +438,4 @@
 	html += "</ul>"
 	html += "<p><em>Примечание: Разложите предметы на руне, как указано в требованиях. Ритуал сработает при активации, если выполнены все требования.</em></p>"
 	return html
+*/

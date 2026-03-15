@@ -605,7 +605,7 @@ GLOBAL_LIST_INIT(ritual_counters, list())
 	. = ..()
 	new /obj/item/scrying/eye(center)
 	to_chat(user, span_notice("The All-seeing Eye. To see beyond sight."))
-
+/*
 /datum/ritual/transmutation/book
 	name = "Призыв ритуальной книги"
 	desk = "Заменяет обычную книгу на книгу, которая поможет новым культистам с ритуалами."
@@ -617,7 +617,7 @@ GLOBAL_LIST_INIT(ritual_counters, list())
 	new /obj/item/recipe_book/zizo(center)
 
 	to_chat(user, span_notice("Now you know how to make another ritual..."))
-
+*/
 /datum/ritual/transmutation/cross
 	name = "Призыв амулета Зизо"
 	desk = "Призывает особый крест Зизо, который и защитит, и одарит Её милостинью."
