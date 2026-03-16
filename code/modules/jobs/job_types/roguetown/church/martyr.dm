@@ -817,7 +817,7 @@
 	is_silver = TRUE
 	toggle_state = null
 	is_important = TRUE
-	special = /datum/special_intent/martyr_volcano_slam
+	special = /datum/special_intent/martyr_malum_hammerfall
 
 /obj/item/rogueweapon/mace/goden/martyr/ComponentInitialize()
 	AddComponent(\

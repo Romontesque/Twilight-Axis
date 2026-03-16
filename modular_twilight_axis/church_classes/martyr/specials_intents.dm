@@ -40,6 +40,53 @@
 	duration = 0.25 SECONDS
 	alpha = 180
 
+/obj/effect/temp_visual/malum_forge_impact
+	icon = 'icons/effects/effects.dmi'
+	icon_state = "lavastaff_warn"
+	layer = ABOVE_MOB_LAYER
+	duration = 0.8 SECONDS
+	alpha = 255
+
+/obj/effect/temp_visual/malum_forge_burst
+	icon = 'icons/effects/effects.dmi'
+	icon_state = "strike"
+	layer = ABOVE_MOB_LAYER
+	duration = 0.5 SECONDS
+	alpha = 255
+
+/obj/effect/malum_scorched_ground
+	name = "scorched ground"
+	icon = 'icons/effects/effects.dmi'
+	icon_state = "lavastaff_warn"
+	anchored = TRUE
+	density = FALSE
+	mouse_opacity = FALSE
+	layer = BELOW_MOB_LAYER
+	alpha = 180
+
+	var/end_time = 0
+	var/fire_stacks_tick = 1
+	var/slow_tick = 1
+
+/obj/effect/malum_scorched_ground/Initialize(mapload, duration_override = 20 SECONDS)
+	. = ..()
+	end_time = world.time + duration_override
+	START_PROCESSING(SSobj, src)
+
+/obj/effect/malum_scorched_ground/Destroy()
+	STOP_PROCESSING(SSobj, src)
+	return ..()
+
+/obj/effect/malum_scorched_ground/process()
+	if(world.time >= end_time)
+		qdel(src)
+		return
+
+	for(var/mob/living/L in loc)
+		L.adjust_fire_stacks(fire_stacks_tick)
+		L.ignite_mob()
+		L.Slowdown(slow_tick)
+
 /atom/movable/screen/alert/status_effect/debuff/necra_harvested
 	name = "Жатва Некры"
 	desc = "Под вуалью Некры твои силы увядают."
@@ -548,3 +595,183 @@
 			L.safe_throw_at(throwtarget, 1, 1, howner, force = MOVE_FORCE_STRONG)
 
 	..()
+
+
+
+#define MARTYR_MALUM_WAVE2_DELAY 3 SECONDS
+
+/datum/special_intent/martyr_malum_hammerfall
+	name = "Malum's Hammerfall"
+	desc = "Сокрушающий удар по земле перед собой. Спустя миг с небес падает молот Малума, повторно поражая ту же область и сильно повреждая какие-либо стены и укрепления."
+	tile_coordinates = list(
+		list(-1,0), list(0,0), list(1,0),
+		list(-1,1), list(0,1), list(1,1),
+		list(-1,2), list(0,2), list(1,2),
+
+		list(-1,0, MARTYR_MALUM_WAVE2_DELAY), list(0,0, MARTYR_MALUM_WAVE2_DELAY), list(1,0, MARTYR_MALUM_WAVE2_DELAY),
+		list(-1,1, MARTYR_MALUM_WAVE2_DELAY), list(0,1, MARTYR_MALUM_WAVE2_DELAY), list(1,1, MARTYR_MALUM_WAVE2_DELAY),
+		list(-1,2, MARTYR_MALUM_WAVE2_DELAY), list(0,2, MARTYR_MALUM_WAVE2_DELAY), list(1,2, MARTYR_MALUM_WAVE2_DELAY)
+	)
+
+	use_clickloc = FALSE
+	respect_adjacency = TRUE
+	respect_dir = TRUE
+
+	delay = 1.1 SECONDS
+	fade_delay = 0.6 SECONDS
+
+	pre_icon_state = "trap"
+	post_icon_state = "strike"
+
+	sfx_pre_delay = 'sound/combat/ground_smash_start.ogg'
+	sfx_post_delay = 'sound/combat/ground_smash1.ogg'
+
+	cooldown = 60 SECONDS
+	stamcost = 25
+
+	var/current_wave = 0
+	var/self_immob_dur = 1 SECONDS
+	var/first_wave_dam = 0
+	var/second_wave_dam = 0
+	var/fire_stacks_first = 5
+	var/fire_stacks_second = 3
+	var/slow_dur = 4
+	var/structure_damage = 450
+	var/scorched_duration = 15 SECONDS
+
+	var/list/malum_cries = list(
+		"Малум, сокруши их в горне войны!",
+		"Пусть пламя и молот Малума падут на вас!",
+		"Малум, яви свою кузницу на поле брани!",
+		"В горниле Малума вы будете перекованы в прах!"
+	)
+
+/datum/special_intent/martyr_malum_hammerfall/_reset()
+	current_wave = 0
+	first_wave_dam = 0
+	second_wave_dam = 0
+	. = ..()
+
+/datum/special_intent/martyr_malum_hammerfall/process_attack()
+	var/obj/item/rogueweapon/W = iparent
+	var/scalemod = max(((howner.STASTR + howner.STACON + howner.STAWIL) / 30), 1)
+
+	first_wave_dam = W.force_dynamic * scalemod * 1.0
+	second_wave_dam = W.force_dynamic * scalemod * 1.35
+
+	. = ..()
+
+/datum/special_intent/martyr_malum_hammerfall/_process_grid(list/turfs, newdelay)
+	current_wave++
+	. = ..()
+
+/datum/special_intent/martyr_malum_hammerfall/on_create()
+	. = ..()
+	howner.Immobilize(self_immob_dur)
+	howner.apply_status_effect(/datum/status_effect/debuff/clickcd, self_immob_dur)
+	howner.say(pick(malum_cries))
+
+/datum/special_intent/martyr_malum_hammerfall/pre_delay(list/turfs, newdelay)
+	for(var/turf/T in turfs)
+		new /obj/effect/temp_visual/lavastaff(T)
+	. = ..()
+
+/datum/special_intent/martyr_malum_hammerfall/apply_hit(turf/T)
+	switch(current_wave)
+		if(1)
+			if(!locate(/obj/effect/malum_scorched_ground) in T)
+				new /obj/effect/malum_scorched_ground(T, scorched_duration)
+
+			for(var/mob/living/L in get_hearers_in_view(0, T))
+				if(L == howner)
+					continue
+
+				L.Slowdown(slow_dur)
+				L.adjust_fire_stacks(fire_stacks_first)
+				L.ignite_mob()
+
+				if(L.mobility_flags & MOBILITY_STAND)
+					apply_generic_weapon_damage(L, first_wave_dam, "fire", BODY_ZONE_CHEST, bclass = BCLASS_BLUNT)
+
+			playsound(T, pick('sound/combat/ground_smash1.ogg','sound/combat/ground_smash2.ogg','sound/combat/ground_smash3.ogg'), 100, TRUE)
+
+		if(2)
+			var/turf/from_sky = locate(T.x, T.y + 6, T.z)
+			if(from_sky)
+				from_sky.Beam(T, icon_state = "lightning[rand(1,12)]", time = 4)
+
+			new /obj/effect/temp_visual/malum_forge_impact(T)
+			new /obj/effect/temp_visual/malum_forge_burst(T)
+
+			for(var/mob/living/carbon/C in viewers(7, T))
+				shake_camera(C, 4, 4)
+
+			for(var/mob/living/L in get_hearers_in_view(0, T))
+				if(L == howner)
+					continue
+
+				L.adjust_fire_stacks(fire_stacks_second)
+				L.ignite_mob()
+				L.Knockdown(1 SECONDS)
+				L.apply_status_effect(/datum/status_effect/debuff/exposed, 3 SECONDS)
+
+				if(L.mobility_flags & MOBILITY_STAND)
+					apply_generic_weapon_damage(L, second_wave_dam, "fire", BODY_ZONE_CHEST, bclass = BCLASS_BLUNT, no_pen = TRUE)
+
+			for(var/obj/structure/S in T)
+				if(!istype(S, /obj/structure/flora/newbranch))
+					S.take_damage(structure_damage, BRUTE, "blunt", 1)
+
+			for(var/turf/closed/wall/W in range(0, T))
+				W.take_damage(structure_damage, BRUTE, "blunt", 1)
+
+			for(var/turf/closed/mineral/M in range(0, T))
+				M.lastminer = howner
+				M.take_damage(structure_damage, BRUTE, "blunt", 1)
+
+			playsound(T, 'sound/items/bsmithfail.ogg', 100, TRUE)
+			playsound(T, 'sound/combat/ground_smash1.ogg', 100, TRUE)
+
+	..()
+
+/datum/special_intent/martyr_malum_hammerfall/_create_grid()
+	var/turf/origin = use_clickloc ? click_loc : get_step(get_turf(howner), howner.dir)
+	if(!origin)
+		return
+
+	for(var/list/l in tile_coordinates)
+		var/dx = l[1]
+		var/dy = l[2]
+		var/dtimer
+
+		if(LAZYACCESS(l, 3))
+			dtimer = l[3]
+
+		if(respect_dir)
+			switch(howner.dir)
+				if(SOUTH)
+					dx = -dx
+					dy = -dy
+				if(WEST)
+					var/holder = dx
+					dx = -dy
+					dy = holder
+				if(EAST)
+					var/holder = dx
+					dx = dy
+					dy = -holder
+
+		var/turf/step = locate(origin.x + dx, origin.y + dy, origin.z)
+		if(step && isturf(step))
+			var/list/timerlist
+			if(dtimer)
+				timerlist = affected_turfs[dtimer]
+				if(!timerlist)
+					affected_turfs[dtimer] = list()
+					timerlist = affected_turfs[dtimer]
+				timerlist.Add(step)
+			else
+				timerlist = affected_turfs[0]
+				timerlist.Add(step)
+
+#undef MARTYR_MALUM_WAVE2_DELAY
