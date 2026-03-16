@@ -190,7 +190,7 @@
 		var/turf/H = get_turf(howner)
 		if(H)
 			new /obj/effect/temp_visual/necra_burst(H)
-			playsound(H, 'sound/magic/voidblink.ogg', 70, TRUE)
+			playsound(H, 'sound/magic/necra_sight.ogg', 70, TRUE)
 
 		howner.visible_message(
 			span_warning("[howner] черпает силу из собранных душ!"),
