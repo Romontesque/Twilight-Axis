@@ -123,8 +123,7 @@
 
 /datum/advclass/foreigner/marinero
 	name = "Etruscan Marinero"
-	tutorial = "You once served in the Etruscan navy \"Nauticon\", but now that the company in Lirvas has ended for you and your earned gold has come to an end, you are on the path of fortune. Perhaps you will be lucky enough to meet one of your old commanders. 
-But something remains with you - the memory of colonization..."
+	tutorial = "You once served in the Etruscan navy \"Nauticon\", but now that the company in Lirvas has ended for you and your earned gold has come to an end, you are on the path of fortune. Perhaps you will be lucky enough to meet one of your old commanders. But something remains with you - the memory of colonization..."
 	allowed_sexes = list(MALE, FEMALE)
 	allowed_races = RACES_ALL_KINDS
 	subclass_languages = list(/datum/language/etruscan)
