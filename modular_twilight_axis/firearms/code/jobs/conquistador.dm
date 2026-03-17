@@ -2,7 +2,18 @@
 	name = "Сonquistador Adelantado"
 	tutorial = "A fallen etruscan grandee and a hardened veteran of the Lirvas colonization. Tempered by the deadly wilds and terrors of the eastern jungles, he reclaims his lost glory through rapier and pistol, forging a path for the crown amidst gunpowder and cold steel."
 	allowed_sexes = list(MALE, FEMALE)
-	allowed_races = RACES_ALL_KINDS
+	allowed_races = list(\
+	/datum/species/human/northern,\
+	/datum/species/aasimar,\
+	/datum/species/anthromorph,\
+	/datum/species/demihuman,\
+	/datum/species/aura,\
+	/datum/species/human/halfelf,\
+	/datum/species/elf/dark,\
+	/datum/species/elf/dark/raider,\
+	/datum/species/elf/wood,\
+	/datum/species/elf/sun,\
+)
 	outfit = /datum/outfit/job/roguetown/mercenary/twilight_conquistador
 	maximum_possible_slots = 2
 	min_pq = 25 // Все мерки в данный момент с 25 открываются
@@ -26,6 +37,8 @@
 		/datum/skill/misc/swimming = SKILL_LEVEL_APPRENTICE,
 		/datum/skill/misc/climbing = SKILL_LEVEL_JOURNEYMAN,
 		/datum/skill/misc/athletics = SKILL_LEVEL_JOURNEYMAN,
+		/datum/skill/misc/lockpicking = SKILL_LEVEL_APPRENTICE,
+		/datum/skill/misc/athletics = SKILL_LEVEL_JOURNEYMAN,
 		/datum/skill/misc/reading = SKILL_LEVEL_APPRENTICE,
 		/datum/skill/misc/medicine = SKILL_LEVEL_NOVICE,
 	)
@@ -48,7 +61,7 @@
 	wrists = /obj/item/clothing/wrists/roguetown/bracers/leather
 	belt = /obj/item/storage/belt/rogue/leather/twilight_holsterbelt
 	neck = /obj/item/clothing/neck/roguetown/gorget/steel
-	shirt = /obj/item/clothing/suit/roguetown/armor/gambeson/heavy/duelcoat
+	shirt = /obj/item/clothing/suit/roguetown/shirt/freifechter
 	armor = /obj/item/clothing/suit/roguetown/armor/plate/cuirass/fencer
 	backr = /obj/item/rogueweapon/scabbard/sword
-	backpack_contents = list(/obj/item/roguekey/mercenary = 1, /obj/item/twilight_powderflask = 1, /obj/item/rogueweapon/huntingknife/idagger/navaja = 1, /obj/item/storage/belt/rogue/pouch/coins/poor = 1, /obj/item/clothing/head/roguetown/duelhat = 1)
+	backpack_contents = list(/obj/item/roguekey/mercenary = 1, /obj/item/twilight_powderflask = 1, /obj/item/rogueweapon/huntingknife/idagger/navaja = 1, /obj/item/storage/belt/rogue/pouch/coins/poor = 1, /obj/item/clothing/head/roguetown/duelhat = 1, /obj/item/lockpickring/mundane = 1)

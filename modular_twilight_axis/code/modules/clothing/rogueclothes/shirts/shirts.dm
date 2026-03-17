@@ -598,15 +598,3 @@
 /obj/item/clothing/suit/roguetown/armor/gambeson/heavy/duelcoat/ComponentInitialize()
 	AddComponent(/datum/component/armour_filtering/positive, TRAIT_FENCERDEXTERITY)
 	AddComponent(/datum/component/armour_filtering/positive, TRAIT_HONORBOUND)
-
-/obj/item/clothing/suit/roguetown/armor/gambeson/heavy/duelcoat
-	name = "black leather coat"
-	desc = "A stylish coat worn by the Duelists of Etrusca. Light and flexible, it doesn't impede the complex movements they are known for, Seems to be well-padded."
-	icon_state = "bwleathercoat"
-	icon = 'modular_twilight_axis/icons/roguetown/clothing/shirts.dmi'
-	mob_overlay_icon = 'modular_twilight_axis/icons/roguetown/clothing/onmob/shirts.dmi'
-	sleeved = 'modular_twilight_axis/icons/roguetown/clothing/onmob/shirts.dmi'
-	detail_color = COLOR_WHITE
-	detail_tag = "_det"
-	boobed = TRUE
-	color = null
