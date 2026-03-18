@@ -57,7 +57,7 @@
 				var/active_pain_mult = 1
 				var/passive_pain_mult = 1
 				var/str_active = L.actor_active ? L.actor_active.get_strength() : 10
-				var/self_mult = max(0, (10 - str_active) / 1.5)
+				var/self_mult = max(0, (10 - str_active) / 2)
 				if(L.actor_active == L.actor_passive)
 					active_pain_mult = self_mult
 					passive_pain_mult = self_mult
