@@ -619,8 +619,6 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 		
 		MessageNoRecipient(msg)
 
-		to_chat(C, span_notice("Your adminhelp has been sent to [admin_number_present] admin[admin_number_present > 1 ? "s" : ""]."))
-
 	GLOB.ahelp_tickets.active_tickets += src
 	
 	// Open the TGUI chat window for the initiator
