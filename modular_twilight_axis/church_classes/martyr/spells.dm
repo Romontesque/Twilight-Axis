@@ -15,15 +15,15 @@
 	recharge_time = 0.5 SECONDS
 	chargedloop = /datum/looping_sound/invokegen
 	action_icon = 'modular_twilight_axis/church_classes/icons/ui.dmi'
-	action_icon_state = "select_weapon_martyr"
-	overlay_state = "select_weapon_martyr"
+	action_icon_state = "martyr_summon"
+	overlay_state = "martyr_summon"
 	overlay_icon = 'modular_twilight_axis/church_classes/icons/ui.dmi'
 	invocation_type = "none"
 	spell_tier = 2
 	cost = 1
 
-	var/selected_weapon = /obj/item/rogueweapon/halberd/bardiche/scythe/martyr
-	var/list/selected_invocations = list("Некра, вручи мне косу последнего часа!")
+	var/selected_weapon = /obj/item/rogueweapon/sword/long/martyr
+	var/list/selected_invocations = list("Астрата, вложи в мою руку меч твоего суда!")
 	var/obj/effect/proc_holder/spell/invoked/martyr_summon_weapon/summon_weapon
 
 /obj/effect/proc_holder/spell/targeted/martyr_select_weapon/proc/apply_manifest_sprite(obj/effect/martyr_weapon_manifest/manifest)
@@ -94,6 +94,23 @@
 	if(summon_weapon)
 		summon_weapon.invocations = selected_invocations
 
+		var/new_state = get_weapon_ui_state()
+
+		summon_weapon.action_background_icon_state = "bg_spell"
+		summon_weapon.action_icon = 'modular_twilight_axis/church_classes/icons/ui.dmi'
+		summon_weapon.action_icon_state = "spell1"
+
+		if(summon_weapon.action)
+			summon_weapon.action.button_icon = 'icons/mob/actions/roguespells.dmi'
+			summon_weapon.action.background_icon_state = "bg_spell"
+
+			summon_weapon.action.icon_icon = 'modular_twilight_axis/church_classes/icons/ui.dmi'
+			summon_weapon.action.button_icon_state = "spell1"
+			summon_weapon.action.overlay_state = new_state
+			summon_weapon.action.overlay_alpha = 255
+
+			summon_weapon.action.UpdateButtonIcon(FALSE, TRUE)
+
 	return TRUE
 
 /obj/effect/proc_holder/spell/invoked/martyr_summon_weapon
@@ -103,8 +120,9 @@
 	recharge_time = 30 SECONDS
 	chargedloop = /datum/looping_sound/invokegen
 	action_icon = 'modular_twilight_axis/church_classes/icons/ui.dmi'
-	action_icon_state = "summon"
-	invocations = list("Некра, вручи мне косу последнего часа!")
+	action_icon_state = "martyrsword"
+	overlay_state = "martyrsword"
+	invocations = list("Астрата, вложи в мою руку меч твоего суда!")
 	invocation_type = "shout"
 	spell_tier = 2
 	cost = 10
@@ -181,3 +199,18 @@
 		to_chat(user, span_notice("Реликвия с грохотом нисходит в мою руку."))
 	else
 		to_chat(user, span_warning("Мои руки заняты! Реликвия ударяется о землю."))
+
+/obj/effect/proc_holder/spell/targeted/martyr_select_weapon/proc/get_weapon_ui_state()
+	switch(selected_weapon)
+		if(/obj/item/rogueweapon/sword/long/martyr)
+			return "martyrsword"
+		if(/obj/item/rogueweapon/greataxe/steel/doublehead/martyr)
+			return "martyraxe"
+		if(/obj/item/rogueweapon/mace/goden/martyr)
+			return "martyrmace"
+		if(/obj/item/rogueweapon/spear/partizan/martyr)
+			return "martyrtrident"
+		if(/obj/item/rogueweapon/halberd/bardiche/scythe/martyr)
+			return "martyrscyth"
+
+	return "summon"
