@@ -44,8 +44,6 @@
 	backr = /obj/item/storage/backpack/rogue/satchel
 	belt = /obj/item/storage/belt/rogue/leather
 	neck = /obj/item/storage/belt/rogue/pouch/coins/poor
-	beltl = /obj/item/rogueweapon/handclaw/gronn
-	beltr = /obj/item/rogueweapon/handclaw/gronn
 	mask = /obj/item/clothing/head/roguetown/helmet/sallet/warden/wolf/wretch
 
 	switch(H.patron?.type)
@@ -76,5 +74,10 @@
 	switch(crimeschoice)
 		if("I'm nobody")
 			GLOB.excommunicated_players += H.real_name
+			H.put_in_hands(new /obj/item/rogueweapon/handclaw/gronn)
+			H.put_in_hands(new /obj/item/rogueweapon/handclaw/gronn)
 		if("They fear me")
+			to_chat(H, span_red("Они ничтожны, как и их боги. Этими когтями я разорву их словно шавок!"))
 			wretch_select_bounty(H)
+			H.put_in_hands(new /obj/item/rogueweapon/handclaw/steel)
+			H.put_in_hands(new /obj/item/rogueweapon/handclaw/steel)
