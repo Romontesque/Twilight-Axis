@@ -93,25 +93,24 @@
 
 	if(summon_weapon)
 		summon_weapon.invocations = selected_invocations
-
-		var/new_state = get_weapon_ui_state()
-
-		summon_weapon.action_background_icon_state = "bg_spell"
-		summon_weapon.action_icon = 'modular_twilight_axis/church_classes/icons/ui.dmi'
-		summon_weapon.action_icon_state = "spell1"
-
-		if(summon_weapon.action)
-			summon_weapon.action.button_icon = 'icons/mob/actions/roguespells.dmi'
-			summon_weapon.action.background_icon_state = "bg_spell"
-
-			summon_weapon.action.icon_icon = 'modular_twilight_axis/church_classes/icons/ui.dmi'
-			summon_weapon.action.button_icon_state = "spell1"
-			summon_weapon.action.overlay_state = new_state
-			summon_weapon.action.overlay_alpha = 255
-
-			summon_weapon.action.UpdateButtonIcon(FALSE, TRUE)
+		summon_weapon.sync_weapon_button()
 
 	return TRUE
+
+/obj/effect/proc_holder/spell/targeted/martyr_select_weapon/proc/get_weapon_ui_state()
+	switch(selected_weapon)
+		if(/obj/item/rogueweapon/sword/long/martyr)
+			return "martyrsword"
+		if(/obj/item/rogueweapon/greataxe/steel/doublehead/martyr)
+			return "martyraxe"
+		if(/obj/item/rogueweapon/mace/goden/martyr)
+			return "martyrmace"
+		if(/obj/item/rogueweapon/spear/partizan/martyr)
+			return "martyrtrident"
+		if(/obj/item/rogueweapon/halberd/bardiche/scythe/martyr)
+			return "martyrscyth"
+
+	return "martyrsword"
 
 /obj/effect/proc_holder/spell/invoked/martyr_summon_weapon
 	name = "Summon divine weapon"
@@ -120,14 +119,36 @@
 	recharge_time = 30 SECONDS
 	chargedloop = /datum/looping_sound/invokegen
 	action_icon = 'modular_twilight_axis/church_classes/icons/ui.dmi'
-	action_icon_state = "martyrsword"
-	overlay_state = "martyrsword"
+	action_icon_state = "spell1"
+	action_background_icon_state = "bg_spell"
+	overlay_state = null
 	invocations = list("Астрата, вложи в мою руку меч твоего суда!")
 	invocation_type = "shout"
 	spell_tier = 2
 	cost = 10
 
 	var/obj/effect/proc_holder/spell/targeted/martyr_select_weapon/weapon_select
+
+/obj/effect/proc_holder/spell/invoked/martyr_summon_weapon/proc/sync_weapon_button()
+	if(!weapon_select)
+		return
+
+	var/new_state = weapon_select.get_weapon_ui_state()
+
+	action_icon = 'modular_twilight_axis/church_classes/icons/ui.dmi'
+	action_icon_state = "spell0"
+	action_background_icon_state = "bg_spell"
+
+	if(action)
+		action.button_icon = 'icons/mob/actions/roguespells.dmi'
+		action.background_icon_state = "bg_spell"
+
+		action.icon_icon = 'modular_twilight_axis/church_classes/icons/ui.dmi'
+		action.button_icon_state = "spell0"
+		action.overlay_state = new_state
+		action.overlay_alpha = 255
+
+		action.UpdateButtonIcon(FALSE, TRUE)
 
 /obj/effect/proc_holder/spell/invoked/martyr_summon_weapon/proc/lightning_summon_fx(mob/living/carbon/human/user)
 	for(var/mob/living/carbon/M in viewers(world.view, user))
@@ -199,18 +220,3 @@
 		to_chat(user, span_notice("Реликвия с грохотом нисходит в мою руку."))
 	else
 		to_chat(user, span_warning("Мои руки заняты! Реликвия ударяется о землю."))
-
-/obj/effect/proc_holder/spell/targeted/martyr_select_weapon/proc/get_weapon_ui_state()
-	switch(selected_weapon)
-		if(/obj/item/rogueweapon/sword/long/martyr)
-			return "martyrsword"
-		if(/obj/item/rogueweapon/greataxe/steel/doublehead/martyr)
-			return "martyraxe"
-		if(/obj/item/rogueweapon/mace/goden/martyr)
-			return "martyrmace"
-		if(/obj/item/rogueweapon/spear/partizan/martyr)
-			return "martyrtrident"
-		if(/obj/item/rogueweapon/halberd/bardiche/scythe/martyr)
-			return "martyrscyth"
-
-	return "summon"
