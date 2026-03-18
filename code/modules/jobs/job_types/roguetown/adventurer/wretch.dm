@@ -193,29 +193,7 @@
 	wretch_job.spawn_positions = slots
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/proc/bountychoice_poacher(mob/living/carbon/human/H)
+/proc/bountychoice_poacher(mob/living/carbon/human/H)		//TA - EDIT START
 	var/crimes = list("I'm nobody", "They fear me")
 	var/crimeschoice = input(H, "Who is me", "How much have I done?") as anything in crimes
 	switch(crimeschoice)
@@ -225,6 +203,7 @@
 			wretch_select_bounty(H)
 			H.change_stat(STATKEY_PER, 1)
 			H.change_stat(STATKEY_WIL, 1)
+			H.change_stat(STATKEY_CON, 1)
 
 /proc/bountychoice_spellblade(mob/living/carbon/human/H)
 	var/crimes = list("I'm nobody", "They fear me")
@@ -246,6 +225,7 @@
 		if("They fear me")
 			wretch_select_bounty(H)
 			H.change_stat(STATKEY_WIL, 2)
+			H.change_stat(STATKEY_CON, 1)
 
 /proc/bountychoice_hereticspy(mob/living/carbon/human/H)
 	var/crimes = list("I'm nobody", "They fear me")
@@ -265,4 +245,4 @@
 		if("I'm nobody")
 			return
 		if("They fear me")
-			wretch_select_bounty(H)
+			wretch_select_bounty(H)								//TA - EDIT END
