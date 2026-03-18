@@ -75,7 +75,6 @@
 				wrists = /obj/item/clothing/wrists/roguetown/bracers/psythorns
 				neck = /obj/item/clothing/neck/roguetown/psicross/silver
 				id = /obj/item/clothing/ring/signet/silver
-				change_origin(H, /datum/virtue/origin/otava, "Holy order")
 			if("Naledian - Lightweight, Arcyne-Martiality")
 				head = /obj/item/clothing/head/roguetown/headband/naledi
 				mask = /obj/item/clothing/mask/rogue/lordmask/naledi/sojourner
@@ -115,6 +114,4 @@
 
 	var/datum/devotion/C = new /datum/devotion(H, H.patron)
 	C.grant_miracles(H, cleric_tier = CLERIC_T2, passive_gain = CLERIC_REGEN_WEAK, devotion_limit = CLERIC_REQ_1)	//Capped to T2 miracles.
-	if(!isdarkelf(H) && !HAS_TRAIT(H, TRAIT_NALEDI)) //TA EDIT
-		change_origin(H, /datum/virtue/origin/otava, "Holy order")
 
