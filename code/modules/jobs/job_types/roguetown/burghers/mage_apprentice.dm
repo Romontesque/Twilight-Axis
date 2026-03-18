@@ -32,7 +32,7 @@
 		/datum/advclass/wapprentice/associate,
 		/datum/advclass/wapprentice/alchemist,
 		/datum/advclass/wapprentice/apprentice,
-		// /datum/advclass/wapprentice/spellblade
+		/datum/advclass/wapprentice/spellblade
 	)
 
 /datum/outfit/job/roguetown/wapprentice
@@ -216,11 +216,11 @@
 // And unlike adventurer, the University being technically keep aligned means they can jump in and gank antags and there's less admins can do about it.
 // If the University becomes independent one day, we can restore it. Until then, it will remain commented out.
 
-/*
+
 /datum/advclass/wapprentice/spellblade
-	name = "Azurcaephan Associate"
+	name = "Magician's Practice"
 	maximum_possible_slots = 2
-	tutorial = "You are an Azurcaephan Associate — a Spellblade, carrier of the five hundred yils tradition \
+	tutorial = "You are an Magician Practice — a Spellblade, carrier of the five hundred yils tradition \
 		originating in Azurea. You are employed under the University \
 		as a fellow Magos. The arcyne arts are dangerous, \
 		and you are to protect your peers from their own recklessness. \
@@ -389,4 +389,3 @@
 	H.cmode_music = 'sound/music/cmode/nobility/combat_courtmage.ogg'
 	if(H.mind)
 		SStreasury.give_money_account(ECONOMIC_LOWER_MIDDLE_CLASS, H, "Savings.")
-*/
