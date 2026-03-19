@@ -14,13 +14,13 @@
 	clusterCheckFlags = CLUSTER_CHECK_NONE
 	allowed_turfs = list(/turf/open/floor/rogue/dirt)
 	excluded_turfs = list(/turf/open/floor/rogue/dirt/road)
-	spawnableTurfs = list(/turf/open/floor/rogue/dirt/nospawn = 70)
+	spawnableTurfs = list(/turf/open/floor/rogue/dirt/nospawn = 30)
 	allowed_areas = list(/area/rogue/outdoors/bograt)
 
 /datum/mapGeneratorModule/bogratnospawnsgrass
 	clusterCheckFlags = CLUSTER_CHECK_NONE
 	allowed_turfs = list(/turf/open/floor/rogue/grass)
-	spawnableTurfs = list(/turf/open/floor/rogue/grass/nospawn = 80)
+	spawnableTurfs = list(/turf/open/floor/rogue/grass/nospawn = 30)
 	allowed_areas = list(/area/rogue/outdoors/bograt)
 
 /datum/mapGeneratorModule/bograt
@@ -97,8 +97,8 @@
 							/obj/structure/zizo_bane = 3,
 							/obj/structure/leyline/normal/coast = 0.3,
 							/obj/structure/leyline/powerful = 0.3)
-	spawnableTurfs = list(/turf/open/floor/rogue/dirt/road=1,
-						/turf/open/water/swamp=1)
+	spawnableTurfs = list(/turf/open/floor/rogue/dirt/road=0.1,
+						/turf/open/water/swamp=0.1)
 
 /datum/mapGeneratorModule/bogratwater
 	clusterCheckFlags = CLUSTER_CHECK_SAME_ATOMS

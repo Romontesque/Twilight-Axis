@@ -12,13 +12,13 @@
 /datum/mapGeneratorModule/forestratnospawngrass
 	clusterCheckFlags = CLUSTER_CHECK_NONE
 	allowed_turfs = list(/turf/open/floor/rogue/grass)
-	spawnableTurfs = list(/turf/open/floor/rogue/grass/nospawn = 80)
+	spawnableTurfs = list(/turf/open/floor/rogue/grass/nospawn = 30)
 	allowed_areas = list(/area/rogue/outdoors/woodsrat)
 
 /datum/mapGeneratorModule/forestratnospawndirt
 	clusterCheckFlags = CLUSTER_CHECK_NONE
 	allowed_turfs = list(/turf/open/floor/rogue/dirt)
-	spawnableTurfs = list(/turf/open/floor/rogue/dirt/nospawn = 80)
+	spawnableTurfs = list(/turf/open/floor/rogue/dirt/nospawn = 30)
 	allowed_areas = list(/area/rogue/outdoors/woodsrat)
 
 /datum/mapGeneratorModule/forestrat
@@ -44,8 +44,8 @@
 							/obj/structure/flora/roguegrass/maneater/real/juvenile=1,
 							/obj/item/reagent_containers/food/snacks/smallrat = 0.3,
 							/obj/structure/leyline/normal/grove = 0.2)
-	spawnableTurfs = list(/turf/open/floor/rogue/dirt/road=0.5,
-						/turf/open/water/swamp=0.5)
+	spawnableTurfs = list(/turf/open/floor/rogue/dirt/road=0.1,
+						/turf/open/water/swamp=0.1)
 	allowed_areas = list(/area/rogue/outdoors/woodsrat)
 
 	
