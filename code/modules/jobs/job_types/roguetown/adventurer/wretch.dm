@@ -207,8 +207,7 @@
 
 	wretch_job.total_positions = max(wretch_job.current_positions, slots)
 	wretch_job.spawn_positions = max(wretch_job.current_positions, slots)
-	wretch_job.total_positions = slots
-	wretch_job.spawn_positions = slots
+
 
 
 
