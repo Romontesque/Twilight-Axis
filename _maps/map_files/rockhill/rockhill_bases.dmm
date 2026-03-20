@@ -1600,6 +1600,13 @@
 	dir = 1
 	},
 /area/rogue/indoors/wretchcamp)
+"jt" = (
+/obj/structure/fluff/customsign{
+	name = "NAVIGATOR";
+	icon_state = "signwrote"
+	},
+/turf/open/floor/rogue/dirt,
+/area/rogue/outdoors/bograt/safe)
 "ju" = (
 /obj/structure/table/wood,
 /obj/item/candle/skull/lit,
@@ -1891,13 +1898,10 @@
 	},
 /area/rogue/outdoors/bograt/safe)
 "kZ" = (
-/obj/structure/zizo_bane,
-/turf/open/water/river{
-	icon_state = "rockwd";
-	name = "muddy river";
-	water_color = "#705a43";
-	water_reagent = /datum/reagent/water/gross
+/obj/machinery/light/roguestreet{
+	pixel_x = 10
 	},
+/turf/open/floor/rogue/concrete,
 /area/rogue/outdoors/bograt/safe)
 "la" = (
 /turf/open/floor/rogue/churchmarble,
@@ -2260,6 +2264,14 @@
 /obj/structure/fluff/railing/corner/south_east,
 /turf/open/floor/rogue/dirt,
 /area/rogue/outdoors/bograt/safe)
+"mY" = (
+/obj/structure/fluff/railing/wood/north{
+	layer = 2.7;
+	pixel_x = 2;
+	pixel_y = 7
+	},
+/turf/open/floor/rogue/grass,
+/area/rogue/outdoors/bograt/safe)
 "mZ" = (
 /obj/structure/fluff/railing/wood,
 /turf/open/floor/rogue/grasscold,
@@ -2305,7 +2317,7 @@
 /area/rogue/outdoors/bograt/safe)
 "ns" = (
 /turf/open/floor/rogue/cobble/mossy,
-/area/rogue)
+/area/rogue/under/cavewet/bogcaves)
 "nt" = (
 /obj/effect/decal/cleanable/blood,
 /obj/effect/decal/cleanable/blood/gibs/torso,
@@ -2816,6 +2828,10 @@
 /obj/structure/bars/tough,
 /turf/open/floor/rogue/dirt/road,
 /area/rogue/outdoors/mountains)
+"qy" = (
+/obj/machinery/light/rogue/firebowl/stump,
+/turf/open/floor/rogue/grass,
+/area/rogue/outdoors/bograt/safe)
 "qB" = (
 /turf/open/water/cleanshallow,
 /area/rogue/outdoors/bograt/safe)
@@ -3660,6 +3676,10 @@
 /obj/structure/fluff/walldeco/vinez/blue,
 /turf/closed/wall/mineral/rogue/craftstone,
 /area/rogue/under/cavewet/bogcaves)
+"wr" = (
+/obj/machinery/light/rogue/firebowl/stump,
+/turf/open/floor/rogue/dirt/road,
+/area/rogue/outdoors/bograt/safe)
 "ws" = (
 /turf/open/water/swamp,
 /area/rogue/outdoors/bograt/safe)
@@ -4382,12 +4402,8 @@
 	},
 /area/rogue/indoors/wretchcamp)
 "AI" = (
-/obj/machinery/light/rogue/firebowl/stump,
-/obj/structure/fluff/railing/wood/east{
-	pixel_x = 8
-	},
-/turf/open/floor/rogue/dirt,
-/area/rogue/outdoors/bograt/safe)
+/turf/closed/wall/mineral/rogue/stone/red_moss,
+/area/rogue/under/cavewet/bogcaves)
 "AJ" = (
 /obj/structure/chair/wood/rogue/fancy{
 	dir = 8
@@ -4553,16 +4569,11 @@
 /turf/open/floor/carpet/inn,
 /area/rogue/indoors/vampire_manor)
 "BB" = (
-/obj/structure/fluff/railing/wood/east{
-	pixel_x = 8
+/obj/structure/roguemachine/withdraw{
+	pixel_y = 0
 	},
-/obj/structure/fluff/railing/wood/north{
-	layer = 2.7;
-	pixel_x = 2;
-	pixel_y = 7
-	},
-/turf/open/floor/rogue/cobblerock,
-/area/rogue/outdoors/bograt/safe)
+/turf/closed/wall/mineral/rogue/wooddark,
+/area/rogue/indoors/wretchcamp)
 "BC" = (
 /obj/structure/rack/rogue/shelf/biggest{
 	pixel_y = 9
@@ -4946,7 +4957,7 @@
 /area/rogue/indoors/banditcamp)
 "DO" = (
 /obj/structure/soil,
-/turf/open/floor/rogue/dirt,
+/turf/open/floor/rogue/dirt/road,
 /area/rogue/outdoors/bograt/safe)
 "DP" = (
 /obj/structure/closet/crate/roguecloset{
@@ -5156,9 +5167,12 @@
 	},
 /area/rogue/indoors/wretchcamp)
 "EZ" = (
-/obj/structure/far_travel,
-/turf/open/floor/rogue/cobble/mossy,
-/area/rogue)
+/obj/structure/fluff/traveltile/wretch{
+	aportalgoesto = "wretchtradeout";
+	aportalid = "wretchtradein"
+	},
+/turf/open/floor/rogue/naturalstone,
+/area/rogue/under/cavewet/bogcaves)
 "Fa" = (
 /obj/effect/decal/cleanable/debris/stony,
 /turf/closed/wall/mineral/rogue/decostone/mossy/red/long,
@@ -5263,6 +5277,14 @@
 /obj/item/cooking/pan,
 /turf/open/floor/rogue/tile/bfloorz,
 /area/rogue/indoors/vampire_manor)
+"FA" = (
+/obj/structure/roguemachine/mail{
+	desc = "Carrier zads have fallen severely out of fashion ever since the advent of this hydropneumatic mail system. A coin slot activates thssssssssse mechanism for dispensing parchment(a zenny) and quills(a ziliqua).";
+	mailtag = "Wretch Camp";
+	pixel_y = 0
+	},
+/turf/closed/wall/mineral/rogue/wooddark,
+/area/rogue/indoors/wretchcamp)
 "FB" = (
 /obj/structure/chair/stool/rogue,
 /turf/open/floor/rogue/twig,
@@ -5297,8 +5319,8 @@
 /turf/open/water/swamp,
 /area/rogue/outdoors/bograt/safe)
 "FN" = (
-/turf/open/water/swamp,
-/area/rogue)
+/turf/closed/mineral/rogue/bedrock,
+/area/rogue/under/cavewet/bogcaves)
 "FQ" = (
 /obj/structure/fluff/railing/border/east,
 /obj/structure/flora/roguegrass/bush/wall/tall,
@@ -5354,9 +5376,9 @@
 /turf/open/floor/rogue/herringbone,
 /area/rogue/indoors/banditcamp)
 "Gf" = (
-/obj/structure/flora/roguegrass/bush/westleach,
-/turf/open/floor/rogue/dirt,
-/area/rogue/outdoors/bograt/safe)
+/obj/structure/far_travel,
+/turf/open/floor/rogue/cobblerock,
+/area/rogue/under/cavewet/bogcaves)
 "Gg" = (
 /obj/effect/wisp/prestidigitation{
 	color = "#ff0d00";
@@ -6815,10 +6837,6 @@
 /turf/open/floor/rogue/blocks,
 /area/rogue/under/cave/inhumen)
 "Pd" = (
-/obj/structure/roguemachine/mail{
-	desc = "Carrier zads have fallen severely out of fashion ever since the advent of this hydropneumatic mail system. A coin slot activates thssssssssse mechanism for dispensing parchment(a zenny) and quills(a ziliqua).";
-	mailtag = "Wretch Camp"
-	},
 /obj/item/chair/stool/bar/rogue,
 /turf/open/floor/rogue/cobble/mossy,
 /area/rogue/indoors/wretchcamp)
@@ -7828,6 +7846,10 @@
 /obj/structure/bars/grille,
 /turf/open/floor/rogue/twig/platform,
 /area/rogue/outdoors/bograt/safe)
+"Vd" = (
+/obj/structure/flora/roguetree/burnt,
+/turf/open/floor/rogue/grass,
+/area/rogue/outdoors/bograt/safe)
 "Ve" = (
 /obj/structure/roguewindow,
 /turf/open/floor/rogue/ruinedwood/spiral,
@@ -8027,6 +8049,13 @@
 /obj/effect/decal/cleanable/blood/gibs/core,
 /turf/open/floor/rogue/dirt,
 /area/rogue/outdoors/mountains)
+"Ws" = (
+/obj/machinery/light/roguestreet{
+	pixel_x = -10;
+	dir = 1
+	},
+/turf/open/floor/rogue/concrete,
+/area/rogue/outdoors/bograt/safe)
 "Wt" = (
 /turf/open/floor/rogue/ruinedwood/spiral,
 /area/rogue/indoors/banditcamp)
@@ -8213,8 +8242,8 @@
 /area/rogue/indoors/vampire_manor)
 "XG" = (
 /obj/structure/roguemachine/noticeboard{
-	pixel_x = -14;
-	pixel_y = -6
+	pixel_x = -16;
+	pixel_y = -4
 	},
 /turf/open/floor/rogue/dirt/road,
 /area/rogue/outdoors/bograt/safe)
@@ -20136,7 +20165,7 @@ gy
 Zp
 ws
 fV
-ws
+YE
 iZ
 iZ
 DT
@@ -20267,7 +20296,7 @@ vJ
 ws
 ws
 iZ
-oh
+iZ
 iZ
 hu
 hu
@@ -21043,11 +21072,11 @@ aE
 Pk
 Gy
 wj
-Gf
+lK
 iZ
-yd
-uz
-uz
+qy
+hu
+ws
 aE
 ws
 YE
@@ -21173,12 +21202,12 @@ aE
 EB
 gu
 ng
-hu
+DT
 TS
-Bn
-Bn
-Bn
-uz
+dZ
+ws
+ws
+DH
 oW
 oW
 ws
@@ -21302,17 +21331,17 @@ iZ
 iZ
 Uu
 DO
-hu
+DT
 TS
 DT
 VC
-fk
-Bn
-ws
+RY
+DH
+DH
 oW
 WE
-ws
-TS
+wr
+DT
 Em
 TF
 BT
@@ -21439,9 +21468,9 @@ MG
 VC
 VC
 ws
-YE
+sZ
 DH
-ws
+TS
 DT
 Vh
 CO
@@ -21571,7 +21600,7 @@ sW
 rc
 rc
 rc
-AI
+DT
 DT
 Vh
 Wo
@@ -21590,7 +21619,7 @@ yb
 DH
 WE
 ws
-Sj
+hu
 iZ
 Em
 Em
@@ -21701,7 +21730,7 @@ RI
 nw
 nw
 nw
-nw
+DT
 DT
 Vh
 Mb
@@ -21720,7 +21749,7 @@ yb
 uz
 ws
 ws
-bJ
+PK
 iZ
 Em
 iZ
@@ -21831,7 +21860,7 @@ iZ
 kY
 kY
 kY
-kY
+DT
 DT
 Vh
 xw
@@ -21839,7 +21868,7 @@ Oj
 js
 AE
 jf
-TF
+BB
 jf
 ES
 MC
@@ -21852,7 +21881,7 @@ Bj
 CW
 iZ
 TS
-vJ
+Ws
 DT
 iZ
 iZ
@@ -21969,7 +21998,7 @@ Lo
 js
 RC
 jf
-TF
+FA
 Pd
 CS
 Ov
@@ -22110,9 +22139,9 @@ yb
 uz
 ws
 ws
-TS
+Op
 iZ
-vJ
+kZ
 Em
 iZ
 iZ
@@ -22240,8 +22269,8 @@ yb
 DH
 qY
 hr
-ws
-BB
+mY
+iZ
 iZ
 iZ
 hu
@@ -22370,14 +22399,14 @@ yb
 YE
 Zp
 qm
-ws
-ws
-PK
+nT
+dZ
+iZ
 iZ
 ws
 Yz
 VC
-hu
+jt
 Em
 yd
 ws
@@ -22506,11 +22535,11 @@ iZ
 iZ
 ws
 ae
-bX
-bX
+FN
+FN
 ns
-bX
-bX
+FN
+FN
 RY
 ws
 iZ
@@ -22636,11 +22665,11 @@ iZ
 iZ
 Gy
 ae
-bX
-bX
+FN
+FN
 EZ
-bX
-bX
+FN
+FN
 aB
 fI
 NY
@@ -22767,9 +22796,9 @@ iZ
 dZ
 vs
 ae
-bX
-bX
-bX
+FN
+FN
+FN
 aB
 aB
 fI
@@ -22897,9 +22926,9 @@ xw
 Ds
 bG
 bG
-bX
-bX
-bX
+FN
+FN
+FN
 aB
 aB
 aB
@@ -23027,8 +23056,8 @@ dc
 dc
 UG
 bG
-bX
-bX
+FN
+FN
 aB
 Hf
 wq
@@ -24304,7 +24333,7 @@ Hv
 ho
 iZ
 iZ
-Em
+iZ
 Em
 VC
 ws
@@ -24433,8 +24462,8 @@ uo
 og
 og
 CZ
-hu
-wj
+iZ
+DT
 yd
 ws
 YE
@@ -24563,7 +24592,7 @@ Hv
 ho
 ae
 ws
-YE
+cP
 ws
 DH
 Bn
@@ -24693,8 +24722,8 @@ pN
 PB
 hu
 ws
-kZ
-nI
+cP
+DH
 ws
 wj
 IN
@@ -24823,7 +24852,7 @@ uk
 kV
 ae
 DH
-ws
+cP
 ws
 xV
 dZ
@@ -24951,12 +24980,12 @@ YG
 YG
 Mk
 Jk
-ew
-bX
-bX
+AI
 FN
-Px
-dZ
+uK
+FN
+hu
+Vd
 uY
 RI
 gV
@@ -25081,10 +25110,10 @@ ew
 ew
 ew
 bX
-bX
-bX
-bX
-bX
+FN
+FN
+Gf
+FN
 ws
 Zp
 Zp
@@ -25211,10 +25240,10 @@ bX
 bX
 bX
 bX
-bX
-bX
-bX
-bX
+FN
+FN
+FN
+FN
 bX
 bX
 bX
