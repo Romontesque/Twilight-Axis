@@ -817,6 +817,7 @@
 	desc = "Компактное огнестрельное оружие отаванского производства. Ствол изготовлен из вороненой стали, на которую нанесены несколько простых рун. Благодаря необычной конструкции и рунической магии, Умбра стреляет практически бесшумно, что делает её идеальным выбором для агентов Инквизиции."
 	silenced = TRUE
 	critfactor = 1
+	damfactor = 1
 	icon = 'modular_twilight_axis/firearms/icons/umbra/pistol.dmi'
 	advanced_icon = 'modular_twilight_axis/firearms/icons/umbra/pistol.dmi'
 	advanced_icon_r = 'modular_twilight_axis/firearms/icons/umbra/pistol_r.dmi'
