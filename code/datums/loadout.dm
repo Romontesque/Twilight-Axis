@@ -2001,7 +2001,7 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 
 // Маски
 
-/datum/loadout_item/donat/naledimask
+/datum/loadout_item/naledimask
 	name = "Маска Наледи"
 	category = list("Головные уборы", "Донат")
 	path = /obj/item/clothing/mask/rogue/lordmask/naledi/decorated
