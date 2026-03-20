@@ -2233,6 +2233,13 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 	path = /obj/item/clothing/neck/roguetown/collar/woolen
 	donatitem = TRUE
 
+/datum/loadout_item/chess
+	name = "Набор с шахматами, шашками и нардами"
+	category = list("Аксессуары", "Донат")
+	path = /obj/item/chessboard_folded
+	donat_tier = 2
+	donatitem = TRUE
+
 // Aria Mrix Start
 
 /datum/loadout_item/aria_bikini
