@@ -520,7 +520,7 @@
 	icon_state = "reformistcross"
 
 /obj/item/clothing/neck/roguetown/psicross/aalloy
-	name = "decrepit psicross"
+	name = "decrepit psycross"
 	desc = "'A comet capable of rending all the enemies of humanity apart; oh, how graceful His power was! And His sacrifice, ever so noble! Yet now He slumbers, unaware of the fruits His efforts came to give. And He sighs. And He weeps.'"
 	icon_state = "psycross_a"
 	color = "#bb9696"

@@ -1,6 +1,0 @@
-author: "Ryan180602"
-delete-after: True
-changes:
-  - bugfix: "bad trainer now only lets you train two levels below yours."
-  - bugfix: "fencer's dexterity only lets you wear sallets now."
-  - bugfix: "gorgets are disallowed by fencer's dexterity, as was always intended."

@@ -936,3 +936,10 @@
   WeNeedMorePhoron:
   - rscdel: Randomly generated half elven name no longer append "Halfelfen" as the
       last name because that's stupid
+2026-03-21:
+  Ryan180602:
+  - bugfix: bad trainer now only lets you train two levels below yours.
+  - bugfix: fencer's dexterity only lets you wear sallets now.
+  - bugfix: gorgets are disallowed by fencer's dexterity, as was always intended.
+  mumblemancer:
+  - bugfix: miners have the right clothing type per preference
