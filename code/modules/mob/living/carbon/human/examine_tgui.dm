@@ -42,6 +42,9 @@
 	var/ooc_notes_nsfw
 	var/headshot = ""
 	var/list/img_gallery = list()
+	var/list/nsfw_img_gallery = list()
+	var/ooc_extra_image = ""
+	var/nsfw_ooc_extra_image = ""
 	var/char_name
 	var/song_url
 	var/has_song = FALSE
@@ -57,7 +60,6 @@
 	headshot = fam_pref.familiar_headshot_link
 	char_name = fam_pref.familiar_name
 	song_url = prefs.ooc_extra
-	is_vet = viewing.check_agevet()
 	if(!headshot)
 		headshot = "headshot_red.png"
 
@@ -76,6 +78,9 @@
 		"flavor_text_nsfw" = flavor_text_nsfw,
 		"ooc_notes_nsfw" = ooc_notes_nsfw,
 		"img_gallery" = img_gallery,
+		"nsfw_img_gallery" = nsfw_img_gallery,
+		"ooc_extra_image" = ooc_extra_image,
+		"nsfw_ooc_extra_image" = nsfw_ooc_extra_image,
 		"has_song" = has_song,
 		"is_vet" = is_vet,
 		"is_naked" = is_naked,
@@ -97,7 +102,11 @@
 	var/ooc_notes = ""
 	var/ooc_notes_nsfw
 	var/headshot = ""
+	var/nsfw_headshot = ""
 	var/list/img_gallery = list()
+	var/list/nsfw_img_gallery = list()
+	var/ooc_extra_image = ""
+	var/nsfw_ooc_extra_image = ""
 	var/char_name
 	var/song_url
 	var/has_song = FALSE
@@ -117,7 +126,6 @@
 		ooc_notes_nsfw += holder.erpprefs_cached
 		char_name = holder.name
 		song_url = holder.ooc_extra
-		is_vet = holder.check_agevet()
 		if(!obscured)
 			if(vampireplayer && (!SEND_SIGNAL(holder, COMSIG_DISGUISE_STATUS))&& !isnull(holder.vampire_headshot_link)) //vampire with their disguise down and a valid headshot
 				headshot = holder.vampire_headshot_link
@@ -125,7 +133,11 @@
 				headshot = holder.lich_headshot_link
 			else
 				headshot = holder.headshot_link
+			nsfw_headshot += holder.nsfw_headshot_link
 			img_gallery = holder.img_gallery
+			nsfw_img_gallery = holder.nsfw_img_gallery
+			ooc_extra_image = holder.ooc_extra_img
+			nsfw_ooc_extra_image = holder.nsfw_ooc_extra_img
 		if(!headshot)
 			headshot = "headshot_red.png"
 
@@ -142,10 +154,13 @@
 			headshot = pref.lich_headshot_link
 		else
 			headshot = pref.headshot_link
+		nsfw_headshot = pref.nsfw_headshot_link
 		img_gallery = pref.img_gallery
+		nsfw_img_gallery = pref.nsfw_img_gallery
+		ooc_extra_image = pref.ooc_extra_img
+		nsfw_ooc_extra_image = pref.nsfw_ooc_extra_img
 		char_name = pref.real_name
 		song_url = pref.ooc_extra
-		is_vet = viewing.check_agevet()
 		if(!headshot)
 			headshot = "headshot_red.png"
 
@@ -175,7 +190,11 @@
 		// Descriptions, but requiring manual input to see
 		"flavor_text_nsfw" = flavor_text_nsfw,
 		"ooc_notes_nsfw" = ooc_notes_nsfw,
+		"nsfw_headshot" = nsfw_headshot,
 		"img_gallery" = img_gallery,
+		"nsfw_img_gallery" = nsfw_img_gallery,
+		"ooc_extra_image" = ooc_extra_image,
+		"nsfw_ooc_extra_image" = nsfw_ooc_extra_image,
 		"has_song" = has_song,
 		"is_vet" = is_vet,
 		"is_naked" = is_naked,
