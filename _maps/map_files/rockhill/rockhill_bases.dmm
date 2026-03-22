@@ -28,7 +28,7 @@
 	pixel_y = 8;
 	desc = "Shiny gem!"
 	},
-/turf/open/floor/rogue/blocks,
+/turf/open/floor/rogue/tile,
 /area/rogue/indoors/banditcamp)
 "ag" = (
 /turf/closed/wall/mineral/rogue/craftstone,
@@ -129,7 +129,7 @@
 	desc = "A pile of shiny gold.";
 	pixel_y = -7
 	},
-/turf/open/floor/rogue/blocks,
+/turf/open/floor/rogue/tile,
 /area/rogue/indoors/banditcamp)
 "aX" = (
 /obj/item/natural/bone,
@@ -181,7 +181,7 @@
 	pixel_y = -8;
 	desc = "Shiny gem!"
 	},
-/turf/open/floor/rogue/blocks,
+/turf/open/floor/rogue/tile,
 /area/rogue/indoors/banditcamp)
 "bg" = (
 /turf/closed/mineral/random/rogue/boglava/med,
@@ -1437,7 +1437,7 @@
 	desc = "A pile of shiny gold.";
 	pixel_y = 1
 	},
-/turf/open/floor/rogue/blocks,
+/turf/open/floor/rogue/tile,
 /area/rogue/indoors/banditcamp)
 "iC" = (
 /obj/structure/fluff/traveltile/vampire{
@@ -1514,7 +1514,7 @@
 /obj/structure/fluff/railing/wood/west{
 	pixel_x = -12
 	},
-/turf/open/floor/rogue/dirt/road,
+/turf/open/floor/rogue/naturalstone,
 /area/rogue/outdoors/banditcamp)
 "iX" = (
 /obj/item/bedsheet/rogue/fabric_double,
@@ -1570,7 +1570,7 @@
 	pixel_y = 5;
 	desc = "Shiny gem!"
 	},
-/turf/open/floor/rogue/blocks,
+/turf/open/floor/rogue/tile,
 /area/rogue/indoors/banditcamp)
 "jl" = (
 /obj/structure/fluff/railing/wood/north{
@@ -1776,7 +1776,7 @@
 	desc = "A pile of shiny silver.";
 	pixel_y = 3
 	},
-/turf/open/floor/rogue/blocks,
+/turf/open/floor/rogue/tile,
 /area/rogue/indoors/banditcamp)
 "ku" = (
 /obj/structure/fluff/railing/border/west,
@@ -1843,7 +1843,7 @@
 	desc = "A pile of shiny gold.";
 	pixel_y = -2
 	},
-/turf/open/floor/rogue/blocks,
+/turf/open/floor/rogue/tile,
 /area/rogue/indoors/banditcamp)
 "kJ" = (
 /obj/structure/roguemachine/Hoardmaster{
@@ -1974,7 +1974,7 @@
 	pixel_x = 2;
 	pixel_y = 7
 	},
-/turf/open/floor/rogue/dirt/road,
+/turf/open/floor/rogue/naturalstone,
 /area/rogue/outdoors/banditcamp)
 "lw" = (
 /obj/structure/bookcase/random,
@@ -2520,7 +2520,7 @@
 	desc = "A pile of shiny gold.";
 	pixel_y = -7
 	},
-/turf/open/floor/rogue/blocks,
+/turf/open/floor/rogue/tile,
 /area/rogue/indoors/banditcamp)
 "oC" = (
 /obj/effect/decal/edge{
@@ -2874,7 +2874,7 @@
 /obj/structure/stairs{
 	dir = 1
 	},
-/turf/open/floor/rogue/dirt/road,
+/turf/open/floor/rogue/ruinedwood/turned,
 /area/rogue/outdoors/banditcamp)
 "qM" = (
 /obj/machinery/light/rogue/firebowl/stump,
@@ -3354,6 +3354,13 @@
 /obj/effect/decal/cleanable/debris/stony,
 /turf/open/floor/rogue/dirt,
 /area/rogue/under/cave/inhumen)
+"un" = (
+/obj/structure/fluff/traveltile/bandit{
+	aportalgoesto = "banditexit3";
+	aportalid = "banditin3"
+	},
+/turf/open/floor/rogue/naturalstone,
+/area/rogue/outdoors/banditcamp)
 "uo" = (
 /obj/structure/bars,
 /turf/open/floor/rogue/cobblerock,
@@ -3503,7 +3510,7 @@
 /obj/structure/fluff/railing/wood/east{
 	pixel_x = 8
 	},
-/turf/open/floor/rogue/dirt/road,
+/turf/open/floor/rogue/ruinedwood/turned,
 /area/rogue/outdoors/banditcamp)
 "vx" = (
 /obj/structure/bars/grille,
@@ -3627,7 +3634,7 @@
 /obj/structure/stairs/stone{
 	dir = 8
 	},
-/turf/open/floor/rogue/dirt/road,
+/turf/open/floor/rogue/naturalstone,
 /area/rogue/outdoors/banditcamp)
 "vZ" = (
 /obj/structure/bars/cemetery,
@@ -4417,7 +4424,7 @@
 /obj/structure/stairs/stone{
 	dir = 1
 	},
-/turf/open/floor/rogue/dirt/road,
+/turf/open/floor/rogue/naturalstone,
 /area/rogue/outdoors/banditcamp)
 "AP" = (
 /obj/structure/fluff/walldeco/vinez,
@@ -5058,7 +5065,7 @@
 	dir = 1
 	},
 /obj/structure/fluff/railing/corner/north_east,
-/turf/open/floor/rogue/cobblerock,
+/turf/open/floor/rogue/ruinedwood/turned,
 /area/rogue/outdoors/banditcamp)
 "Ex" = (
 /obj/structure/table/wood{
@@ -5342,7 +5349,7 @@
 /obj/structure/fluff/railing/wood/west{
 	pixel_x = -12
 	},
-/turf/open/floor/rogue/dirt/road,
+/turf/open/floor/rogue/ruinedwood/turned,
 /area/rogue/outdoors/banditcamp)
 "FW" = (
 /obj/machinery/light/rogue/firebowl/stump{
@@ -5584,7 +5591,7 @@
 /area/rogue/indoors/banditcamp)
 "HM" = (
 /obj/structure/stairs/stone,
-/turf/open/floor/rogue/dirt/road,
+/turf/open/floor/rogue/naturalstone,
 /area/rogue/outdoors/banditcamp)
 "HO" = (
 /obj/structure/fluff/statue/gargoyle,
@@ -5750,7 +5757,7 @@
 /obj/structure/fluff/railing/wood/east{
 	pixel_x = 8
 	},
-/turf/open/floor/rogue/grasscold,
+/turf/open/floor/rogue/naturalstone,
 /area/rogue/outdoors/banditcamp)
 "IR" = (
 /obj/structure/vine,
@@ -6078,7 +6085,7 @@
 	dir = 1
 	},
 /obj/structure/fluff/railing/corner,
-/turf/open/floor/rogue/cobblerock,
+/turf/open/floor/rogue/ruinedwood/turned,
 /area/rogue/outdoors/banditcamp)
 "KT" = (
 /obj/structure/closet/crate/roguecloset,
@@ -6286,7 +6293,7 @@
 	desc = "A pile of shiny gold.";
 	pixel_y = -7
 	},
-/turf/open/floor/rogue/blocks,
+/turf/open/floor/rogue/tile,
 /area/rogue/indoors/banditcamp)
 "Ma" = (
 /obj/structure/fluff/ceramicswheel,
@@ -6392,9 +6399,7 @@
 	desc = "A pile of shiny gold.";
 	pixel_y = -2
 	},
-/turf/open/floor/rogue/blocks{
-	desc = "Golden Statue!"
-	},
+/turf/open/floor/rogue/tile,
 /area/rogue/indoors/banditcamp)
 "MA" = (
 /obj/structure/closet/crate/roguecloset,
@@ -6883,7 +6888,7 @@
 	pixel_x = 8
 	},
 /obj/structure/stairs/stone,
-/turf/open/floor/rogue/grasscold,
+/turf/open/floor/rogue/naturalstone,
 /area/rogue/outdoors/banditcamp)
 "Pr" = (
 /obj/structure/mineral_door/wood{
@@ -7093,7 +7098,7 @@
 	desc = "A pile of shiny silver.";
 	pixel_y = -7
 	},
-/turf/open/floor/rogue/blocks,
+/turf/open/floor/rogue/tile,
 /area/rogue/indoors/banditcamp)
 "QD" = (
 /obj/structure/fluff/walldeco/maidendrape{
@@ -7710,7 +7715,7 @@
 	desc = "A pile of shiny silver.";
 	pixel_y = -2
 	},
-/turf/open/floor/rogue/blocks,
+/turf/open/floor/rogue/tile,
 /area/rogue/indoors/banditcamp)
 "Uo" = (
 /obj/effect/decal/cleanable/blood/splatter{
@@ -7956,12 +7961,6 @@
 /obj/structure/spike_pit,
 /turf/open/floor/rogue/dirt/road,
 /area/rogue/outdoors/mountains)
-"VP" = (
-/obj/structure/stairs/stone{
-	dir = 4
-	},
-/turf/open/floor/rogue/grasscold,
-/area/rogue/outdoors/banditcamp)
 "VQ" = (
 /obj/effect/decal/edge{
 	color = "#3f3f3f";
@@ -8559,9 +8558,9 @@
 /area/rogue/outdoors/banditcamp)
 "Zu" = (
 /obj/structure/stairs/stone{
-	dir = 1
+	dir = 4
 	},
-/turf/open/floor/rogue/grass,
+/turf/open/floor/rogue/naturalstone,
 /area/rogue/outdoors/banditcamp)
 "Zw" = (
 /turf/open/water/river/flow,
@@ -10569,8 +10568,8 @@ Lh
 Bw
 Lh
 rS
-tH
-tH
+Zu
+Zu
 Hm
 Sf
 oZ
@@ -10958,8 +10957,8 @@ si
 Rw
 Bf
 mZ
-tH
-tH
+Zu
+Zu
 Xs
 Bw
 Lh
@@ -11966,11 +11965,11 @@ ux
 rQ
 rQ
 rQ
-bX
-bX
-bX
-bX
-bX
+zq
+zq
+zq
+zq
+zq
 mK
 wd
 wd
@@ -12096,7 +12095,7 @@ ux
 rQ
 rQ
 rQ
-bX
+zq
 zq
 zq
 rn
@@ -12226,7 +12225,7 @@ ux
 rQ
 rQ
 rQ
-bX
+zq
 zq
 Qh
 Qh
@@ -12356,7 +12355,7 @@ ux
 rQ
 rQ
 rQ
-bX
+zq
 zq
 Qh
 Cu
@@ -12486,7 +12485,7 @@ ux
 rQ
 rQ
 rQ
-bX
+zq
 zq
 zq
 rn
@@ -12616,7 +12615,7 @@ ux
 rQ
 rQ
 rQ
-bX
+zq
 zq
 zq
 fl
@@ -12746,7 +12745,7 @@ ux
 rQ
 rQ
 rQ
-bX
+zq
 Cu
 Cu
 Cu
@@ -12876,7 +12875,7 @@ ux
 rQ
 rQ
 rQ
-bX
+zq
 Cu
 Qh
 mJ
@@ -13006,7 +13005,7 @@ ux
 rQ
 rQ
 rQ
-bX
+zq
 zq
 Qh
 Qh
@@ -13136,7 +13135,7 @@ ux
 rQ
 rQ
 rQ
-bX
+zq
 zq
 Qh
 Qh
@@ -13266,7 +13265,7 @@ ux
 rQ
 rQ
 rQ
-bX
+zq
 zq
 zq
 Qh
@@ -13396,15 +13395,15 @@ ux
 ux
 ux
 rQ
-bX
-bX
-bX
-bX
-bX
-bX
-bX
-bX
-bX
+zq
+zq
+zq
+zq
+zq
+zq
+zq
+zq
+zq
 rQ
 rQ
 rQ
@@ -13421,18 +13420,18 @@ nX
 HY
 HY
 wa
-WM
-WM
+yq
+hb
 hb
 zy
 HM
 jg
 jg
 jg
+jg
 WM
 WM
-WM
-Zu
+AO
 WM
 nX
 nX
@@ -13549,21 +13548,21 @@ pU
 jg
 HM
 jg
-WM
-hb
-yq
-VP
-WM
-WM
+jg
+jg
 HM
 jg
 jg
-WM
-wa
+jg
+HM
+jg
+jg
+jg
+jg
+Sf
 nX
 nX
-nX
-WK
+vY
 WK
 Vq
 nX
@@ -13688,16 +13687,16 @@ jg
 Po
 WM
 fy
-yq
-nX
-nX
+jg
+jg
+jg
 nX
 nX
 WM
 jg
 jg
 WM
-Zu
+AO
 WM
 Ru
 bX
@@ -13812,22 +13811,22 @@ jg
 jg
 jg
 HM
-WM
+jg
 WM
 wa
 WM
 HY
-nX
-nX
-nX
-nX
+WM
+jg
+jg
+jg
 nX
 nX
 eS
 WM
 WM
 jg
-Zu
+AO
 jg
 Ru
 bX
@@ -13947,11 +13946,11 @@ HY
 HY
 nX
 nX
-nX
-nX
-nX
-nX
-nX
+HY
+Zu
+Zu
+Zu
+HY
 nX
 nX
 eS
@@ -14066,24 +14065,24 @@ rQ
 rQ
 rQ
 rQ
-bX
-bX
-bX
-bX
-bX
-bX
-bX
-bX
-bX
-bX
-bX
-bX
-bX
-bX
-bX
-bX
-bX
-bX
+nX
+nX
+nX
+nX
+nX
+nX
+nX
+nX
+nX
+nX
+nX
+HY
+jg
+jg
+jg
+HY
+nX
+nX
 bX
 bX
 bX
@@ -14206,14 +14205,14 @@ ux
 ux
 ux
 ux
-ux
-ux
-ux
-ux
-ux
-ux
-ux
-ux
+nX
+HY
+WM
+jg
+jg
+WM
+HY
+nX
 ux
 ux
 ux
@@ -14336,14 +14335,14 @@ ux
 ux
 ux
 ux
-ux
-ux
-ux
-ux
-ux
-ux
-ux
-ux
+nX
+nX
+WM
+jg
+jg
+jg
+WM
+nX
 ux
 ux
 ux
@@ -14467,13 +14466,13 @@ ux
 ux
 ux
 ux
-ux
-ux
-ux
-ux
-ux
-ux
-ux
+nX
+wa
+Zu
+Zu
+Zu
+wa
+nX
 ux
 ux
 ux
@@ -14597,13 +14596,13 @@ ux
 ux
 ux
 ux
-ux
-ux
-ux
-ux
-ux
-ux
-ux
+nX
+nX
+un
+un
+un
+nX
+nX
 ux
 ux
 ux
@@ -14728,11 +14727,11 @@ ux
 ux
 ux
 ux
-ux
-ux
-ux
-ux
-ux
+nX
+nX
+nX
+nX
+nX
 ux
 ux
 ux
