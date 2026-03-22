@@ -533,7 +533,7 @@
 
 /obj/item/clothing/shoes/roguetown/anklets
 	name = "golden anklets"
-	desc = "Luxurious anklets made of the finest gold. They leave the feet bare while adding an exotic flair."
+	desc = "Luxurious anklets made of the finest gold. They leave the feet bare while adding a silky flair."
 	gender = PLURAL
 	icon_state = "anklets"
 	item_state = "anklets"
@@ -566,6 +566,7 @@
 	sewrepair = FALSE
 	armor = ARMOR_PLATE
 	smeltresult = /obj/item/ingot/iron
+	anvilrepair = /datum/skill/craft/armorsmithing
 
 /obj/item/clothing/shoes/roguetown/horseshoes/build_worn_icon(default_layer, default_icon_file, isinhands, femaleuniform, override_state, female, customi, sleeveindex, boobed_overlay, icon/clip_mask)
 	var/mutable_appearance/image = ..()
