@@ -14,7 +14,6 @@
 	min_range = MIN_BULLET_RANGE
 	max_range = MAX_BULLET_RANGE
 	dam_falloff_factor = DMG_FALLOFF_BULLET
-	ap_falloff_factor = AP_FALLOFF_BULLET
 
 /obj/item/ammo_casing
 	var/obj/item/quiver/twilight_bullet/runicbag/linked_bag = null
@@ -25,7 +24,7 @@
 /obj/projectile/bullet/twilight_lead
 	name = "lead sphere"
 	desc = "Небольшая свинцовая сфера. Хорошо сочетается с порохом."
-	damage = 140
+	damage = 100
 	damage_type = BRUTE
 	icon = 'modular_twilight_axis/firearms/icons/ammo.dmi'
 	icon_state = "musketball_proj"
