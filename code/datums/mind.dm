@@ -891,11 +891,11 @@ GLOBAL_LIST_EMPTY(personal_objective_minds)
 
 /// Move Prestidigitation to the end of the spell list so it's always last
 /datum/mind/proc/bump_prestidigitation()
-	var/datum/presto = get_spell(/obj/effect/proc_holder/spell/targeted/touch/prestidigitation)
+	var/obj/effect/proc_holder/spell/targeted/touch/prestidigitation/presto = get_spell(/obj/effect/proc_holder/spell/targeted/touch/prestidigitation)
 	if(!presto)
 		return
-	spell_list -= presto
-	spell_list += presto
+	RemoveSpell(presto)
+	AddSpell(new /obj/effect/proc_holder/spell/targeted/touch/prestidigitation)
 
 /datum/mind/proc/show_spell_tip()
 	if(current)
@@ -932,16 +932,16 @@ GLOBAL_LIST_EMPTY(personal_objective_minds)
 		if(!has_remaining_slots && !has_remaining_util)
 			RemoveSpell(/obj/effect/proc_holder/spell/self/learnspell)
 			return
-		// Still has available slots/points — show LearnSpell
-		if(!has_spell(/obj/effect/proc_holder/spell/self/learnspell))
-			AddSpell(new /obj/effect/proc_holder/spell/self/learnspell(null))
+		// Still has available slots/points — remove and re-add LearnSpell to bump it to end
+		RemoveSpell(/obj/effect/proc_holder/spell/self/learnspell)
+		AddSpell(new /obj/effect/proc_holder/spell/self/learnspell(null))
 		return
 
 	// Arcyne casters without aspects still need learnspell to open the aspect picker
 	if(current)
 		if(HAS_TRAIT(current, TRAIT_ARCYNE) && !LAZYLEN(major_aspects))
-			if(!has_spell(/obj/effect/proc_holder/spell/self/learnspell))
-				AddSpell(new /obj/effect/proc_holder/spell/self/learnspell(null))
+			RemoveSpell(/obj/effect/proc_holder/spell/self/learnspell)
+			AddSpell(new /obj/effect/proc_holder/spell/self/learnspell(null))
 			return
 
 	return

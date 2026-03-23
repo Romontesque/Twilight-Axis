@@ -234,7 +234,7 @@
 	pixel_x = -16
 	inhand_x_dimension = 64
 	inhand_y_dimension = 64
-	wdefense = 3
+	wdefense = 5
 	wdefense_wbonus = 8	//11 when wielded.
 	bigboy = TRUE
 	gripsprite = TRUE

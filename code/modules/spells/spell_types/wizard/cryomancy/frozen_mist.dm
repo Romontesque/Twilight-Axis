@@ -4,7 +4,7 @@
 	desc = "Conjure a persistent cloud of freezing mist over a large area. \
 	Everyone caught within is immediately afflicted with full frost stacks and takes burn damage every second. \
 	The mist lingers for 10 seconds."
-	button_icon_state = "hailstorm"
+	button_icon_state = "frozen_mist"
 	sound = 'sound/spellbooks/crystal.ogg'
 	spell_color = GLOW_COLOR_ICE
 	glow_intensity = GLOW_INTENSITY_VERY_HIGH

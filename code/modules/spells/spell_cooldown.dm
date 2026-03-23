@@ -421,7 +421,6 @@
 	return best
 
 /datum/action/cooldown/spell/InterceptClickOn(mob/living/clicker, list/modifiers, atom/click_target)
-	// check_click_intercept passes raw params string, not a list — parse it
 	if(istext(modifiers))
 		modifiers = params2list(modifiers)
 	if(!LAZYACCESS(modifiers, MIDDLE_CLICK))

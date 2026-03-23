@@ -69,6 +69,7 @@
 
 // Standardized charge times — keeps poke/major/heavy spells consistent for balance passes
 #define CHARGETIME_POKE          0.5 SECONDS  // Staple poke spells
+#define CHARGETIME_MINOR         1 SECONDS    // Minor utility / support spells
 #define CHARGETIME_MAJOR         1.5 SECONDS  // Major projectiles
 #define CHARGETIME_HEAVY         2 SECONDS    // Heavy AOE / ultimates
 

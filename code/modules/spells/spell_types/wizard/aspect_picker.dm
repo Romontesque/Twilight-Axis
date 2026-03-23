@@ -146,6 +146,11 @@
 		for(var/spell_path in staged.fixed_spells)
 			all_selected_spells |= "[spell_path]"
 		qdel(staged)
+	// Include spells the owner already knows (pre-granted by class, etc.)
+	for(var/datum/action/cooldown/spell/S in owner.mind.spell_list)
+		all_selected_spells |= "[S.type]"
+	for(var/obj/effect/proc_holder/spell/S in owner.mind.spell_list)
+		all_selected_spells |= "[S.type]"
 	data["all_selected_spells"] = all_selected_spells
 
 	// Collect spent budget per aspect
@@ -463,6 +468,8 @@
 			var/has_new_utilities = length(staged_utilities)
 			var/has_unbinds = length(staged_unbind_aspects) || length(staged_unbind_utilities)
 			if(!has_new_aspects && !has_new_utilities && !has_unbinds)
+				owner.mind.bump_prestidigitation()
+				owner.mind.check_learnspell()
 				to_chat(owner, span_warning("You must select something before sealing."))
 				return
 
@@ -599,7 +606,7 @@
 
 	if(has_unbinds)
 		to_chat(owner, span_notice("The inscriptions in my grimoire shift and reform..."))
-	owner.mind.ensure_prestidigitation()
+	owner.mind.bump_prestidigitation()
 	owner.mind.check_learnspell()
 
 	chanting = FALSE

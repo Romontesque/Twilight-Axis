@@ -138,15 +138,10 @@
 	)
 	fixed_spells = list(
 		/datum/action/cooldown/spell/projectile/soulshot,
-		/datum/action/cooldown/spell/projectile/fetch,
-		/datum/action/cooldown/spell/projectile/repel,
+		/datum/action/cooldown/spell/ensnare/kinesis,
 		/datum/action/cooldown/spell/repulse,
 		/datum/action/cooldown/spell/gravity,
-	)
-	variants = list(
-		"mastery" = list(
-			VARIANT_ADDITIVE =/datum/action/cooldown/spell/mass_gravity,
-		),
+		/datum/action/cooldown/spell/mass_gravity,
 	)
 
 /datum/magic_aspect/augmentation

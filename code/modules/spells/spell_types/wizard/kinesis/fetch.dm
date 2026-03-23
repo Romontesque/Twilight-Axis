@@ -1,5 +1,4 @@
-// Fetch - Kinesis projectile that pulls the target toward the caster
-
+#define FETCH_YEET_RANGE 7
 /datum/action/cooldown/spell/projectile/fetch
 	button_icon = 'icons/mob/actions/mage_kinesis.dmi'
 	name = "Fetch"
@@ -21,11 +20,11 @@
 
 	charge_required = TRUE
 	weapon_cast_penalized = TRUE
-	charge_time = CHARGETIME_POKE
+	charge_time = CHARGETIME_MINOR
 	charge_drain = 0
-	charge_slowdown = CHARGING_SLOWDOWN_NONE
+	charge_slowdown = CHARGING_SLOWDOWN_SMALL
 	charge_sound = 'sound/magic/charging.ogg'
-	cooldown_time = 8 SECONDS
+	cooldown_time = 15 SECONDS
 
 	associated_skill = /datum/skill/magic/arcane
 	spell_tier = 2
@@ -34,6 +33,7 @@
 /obj/projectile/magic/fetch
 	name = "bolt of fetching"
 	icon_state = "cursehand0"
+	speed = MAGE_PROJ_FAST
 	range = 15
 	cannot_cross_z = TRUE
 
@@ -45,7 +45,7 @@
 		if(L.anti_magic_check() || !firer)
 			L.visible_message(span_warning("[src] vanishes on contact with [target]!"))
 			return BULLET_ACT_BLOCK
-		L.throw_at(throw_target, 200, 4)
+		L.throw_at(throw_target, FETCH_YEET_RANGE, 4)
 	else
 		if(isitem(target))
 			var/obj/item/I = target
@@ -54,4 +54,6 @@
 				carbon_firer = firer
 				if (carbon_firer?.can_catch_item())
 					throw_target = get_turf(firer)
-			I.throw_at(throw_target, 200, 3)
+			I.throw_at(throw_target, FETCH_YEET_RANGE, 3)
+
+#undef FETCH_YEET_RANGE

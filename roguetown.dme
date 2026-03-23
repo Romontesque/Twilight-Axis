@@ -2851,6 +2851,7 @@
 #include "code\modules\spells\spell_types\wizard\ferramancy\blade_burst.dm"
 #include "code\modules\spells\spell_types\wizard\invoked_aoe\knock.dm"
 #include "code\modules\spells\spell_types\wizard\invoked_aoe\meteor_storm.dm"
+#include "code\modules\spells\spell_types\wizard\kinesis\ensnare.dm"
 #include "code\modules\spells\spell_types\wizard\kinesis\fetch.dm"
 #include "code\modules\spells\spell_types\wizard\kinesis\gravity.dm"
 #include "code\modules\spells\spell_types\wizard\kinesis\repel.dm"
