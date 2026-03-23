@@ -17,7 +17,7 @@
 	is_silver = TRUE
 	toggle_state = null
 	is_important = TRUE
-	special = /datum/special_intent/martyr_necra_harvest
+	special = /datum/special_intent/martyr_dendor_vine_reap
 
 /obj/item/rogueweapon/halberd/bardiche/scythe/martyr/ComponentInitialize()
 	AddComponent(\

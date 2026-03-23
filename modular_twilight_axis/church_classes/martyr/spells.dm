@@ -89,11 +89,11 @@
 
 		if("Божественная коса")
 			selected_weapon = /obj/item/rogueweapon/halberd/bardiche/scythe/martyr
-			selected_invocations = list("Некра, ниспошли мне косу с твоих садов!")
+			selected_invocations = list("Из корней и лозы, Дендор, сотки мне оружие!")
 
 	if(summon_weapon)
 		summon_weapon.invocations = selected_invocations
-		summon_weapon.sync_weapon_button()
+		summon_weapon.sync_weapon_button(user)
 
 	return TRUE
 
@@ -118,10 +118,15 @@
 	clothes_req = FALSE
 	recharge_time = 30 SECONDS
 	chargedloop = /datum/looping_sound/invokegen
+
 	action_icon = 'modular_twilight_axis/church_classes/icons/ui.dmi'
-	action_icon_state = "spell1"
+	action_icon_state = "spell0"
 	action_background_icon_state = "bg_spell"
-	overlay_state = null
+
+	overlay_icon = 'modular_twilight_axis/church_classes/icons/ui.dmi'
+	overlay_state = "martyrsword"
+	overlay_alpha = 255
+
 	invocations = list("Астрата, вложи в мою руку меч твоего суда!")
 	invocation_type = "shout"
 	spell_tier = 2
@@ -129,7 +134,11 @@
 
 	var/obj/effect/proc_holder/spell/targeted/martyr_select_weapon/weapon_select
 
-/obj/effect/proc_holder/spell/invoked/martyr_summon_weapon/proc/sync_weapon_button()
+/obj/effect/proc_holder/spell/invoked/martyr_summon_weapon/on_gain(mob/living/user)
+	. = ..()
+	sync_weapon_button(user)
+
+/obj/effect/proc_holder/spell/invoked/martyr_summon_weapon/proc/sync_weapon_button(mob/user)
 	if(!weapon_select)
 		return
 
@@ -138,17 +147,16 @@
 	action_icon = 'modular_twilight_axis/church_classes/icons/ui.dmi'
 	action_icon_state = "spell0"
 	action_background_icon_state = "bg_spell"
+	overlay_icon = 'modular_twilight_axis/church_classes/icons/ui.dmi'
+	overlay_state = new_state
+	overlay_alpha = 255
 
 	if(action)
-		action.button_icon = 'icons/mob/actions/roguespells.dmi'
-		action.background_icon_state = "bg_spell"
-
-		action.icon_icon = 'modular_twilight_axis/church_classes/icons/ui.dmi'
-		action.button_icon_state = "spell0"
-		action.overlay_state = new_state
-		action.overlay_alpha = 255
-
-		action.UpdateButtonIcon(FALSE, TRUE)
+		if(user?.hud_used && action.viewers && action.viewers[user.hud_used])
+			refresh_one_weapon_button(action.viewers[user.hud_used])
+		else
+			for(var/datum/hud/H as anything in action.viewers)
+				refresh_one_weapon_button(action.viewers[H])
 
 /obj/effect/proc_holder/spell/invoked/martyr_summon_weapon/proc/lightning_summon_fx(mob/living/carbon/human/user)
 	for(var/mob/living/carbon/M in viewers(world.view, user))
@@ -220,3 +228,24 @@
 		to_chat(user, span_notice("Реликвия с грохотом нисходит в мою руку."))
 	else
 		to_chat(user, span_warning("Мои руки заняты! Реликвия ударяется о землю."))
+
+/obj/effect/proc_holder/spell/invoked/martyr_summon_weapon/proc/refresh_one_weapon_button(atom/movable/screen/movable/action_button/B)
+	if(!B)
+		return
+
+	B.icon = 'icons/mob/actions/roguespells.dmi'
+	B.icon_state = "bg_spell"
+
+	B.cut_overlays(TRUE)
+
+	if(overlay_state)
+		var/mutable_appearance/weapon_overlay = mutable_appearance(
+			'modular_twilight_axis/church_classes/icons/ui.dmi',
+			overlay_state,
+			layer = B.layer + 0.2
+		)
+		weapon_overlay.alpha = overlay_alpha
+		B.add_overlay(weapon_overlay)
+
+	B.active_overlay_icon_state = overlay_state
+	B.active_underlay_icon_state = null

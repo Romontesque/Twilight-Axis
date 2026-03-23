@@ -105,6 +105,30 @@
 	pixel_x = -16
 	pixel_y = -16
 
+/obj/effect/temp_visual/dendor_vines_begin
+	icon = 'modular_twilight_axis/icons/effects/effects.dmi'
+	icon_state = "vines_begin"
+	layer = BELOW_MOB_LAYER
+	duration = 1.5 SECONDS
+	alpha = 255
+	pixel_y = 0
+
+/obj/effect/temp_visual/dendor_vines_mid
+	icon = 'modular_twilight_axis/icons/effects/effects.dmi'
+	icon_state = "vines_mid"
+	layer = ABOVE_MOB_LAYER
+	duration = 7 SECONDS
+	alpha = 255
+	pixel_y = 0
+
+/obj/effect/temp_visual/dendor_vines_end
+	icon = 'modular_twilight_axis/icons/effects/effects.dmi'
+	icon_state = "vines_end"
+	layer = ABOVE_MOB_LAYER
+	duration = 0.3 SECONDS
+	alpha = 255
+	pixel_y = 0
+
 /obj/effect/malum_scorched_ground/Initialize(mapload, duration_override = 20 SECONDS)
 	. = ..()
 	end_time = world.time + duration_override
@@ -1284,3 +1308,140 @@
 	if(is_being_thrown_by_special)
 		return FALSE
 	return ..()
+
+/obj/effect/dendor_vine_hold/Initialize(mapload, duration_override = 8.4 SECONDS)
+	. = ..()
+	QDEL_IN(src, duration_override)
+
+
+
+/datum/special_intent/martyr_dendor_vine_reap
+	name = "Dendor's Vine Reap"
+	desc = "Ты проводишь косой перед собой, и из земли вырываются лианы Дендора. Они хватают своих жертв за ноги и не дают им некоторое время двигаться. "
+	tile_coordinates = list(
+		list(-1,0), list(0,0), list(1,0),
+		list(-2,1), list(-1,1), list(0,1), list(1,1), list(2,1)
+	)
+
+	use_clickloc = FALSE
+	respect_adjacency = TRUE
+	respect_dir = TRUE
+
+	delay = 0.5 SECONDS
+	fade_delay = 0.4 SECONDS
+
+	pre_icon_state = "trap"
+	post_icon_state = "sweep_fx"
+
+	sfx_pre_delay = 'sound/combat/parry/bladed/bladedsmall (3).ogg'
+	sfx_post_delay = 'modular_twilight_axis/sound/misc/vines.ogg'
+
+	cooldown = 45 SECONDS
+	stamcost = 25
+
+	var/base_dam = 0
+	var/constrict_dam = 0
+	var/list/entangled_targets = list()
+
+	var/self_commit = 0.7 SECONDS
+
+	var/vine_begin_delay = 1.5 SECONDS
+	var/vine_mid_duration = 7 SECONDS
+	var/vine_end_duration = 0.3 SECONDS
+	var/entangle_dur = 7.3 SECONDS
+
+	var/exposed_dur = 4 SECONDS
+	var/vulnerable_dur = 5 SECONDS
+
+	var/list/dendor_cries = list(
+		"Дендор, оплети их корнями и лозой!",
+		"Да восстанет чаща Дендора против вас!",
+		"Дендор, свяжи их волей леса!",
+		"Пусть лианы Дендора сомкнутся на вас!"
+	)
+
+/datum/special_intent/martyr_dendor_vine_reap/_reset()
+	base_dam = 0
+	constrict_dam = 0
+	entangled_targets = list()
+	. = ..()
+
+/datum/special_intent/martyr_dendor_vine_reap/process_attack()
+	var/obj/item/rogueweapon/W = iparent
+	var/scalemod = max(((howner.STASTR + howner.STAPER + howner.STAWIL) / 30), 1)
+
+	base_dam = W.force_dynamic * scalemod * 0.8
+	constrict_dam = W.force_dynamic * scalemod * 1.05
+
+	. = ..()
+
+/datum/special_intent/martyr_dendor_vine_reap/on_create()
+	. = ..()
+	howner.Immobilize(self_commit)
+	howner.say(pick(dendor_cries))
+
+/datum/special_intent/martyr_dendor_vine_reap/apply_hit(turf/T)
+	for(var/mob/living/L in get_hearers_in_view(0, T))
+		if(L == howner)
+			continue
+		if(L in entangled_targets)
+			continue
+
+		entangled_targets += L
+
+		if(L.mobility_flags & MOBILITY_STAND)
+			apply_generic_weapon_damage(L, base_dam, "slash", BODY_ZONE_CHEST, bclass = BCLASS_CUT)
+
+		L.apply_status_effect(/datum/status_effect/debuff/exposed, exposed_dur)
+
+		var/turf/mark_turf = get_turf(L)
+		if(mark_turf)
+			new /obj/effect/temp_visual/dendor_vines_begin(mark_turf)
+
+		L.visible_message(
+			span_warning("Под [L] начинают стремительно прорастать лианы Дендора!"),
+			span_userdanger("Подо мной прорастают лианы!")
+		)
+
+		addtimer(CALLBACK(src, PROC_REF(begin_entangle), L), vine_begin_delay)
+
+	..()
+
+/datum/special_intent/martyr_dendor_vine_reap/proc/begin_entangle(mob/living/L)
+	if(!howner || QDELETED(howner))
+		return
+	if(!L || QDELETED(L))
+		return
+	if(L.stat == DEAD)
+		return
+
+	var/turf/T = get_turf(L)
+	if(T)
+		new /obj/effect/temp_visual/dendor_vines_mid(T)
+
+	L.Immobilize(entangle_dur)
+	L.apply_status_effect(/datum/status_effect/debuff/vulnerable, vulnerable_dur)
+	L.apply_status_effect(/datum/status_effect/debuff/exposed, exposed_dur)
+
+	if(L.mobility_flags & MOBILITY_STAND)
+		apply_generic_weapon_damage(L, constrict_dam, "slash", BODY_ZONE_CHEST, bclass = BCLASS_CHOP)
+
+	L.visible_message(
+		span_danger("Лианы Дендора резко смыкаются вокруг [L]!"),
+		span_userdanger("Лианы резко стягиваются на мне и сковывают меня!")
+	)
+
+	if(T)
+		playsound(T, sfx_post_delay, 70, TRUE)
+
+	addtimer(CALLBACK(src, PROC_REF(begin_release), L), vine_mid_duration)
+
+/datum/special_intent/martyr_dendor_vine_reap/proc/begin_release(mob/living/L)
+	if(!L || QDELETED(L))
+		return
+	if(L.stat == DEAD)
+		return
+
+	var/turf/T = get_turf(L)
+	if(T)
+		new /obj/effect/temp_visual/dendor_vines_end(T)
