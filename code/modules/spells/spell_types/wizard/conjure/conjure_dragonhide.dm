@@ -1,36 +1,33 @@
-/obj/effect/proc_holder/spell/self/conjure_armor/dragonhide
+/datum/action/cooldown/spell/conjure_armor/dragonhide
 	name = "Conjure Dragonhide"
 	desc = "Conjure a Dragonhide Barrier. Granting long-lasting protection from attacks and an especial affinity against flames. Your armor slot must be free to use this.\n\
 	The barrier lasts until it is broken, a new one is summoned, or the spell is forgotten."
-	overlay_state = "conjure_dragonhide"
-	sound = list('sound/magic/whiteflame.ogg')
+	button_icon_state = "conjure_dragonhide"
+	sound = 'sound/magic/whiteflame.ogg'
 
-	releasedrain = SPELLCOST_CONJURE
-	chargedrain = 1
-	chargetime = 3 SECONDS
-	no_early_release = TRUE
-	recharge_time = 5 MINUTES
+	primary_resource_type = SPELL_COST_STAMINA
+	primary_resource_cost = SPELLCOST_CONJURE
 
-	warnie = "spellwarning"
-	no_early_release = TRUE
-	antimagic_allowed = FALSE
-	charging_slowdown = 3
-	cost = 4 // upgrade on ring, + firestack immunity pretty dang good.
+	charge_time = 3 SECONDS
+	cooldown_time = 5 MINUTES
+
+	charge_slowdown = 3
+	point_cost = 4
 	spell_tier = 2
+	spell_impact_intensity = SPELL_IMPACT_NONE
 
-	invocations = list("Equitare Draconis") // google translate latin 'ride the dragon' - If someone literate wants to change this, feel free to.
-	invocation_type = "shout"
-	glow_color = GLOW_COLOR_METAL
+	invocations = list("Equitare Draconis")
+	invocation_type = INVOCATION_SHOUT
+	spell_color = GLOW_COLOR_METAL
 	glow_intensity = GLOW_INTENSITY_MEDIUM
-
 
 	objtoequip = /obj/item/clothing/suit/roguetown/dragonhide
 	slottoequip = SLOT_ARMOR
 	checkspot = "armor"
 	cooldown_on_dissipate = TRUE
-	summondelay = 7 SECONDS // Do Not Pass Go. Do Not Cast (during combat)
+	summondelay = 0
 
-/obj/effect/proc_holder/spell/self/conjure_armor/conjure_dragonhide/Destroy()
+/datum/action/cooldown/spell/conjure_armor/dragonhide/Destroy()
 	if(src.conjured_armor)
 		conjured_armor.visible_message(span_warning("The [conjured_armor]'s borders begin to shimmer and fade, before it vanishes entirely!"))
 		qdel(conjured_armor)
@@ -57,7 +54,7 @@
 	max_integrity = ARMOR_INT_CHEST_LIGHT_MEDIUM
 	body_parts_covered = COVERAGE_ALL_BUT_HANDFEET | COVERAGE_HEAD_NOSE | NECK | HANDS | FEET
 	unenchantable = TRUE
-	var/obj/effect/proc_holder/spell/self/conjure_armor/linked_conjure_spell
+	var/datum/action/cooldown/spell/conjure_armor/linked_conjure_spell
 
 /obj/item/clothing/suit/roguetown/dragonhide/equipped(mob/living/user)
 	. = ..()

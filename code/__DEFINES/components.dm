@@ -511,3 +511,4 @@
 //Roguetown-specific
 #define  COMSIG_MOB_ON_KICK	"mob_on_kick"	//from /mob/living/proc/try_kick(atom/A). This is for when the src has done a kick.
 #define  COMSIG_MOB_KICKED	"mob_kicked"	//from /datum/species/proc/kicked(mob/living/carbon/human/user, mob/living/carbon/human/target). This is for when the mob has BEEN kicked.
+#define  COMSIG_MOB_KICKED_SUCCESSFUL	"mob_kicked_successful"	//from /mob/living/proc/try_kick(). Sent to target after a kick lands (past dodge/parry).

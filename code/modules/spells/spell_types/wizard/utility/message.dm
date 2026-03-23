@@ -7,6 +7,7 @@
 	recharge_time = 60 SECONDS
 	warnie = "spellwarning"
 	spell_tier = 1
+	spell_impact_intensity = SPELL_IMPACT_NONE
 	associated_skill = /datum/skill/magic/arcane
 	overlay_state = "message"
 	/// The stat threshold needed to pass the identify check.

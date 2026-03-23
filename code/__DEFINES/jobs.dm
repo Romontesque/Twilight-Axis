@@ -138,6 +138,7 @@
 
 #define TESTER		(1<<0)
 
+
 #define JCOLOR_NOBLE  "#007fff"
 #define JCOLOR_COURTIER "#aa83b9"
 #define JCOLOR_RETINUE "#597fb9"

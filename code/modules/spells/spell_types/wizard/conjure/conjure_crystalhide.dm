@@ -1,31 +1,30 @@
-/obj/effect/proc_holder/spell/self/conjure_armor/crystalhide
+/datum/action/cooldown/spell/conjure_armor/crystalhide
 	name = "Conjure Crystalhide"
 	desc = "Conjure a Crystalhide Barrier that wraps your whole body in brittle leyline-crystal. Your armor slot must be free to use this. While active, the barrier bolsters your intelligence. When the barrier shatters or is dismissed, it lets out a burst of hot, Signal-cut statick wind."
-	overlay_state = "conjure_dragonhide"
-	sound = list('sound/magic/whiteflame.ogg')
+	button_icon_state = "conjure_dragonhide"
+	sound = 'sound/magic/whiteflame.ogg'
 
-	releasedrain = SPELLCOST_CONJURE
-	chargedrain = 1
-	chargetime = 5 SECONDS
-	no_early_release = TRUE
-	recharge_time = 5 MINUTES
+	primary_resource_type = SPELL_COST_STAMINA
+	primary_resource_cost = SPELLCOST_CONJURE
 
-	warnie = "spellwarning"
-	antimagic_allowed = FALSE
-	charging_slowdown = 3
-	cost = 4
+	charge_time = 5 SECONDS
+	cooldown_time = 5 MINUTES
+
+	charge_slowdown = 3
+	point_cost = 4
 	spell_tier = 3
+	spell_impact_intensity = SPELL_IMPACT_NONE
 
-	invocations = list("Psymagia Congrego!") //COLLECT WORLD-LUX/WORLD-LEY.
-	invocation_type = "shout"
-	glow_color = GLOW_COLOR_ARCANE
+	invocations = list("Psymagia Congrego!")
+	invocation_type = INVOCATION_SHOUT
+	spell_color = GLOW_COLOR_ARCANE
 	glow_intensity = GLOW_INTENSITY_MEDIUM
 
 	objtoequip = /obj/item/clothing/suit/roguetown/crystalhide
 	slottoequip = SLOT_ARMOR
 	checkspot = "armor"
 	cooldown_on_dissipate = TRUE
-	summondelay = 7 SECONDS //Cast This In Combat, I Dare You.
+	summondelay = 0
 
 /obj/item/clothing/suit/roguetown/crystalhide
 	name = "crystalhide"
@@ -46,7 +45,7 @@
 	max_integrity = ARMOR_INT_CHEST_LIGHT_BASE
 	body_parts_covered = COVERAGE_ALL_BUT_HANDFEET | COVERAGE_HEAD_NOSE | NECK | HANDS | FEET
 	unenchantable = TRUE
-	var/obj/effect/proc_holder/spell/self/conjure_armor/linked_conjure_spell
+	var/datum/action/cooldown/spell/conjure_armor/linked_conjure_spell
 
 /obj/item/clothing/suit/roguetown/crystalhide/equipped(mob/living/user)
 	. = ..()
@@ -59,7 +58,7 @@
 	for(var/mob/living/target in oview(1, wearer))
 		var/throwtarget = get_edge_target_turf(wearer, get_dir(wearer, get_step_away(target, wearer)))
 		target.safe_throw_at(throwtarget, 2, 1, wearer, spin = FALSE, force = MOVE_FORCE_EXTREMELY_STRONG)
-		target.adjustBruteLoss(20) //bonus. doesnt rly matter
+		target.adjustBruteLoss(20)
 
 /obj/item/clothing/suit/roguetown/crystalhide/proc/dispel()
 	if(QDELETED(src))

@@ -107,7 +107,7 @@
 	outfit = /datum/outfit/job/roguetown/guildsman/artificer
 
 	category_tags = list(CTAG_GUILDSMEN)
-	traits_applied = list(TRAIT_ARCYNE_T2)
+	traits_applied = list(TRAIT_ARCYNE)
 	subclass_stats = list(
 		STATKEY_INT = 3,
 		STATKEY_WIL = 2,
@@ -165,7 +165,6 @@
 	// Not a real mage, no free spell point. Take Arcyne Potential if you want it.
 	if(H.mind)
 		H.mind.AddSpell(new /obj/effect/proc_holder/spell/targeted/touch/prestidigitation)
-		H.mind.AddSpell(new /obj/effect/proc_holder/spell/invoked/enchant_weapon)
 	if(H.mind)
 		SStreasury.give_money_account(ECONOMIC_UPPER_MIDDLE_CLASS, H, "Savings.")
 

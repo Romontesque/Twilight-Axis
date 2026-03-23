@@ -21,6 +21,7 @@
 	glow_intensity = GLOW_INTENSITY_MEDIUM
 	associated_skill = /datum/skill/magic/arcane
 	spell_tier = 3
+	spell_impact_intensity = SPELL_IMPACT_NONE
 	antimagic_allowed = FALSE
 	miracle = FALSE
 	var/delay = 4.5 SECONDS	//Reduced to 1.5 seconds with Legendary

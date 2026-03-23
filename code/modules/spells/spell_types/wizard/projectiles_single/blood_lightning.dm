@@ -1,7 +1,7 @@
 // Lich / Vampire shared list only
 /obj/effect/proc_holder/spell/invoked/projectile/bloodlightning
 	name = "Blood Bolt"
-	desc = "Emit a bolt of lightning that burns a target harshly, preventing them from attacking and slowing them down for 8 seconds."
+	desc = "Emit a bolt of lightning that burns a target harshly, preventing them from attacking and slowing them down for 8 seconds. Applies lightning adaptation - the non-burn effects cannot be reapplied within 15 seconds."
 	clothes_req = FALSE
 	overlay_state = "bloodlightning"
 	sound = 'sound/magic/vlightning.ogg'
@@ -15,6 +15,7 @@
 	no_early_release = TRUE
 	movement_interrupt = FALSE
 	spell_tier = 2 // Doesn't matter for the most part
+	spell_impact_intensity = SPELL_IMPACT_MEDIUM
 	invocations = list("Sanguis Sagitta!")
 	invocation_type = "shout"
 	glow_color = GLOW_COLOR_VAMPIRIC
@@ -51,8 +52,17 @@
 			return BULLET_ACT_BLOCK
 		if(isliving(target))
 			var/mob/living/L = target
-			L.Immobilize(0.5 SECONDS)
-			L.apply_status_effect(/datum/status_effect/debuff/clickcd, 8 SECONDS)
 			L.electrocute_act(1, src, 1, SHOCK_NOSTUN)
-			L.apply_status_effect(/datum/status_effect/buff/lightningstruck, 8 SECONDS)
+			// Lightning Adaptation: CC effects gated behind the shared adaptation timer
+			if(!L.mob_timers[MT_LIGHTNING_ADAPTATION] || world.time > L.mob_timers[MT_LIGHTNING_ADAPTATION] + LIGHTNING_ADAPTATION_COOLDOWN)
+				L.Immobilize(0.5 SECONDS)
+				L.apply_status_effect(/datum/status_effect/debuff/clickcd, 8 SECONDS)
+				L.apply_status_effect(/datum/status_effect/buff/lightningstruck, 8 SECONDS)
+				L.balloon_alert_to_viewers("<font color='#ffcc00'>shocked! (8s)</font>")
+				L.mob_timers[MT_LIGHTNING_ADAPTATION] = world.time
+			else
+				L.balloon_alert_to_viewers("<font color='#ffcc00'>shock adapted!</font>")
 	qdel(src)
+
+#undef LIGHTNING_ADAPTATION_COOLDOWN
+#undef MT_LIGHTNING_ADAPTATION

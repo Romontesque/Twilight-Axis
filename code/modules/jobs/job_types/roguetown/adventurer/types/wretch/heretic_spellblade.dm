@@ -15,7 +15,7 @@
 	maximum_possible_slots = 2 // Team rocket!!!
 	class_select_category = CLASS_CAT_BATTLEMAGE
 	category_tags = list(CTAG_WRETCH)
-	traits_applied = list(TRAIT_MEDIUMARMOR, TRAIT_ARCYNE_T2)
+	traits_applied = list(TRAIT_MEDIUMARMOR, TRAIT_ARCYNE)
 	subclass_stats = list(
 		STATKEY_STR = 1,
 		STATKEY_INT = 1, // Weighted 7. But a very nice statblock
@@ -23,7 +23,7 @@
 		STATKEY_CON = 1,
 		STATKEY_WIL = 2, // With 2 Wil they should not be struggling
 	)
-	subclass_spell_point_pools = list("utility" = 6) // Mama Zizo said you get 2 more points on Utility!!!
+	subclass_mage_aspects = list("mastery" = FALSE, "major" = 0, "minor" = 0, "utilities" = 6) // Mama Zizo said you get 2 more points on Utility!!!
 	subclass_skills = list(
 		/datum/skill/misc/climbing = SKILL_LEVEL_JOURNEYMAN,
 		/datum/skill/combat/shields = SKILL_LEVEL_JOURNEYMAN,
@@ -63,8 +63,9 @@
 	beltl = /obj/item/storage/belt/rogue/pouch/coins/poor
 	wrists = /obj/item/clothing/wrists/roguetown/bracers/iron
 	backpack_contents = list(/obj/item/flashlight/flare/torch = 1,
-		/obj/item/reagent_containers/glass/bottle/alchemical/healthpot = 1,	
-		/obj/item/chalk = 1
+		/obj/item/reagent_containers/glass/bottle/alchemical/healthpot = 1,
+		/obj/item/chalk = 1,
+		/obj/item/book/spellbook = 1,
 	)
 
 	to_chat(H, span_warning("You start with Bind Weapon. Remember to Bind your weapon so you can use your abilities and build up Arcyne Momentum."))
@@ -114,8 +115,7 @@
 		H.mind.AddSpell(new /obj/effect/proc_holder/spell/self/recall_weapon)
 		H.mind.AddSpell(new /obj/effect/proc_holder/spell/self/empower_weapon)
 		H.mind.AddSpell(new /obj/effect/proc_holder/spell/self/bind_weapon)
-		H.mind.AddSpell(new /obj/effect/proc_holder/spell/invoked/mending)
-		H.mind.AddSpell(new /obj/effect/proc_holder/spell/invoked/enchant_weapon)
+		H.mind.AddSpell(new /datum/action/cooldown/spell/mending)
 
 	// Armor choice: Discretion (light, like adventurer) vs Progress (medium armor set with helmet)
 	var/armor_style = list("Discretion (Spellblade Disguise)", "Confrontation (Medium Armor)")

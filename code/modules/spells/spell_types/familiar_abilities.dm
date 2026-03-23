@@ -139,12 +139,11 @@
 	)
 	return TRUE
 
-/obj/effect/proc_holder/spell/invoked/blink/glimmer_hare
-	invocations = list("") //"Natural" abilty, no incantation.
-	chargetime = 0
-	releasedrain = 0
-	chargedrain = 0
-	xp_gain = FALSE
+/datum/action/cooldown/spell/blink/glimmer_hare
+	invocations = list("")
+	charge_required = FALSE
+	primary_resource_cost = 0
+	charge_drain = 0
 	
 
 /obj/effect/proc_holder/spell/self/inscription_cache

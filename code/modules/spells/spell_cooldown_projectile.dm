@@ -11,6 +11,7 @@
  * Supports arc mode toggle via projectile_type_arc.
  */
 /datum/action/cooldown/spell/projectile
+	abstract_type = /datum/action/cooldown/spell/projectile
 	self_cast_possible = FALSE
 
 	/// What projectile we create when we shoot our spell.
@@ -21,6 +22,11 @@
 	var/projectiles_per_fire = 1
 	/// Whether this spell is currently set to fire in arc mode.
 	var/arc_mode = FALSE
+
+/datum/action/cooldown/spell/projectile/generate_wiki_html(mob/user)
+	if(!displayed_damage && projectile_type)
+		displayed_damage = initial(projectile_type.damage)
+	return ..()
 
 /// cast_on is the turf or atom we're firing at.
 /datum/action/cooldown/spell/projectile/cast(atom/cast_on)
@@ -52,6 +58,11 @@
 	to_fire.fired_from = get_turf(user)
 	to_fire.def_zone = user.zone_selected
 
+	// Propagate spell impact intensity to the projectile
+	if(istype(to_fire, /obj/projectile/magic))
+		var/obj/projectile/magic/M = to_fire
+		M.spell_impact_intensity = spell_impact_intensity
+
 	// Accuracy from INT and skill, matching the old proc_holder system
 	if(isliving(user))
 		var/mob/living/L = user
@@ -59,6 +70,23 @@
 		to_fire.bonus_accuracy += (L.STAINT - 8) * 3
 		if(L.mind)
 			to_fire.bonus_accuracy += (L.get_skill_level(associated_skill) * 5)
+
+	// Apply implement poke bonus if the caster is holding a spell implement in either hand
+	if(is_implement_scaled_spell && ishuman(user))
+		var/mob/living/carbon/human/H = user
+		var/best_mult = 0
+		var/obj/item/rogueweapon/best_implement
+		for(var/obj/item/held in list(H.get_active_held_item(), H.get_inactive_held_item()))
+			if(!istype(held, /obj/item/rogueweapon))
+				continue
+			var/obj/item/rogueweapon/W = held
+			var/mult = W.implement_multiplier
+			if(mult > best_mult)
+				best_mult = mult
+				best_implement = held
+		if(best_mult)
+			to_fire.damage = round(to_fire.damage * best_mult)
+			best_implement?.attune_implement(spell_color, implement_aspect_name)
 
 	to_fire.preparePixelProjectile(target, user)
 
@@ -107,4 +135,11 @@
 	var/proj_range = initial(projectile_type.range)
 	if(proj_range)
 		stats.Insert(1, span_info("Projectile range: [proj_range] tiles"))
+	// Auto-display projectile damage
+	var/proj_damage = initial(projectile_type.damage)
+	if(proj_damage > 0)
+		if(projectiles_per_fire > 1)
+			stats += span_info("Damage: [proj_damage] x[projectiles_per_fire]")
+		else
+			stats += span_info("Damage: [proj_damage]")
 	return stats

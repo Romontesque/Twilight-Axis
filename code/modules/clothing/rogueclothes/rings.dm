@@ -331,7 +331,7 @@
 
 /obj/item/clothing/ring/fate_weaver
 	name = "fate weaver"
-	var/obj/effect/proc_holder/spell/self/conjure_armor/linked_conjure_spell
+	var/datum/action/cooldown/spell/conjure_armor/linked_conjure_spell
 	desc = "An arcyne creation first theorized by malcontents with the resolution of Xylix's plays. It protects it's wearer by tugging things gently toward less fatal potentials."
 	icon_state = "ring_s"
 	max_integrity = 50

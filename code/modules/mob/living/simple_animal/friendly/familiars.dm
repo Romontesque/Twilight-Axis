@@ -271,7 +271,7 @@
 	summoning_emote = "The air glints, and a translucent hare twitches into existence."
 	animal_species = "Glimmer Hare"
 	buff_given = /datum/status_effect/buff/familiar/lightstep
-	inherent_spell = list(/obj/effect/proc_holder/spell/invoked/blink/glimmer_hare)
+	inherent_spell = list(/datum/action/cooldown/spell/blink/glimmer_hare)
 	STASTR = 4
 	STAPER = 9
 	STACON = 6
@@ -357,7 +357,7 @@
 
 /datum/status_effect/buff/familiar/burdened_coil
 	id = "burdened_coil"
-	effectedstats = list(STATKEY_LCK = -1, STATKEY_WIL = 1)
+	effectedstats = list(STATKEY_CON = -1, STATKEY_WIL = 1)
 	alert_type = /atom/movable/screen/alert/status_effect/buff/familiar/burdened_coil
 
 /atom/movable/screen/alert/status_effect/buff/familiar/burdened_coil

@@ -21,7 +21,7 @@
 	var/mob/living/carbon/human/L = owner.current
 	L.become_skeleton()
 	ADD_TRAIT(L, TRAIT_MEDIUMARMOR, TRAIT_GENERIC)
-	ADD_TRAIT(L, TRAIT_ARCYNE_T2, TRAIT_GENERIC)
+	ADD_TRAIT(L, TRAIT_ARCYNE, TRAIT_GENERIC)
 
 /datum/antagonist/unbound_spellblade/proc/equip_spellblade()
 	owner.unknow_all_people()
@@ -184,9 +184,8 @@
 		H.mind.AddSpell(new /obj/effect/proc_holder/spell/self/recall_weapon)
 		H.mind.AddSpell(new /obj/effect/proc_holder/spell/self/empower_weapon)
 		H.mind.AddSpell(new /obj/effect/proc_holder/spell/self/bind_weapon)
-		H.mind.AddSpell(new /obj/effect/proc_holder/spell/invoked/mending)
-		H.mind.AddSpell(new /obj/effect/proc_holder/spell/invoked/enchant_weapon)
-		H.mind.set_spell_point_pools(list("utility" = 4))
+		H.mind.AddSpell(new /datum/action/cooldown/spell/mending)
+		H.mind.setup_mage_aspects(list("mastery" = FALSE, "major" = 0, "minor" = 0, "utilities" = 4))
 
 	H.adjust_blindness(-3)
 	var/helmets = list(

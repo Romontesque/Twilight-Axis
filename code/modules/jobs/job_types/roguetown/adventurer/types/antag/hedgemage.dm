@@ -7,8 +7,8 @@
 	category_tags = list(CTAG_BANDIT)
 	cmode_music = 'sound/music/cmode/antag/combat_thewall.ogg'
 	maximum_possible_slots = 1 //Shadow wizard money gang
-	subclass_spellpoints = 36 //We love casting spells - also no T4 unlike actual court mage so probably fine
-	traits_applied = list(TRAIT_MAGEARMOR, TRAIT_ARCYNE_T3, TRAIT_ALCHEMY_EXPERT)
+	subclass_mage_aspects = list("mastery" = FALSE, "major" = 1, "minor" = 3, "utilities" = 8)
+	traits_applied = list(TRAIT_ARCYNE, TRAIT_ALCHEMY_EXPERT)
 	subclass_stats = list(
 		STATKEY_INT = 3,
 		STATKEY_WIL = 3,
@@ -55,7 +55,7 @@
 	head = /obj/item/clothing/head/roguetown/helmet/leather/volfhelm
 	id = /obj/item/mattcoin
 
-	r_hand = /obj/item/rogueweapon/woodstaff/diamond
+	r_hand = /obj/item/rogueweapon/woodstaff/implement/grand
 	if(H.age == AGE_OLD)
 		head = /obj/item/clothing/head/roguetown/wizhat/gen
 		armor = /obj/item/clothing/suit/roguetown/shirt/robe

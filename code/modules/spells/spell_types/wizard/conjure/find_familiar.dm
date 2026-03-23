@@ -17,6 +17,7 @@
 
 	xp_gain = TRUE
 	spell_tier = 1
+	spell_impact_intensity = SPELL_IMPACT_NONE
 	cost = 0
 
 	invocations = list("Appare, spiritus fidus.")
