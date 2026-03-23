@@ -9,8 +9,8 @@
 	outfit = /datum/outfit/job/roguetown/spellblade
 	category_tags = list(CTAG_TEMPLAR)
 	subclass_languages = list(/datum/language/grenzelhoftian, /datum/language/celestial, /datum/language/elvish)
-	traits_applied = list(TRAIT_MEDIUMARMOR, TRAIT_NIGHT_OWL, TRAIT_ARCYNE_T3, TRAIT_NOC_LIGHT_BLESSING)
-	subclass_spellpoints = 12
+	traits_applied = list(TRAIT_MEDIUMARMOR, TRAIT_NIGHT_OWL, TRAIT_ARCYNE, TRAIT_NOC_LIGHT_BLESSING)
+	subclass_mage_aspects = list("mastery" = FALSE, "major" = FALSE, "minor" = 2, "utilities" = 6)
 	maximum_possible_slots = 1
 	subclass_stats = list(
 		STATKEY_WIL = 1,

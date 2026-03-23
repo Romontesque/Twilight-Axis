@@ -95,12 +95,7 @@
 	onlearned(user)
 
 /obj/item/book/granter/spell/attack_self(mob/living/user)
-	if(
-		!HAS_TRAIT(user, TRAIT_ARCYNE_T1) \
-		&& !HAS_TRAIT(user, TRAIT_ARCYNE_T2) \
-		&& !HAS_TRAIT(user, TRAIT_ARCYNE_T3) \
-		&& !HAS_TRAIT(user, TRAIT_ARCYNE_T4)
-	)
+	if(!HAS_TRAIT(user, TRAIT_ARCYNE))
 		to_chat(user, span_danger("I don't know how to parse [src]. It hurts my head."))
 		return FALSE
 	..()

@@ -1,3 +1,4 @@
+/*
 /obj/effect/proc_holder/spell/self/library
 	name = "Compendium of Arcane Arts"
 	desc = "Summon the knowledge of the arcane library to learn new spells."
@@ -146,3 +147,4 @@
 			var/points_left = user.mind.spell_points - user.mind.used_spell_points
 			if(cost > points_left) return "cost"
 	return "ok"
+*/
