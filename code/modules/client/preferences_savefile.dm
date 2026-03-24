@@ -714,9 +714,6 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	if(!valid_headshot_link(null, nsfw_ooc_extra_img_link, FALSE, list("jpg", "jpeg", "png", "gif", "mp4")))
 		nsfw_ooc_extra_img = null
 		nsfw_ooc_extra_img_link = null
-	S["nsfw_headshot_link"]		>> nsfw_headshot_link //TA edit
-	if(!valid_nsfw_headshot_link(null, nsfw_headshot_link, TRUE))
-		nsfw_headshot_link = null //TA edit end
 	S["erpprefs"]			>> erpprefs
 	S["preset_bounty_enabled"] >> preset_bounty_enabled
 	S["preset_bounty_poster_key"] >> preset_bounty_poster_key
@@ -949,7 +946,6 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	WRITE_FILE(S["nsfwflavortext"] , html_decode(nsfwflavortext))
 	WRITE_FILE(S["nsfw_ooc_extra_img"] , nsfw_ooc_extra_img)
 	WRITE_FILE(S["nsfw_ooc_extra_img_link"] , nsfw_ooc_extra_img_link)
-	WRITE_FILE(S["nsfw_headshot_link"] , nsfw_headshot_link) //TA edit
 	WRITE_FILE(S["erpprefs"] , html_decode(erpprefs))
 	WRITE_FILE(S["img_gallery"] , img_gallery)
 	WRITE_FILE(S["nsfw_img_gallery"] , nsfw_img_gallery)

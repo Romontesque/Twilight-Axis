@@ -195,7 +195,6 @@ GLOBAL_LIST_EMPTY(chosen_names)
 	var/vampire_headshot_link
 	var/werewolf_headshot_link //not used but setting up for the future
 	var/chatheadshot = TRUE
-	var/nsfw_headshot_link //Twilight Axis edit далее TA
 	var/list/violated = list() // ТА
 	var/ooc_extra
 	var/ooc_extra_img // ТА 
@@ -350,7 +349,6 @@ GLOBAL_LIST_EMPTY(chosen_names)
 	random_character(gender, FALSE, FALSE)
 	accessory = "Nothing"
 
-	nsfw_headshot_link = null //TA edit
 
 	customizer_entries = list()
 	validate_customizer_entries()
@@ -702,10 +700,6 @@ GLOBAL_LIST_EMPTY(chosen_names)
 			dat += "<br><b>Headshot:</b> <a href='?_src_=prefs;preference=headshot;task=input'>Change</a>"
 			if(headshot_link != null)
 				dat += "<br><img src='[headshot_link]' width='100px' height='100px'>"
-			
-			dat += "<br><b>NSFW Headshot:</b> <a href='?_src_=prefs;preference=nsfw_headshot;task=input'>Change</a>" //TA edit
-			if(nsfw_headshot_link != null) //TA edit
-				dat += "<br><img src='[nsfw_headshot_link]' width='125px' height='175px'>" //TA edit
 
 			var/examine_theme_name = "None (Use Viewer's)"
 			if(examine_theme)
@@ -2249,22 +2243,6 @@ Slots: [job.spawn_positions] [job.round_contrib_points ? "RCP: +[job.round_contr
 					nsfwflavortext_cached = parsemarkdown_basic(html_encode(nsfwflavortext), hyperlink = TRUE)
 					to_chat(user, "<span class='notice'>Successfully updated NSFW flavortext</span>")
 					log_game("[user] has set their NSFW flavortext'.")
-				if("nsfw_headshot")//TA edit
-					to_chat(user, "<span class='notice'>Finally a place to show it all.</span>")
-					var/new_nsfw_headshot_link = input(user, "Input the nsfw headshot link (https, hosts: gyazo, lensdump, imgbox, catbox):", "NSFW Headshot", nsfw_headshot_link) as text|null
-					if(new_nsfw_headshot_link == null)
-						return
-					if(new_nsfw_headshot_link == "")
-						nsfw_headshot_link = null
-						ShowChoices(user)
-						return
-					if(!valid_nsfw_headshot_link(user, new_nsfw_headshot_link))
-						nsfw_headshot_link = null
-						ShowChoices(user)
-						return
-					nsfw_headshot_link = new_nsfw_headshot_link
-					to_chat(user, "<span class='notice'>Successfully updated NSFW Headshot picture</span>")
-					log_game("[user] has set their NSFW Headshot image to '[nsfw_headshot_link]'.") //TA edit end
 				if("erpprefs")
 					to_chat(user, "<span class='notice'>["<span class='bold'>Erotic Roleplay preferences. If you put 'anything goes' or 'no limits' here, do not be surprised if people take you up on it.</span>"]</span>")
 					to_chat(user, "<font color = '#d6d6d6'>Leave blank to clear.</font>")
@@ -3271,8 +3249,6 @@ Slots: [job.spawn_positions] [job.round_contrib_points ? "RCP: +[job.round_contr
 
 	character.nsfw_ooc_extra_img_link = nsfw_ooc_extra_img_link	
 
-	character.nsfw_headshot_link = nsfw_headshot_link //TA edit
-
 	character.erpprefs = erpprefs
 	
 	// Copy the cached version
@@ -3421,39 +3397,6 @@ Slots: [job.spawn_positions] [job.round_contrib_points ? "RCP: +[job.round_contr
 			to_chat(usr, "<span class='warning'>The link must be hosted on one of the following sites: 'Gyazo, Lensdump, Imgbox, Catbox'</span>")
 		return FALSE
 	return TRUE
-
-/proc/valid_nsfw_headshot_link(mob/user, value, silent = FALSE) //TA edit
-	var/static/link_regex = regex("i.gyazo.com|a.l3n.co|b.l3n.co|c.l3n.co|images2.imgbox.com|thumbs2.imgbox.com|files.catbox.moe") //gyazo, discord, lensdump, imgbox, catbox
-	var/static/list/valid_extensions = list("jpg", "png", "jpeg") // Regex works fine, if you know how it works
-
-	if(!length(value))
-		return FALSE
-
-	var/find_index = findtext(value, "https://")
-	if(find_index != 1)
-		if(!silent)
-			to_chat(user, "<span class='warning'>Your link must be https!</span>")
-		return FALSE
-
-	if(!findtext(value, "."))
-		if(!silent)
-			to_chat(user, "<span class='warning'>Invalid link!</span>")
-		return FALSE
-	var/list/value_split = splittext(value, ".")
-
-	// extension will always be the last entry
-	var/extension = value_split[length(value_split)]
-	if(!(extension in valid_extensions))
-		if(!silent)
-			to_chat(usr, "<span class='warning'>The image must be one of the following extensions: '[english_list(valid_extensions)]'</span>")
-		return FALSE
-
-	find_index = findtext(value, link_regex)
-	if(find_index != 9)
-		if(!silent)
-			to_chat(usr, "<span class='warning'>The image must be hosted on one of the following sites: 'Gyazo, Lensdump, Imgbox, Catbox'</span>")
-		return FALSE
-	return TRUE //TA edit end
 
 /datum/preferences/proc/is_active_migrant()
 	if(!migrant)
