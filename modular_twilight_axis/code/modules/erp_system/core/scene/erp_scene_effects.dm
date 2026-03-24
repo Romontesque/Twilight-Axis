@@ -123,6 +123,8 @@
 		var/multP = controller.inject_d.rel_mult_for(mp, ma)
 		best.actor_passive.apply_erp_effect(p_arousal * multP, p_pain, FALSE, avg_force, avg_speed, null)
 
+	apply_training(active_links)
+
 /// Returns average force/speed for active links.
 /datum/erp_scene_effects/proc/get_scene_force_speed_avg(list/active_links)
 	var/n = 0
