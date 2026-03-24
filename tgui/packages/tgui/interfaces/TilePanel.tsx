@@ -11,7 +11,6 @@ import {
   Stack,
 } from 'tgui-core/components';
 import { isEscape } from 'tgui-core/keys';
-import { clamp } from 'tgui-core/math';
 import { createSearch } from 'tgui-core/string';
 
 type TileAtom = {
@@ -322,81 +321,86 @@ export const TilePanel = () => {
     return acc;
   }, [nonTurfAtoms]);
 
-  const itemCount = grouping
-    ? Object.keys(groupedContents).length + (turfAtom ? 1 : 0)
-    : atoms.length;
-
-  const headerHeight = 38;
-  const itemHeight = 38;
-  const minHeight = headerHeight + itemHeight;
-  const maxHeight = headerHeight + itemHeight * 10;
-
-  const height = clamp(
-    headerHeight + itemCount * itemHeight,
-    minHeight,
-    maxHeight,
-  );
-
   const title = data.has_target ? data.name || 'Tile Panel' : 'Tile Panel';
 
   return (
-    <Window
-      width={320}
-      height={height}
-      title={title}
-      buttons={
-        <Stack align="center">
-          <Input
-            onChange={setSearchText}
-            placeholder="Search..."
-            value={searchText}
-          />
-          <Button
-            m={0}
-            icon={grouping ? 'layer-group' : 'object-ungroup'}
-            selected={grouping}
-            onClick={() => setGrouping(!grouping)}
-            tooltip="Toggle Grouping"
-          />
-        </Stack>
-      }
-    >
+    <Window width={320} height={420} title={title}>
       <Window.Content
         fitted
-        scrollable={height === maxHeight}
         onKeyDown={(event) => {
           if (isEscape(event.key)) {
             act('close');
           }
         }}
       >
-        {!data.has_target ? (
-          <NoticeBox>No turf selected.</NoticeBox>
-        ) : (
-          <Section>
-            {turfAtom && (
-              <RawContents
-                contents={[turfAtom]}
-                searchText={searchText}
-                dragRef={dragRef}
-              />
-            )}
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            height: '100%',
+            minHeight: 0,
+          }}
+        >
+          <div style={{ flex: '0 0 auto', paddingBottom: '6px' }}>
+            <Stack align="center">
+              <Stack.Item grow basis={0}>
+                <Input
+                  fluid
+                  onChange={setSearchText}
+                  placeholder="Search..."
+                  value={searchText}
+                />
+              </Stack.Item>
+              <Stack.Item>
+                <Button
+                  m={0}
+                  width="28px"
+                  icon="layer-group"
+                  selected={grouping}
+                  onClick={() => setGrouping(!grouping)}
+                  tooltip="Toggle Grouping"
+                />
+              </Stack.Item>
+            </Stack>
+          </div>
 
-            {grouping ? (
-              <GroupedContents
-                contents={groupedContents}
-                searchText={searchText}
-                dragRef={dragRef}
-              />
+          <div
+            style={{
+              flex: '1 1 auto',
+              minHeight: 0,
+              overflowY: 'auto',
+              overflowX: 'hidden',
+            }}
+          >
+            {!data.has_target ? (
+              <NoticeBox>No turf selected.</NoticeBox>
             ) : (
-              <RawContents
-                contents={nonTurfAtoms}
-                searchText={searchText}
-                dragRef={dragRef}
-              />
+              <Section fill>
+                {turfAtom && (
+                  <RawContents
+                    contents={[turfAtom]}
+                    searchText={searchText}
+                    dragRef={dragRef}
+                  />
+                )}
+
+                {grouping ? (
+                  <GroupedContents
+                    contents={groupedContents}
+                    searchText={searchText}
+                    dragRef={dragRef}
+                  />
+                ) : (
+                  <RawContents
+                    contents={nonTurfAtoms}
+                    searchText={searchText}
+                    dragRef={dragRef}
+                  />
+                )}
+              </Section>
             )}
-          </Section>
-        )}
+          </div>
+        </div>
       </Window.Content>
     </Window>
   );
