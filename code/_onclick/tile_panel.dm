@@ -54,20 +54,34 @@
 	var/refresh_queued = FALSE
 	var/last_context_ref
 	var/refresh_throttle_ds = TILEPANEL_REFRESH_THROTTLE_DS
-	var/list/icon_cache
-	var/icon_cache_ttl_ds = 100
-	var/max_icon_renders_per_update = 12
+
+	/// REF(atom) -> list("key" = visual_key, "appearance_ref" = ..., "container" = /atom/movable/screen)
+	var/list/appearance_cache
+
+	/// visual_key -> /atom/movable/screen
+	var/list/appearance_pool
+
+	/// Все контейнеры, которые мы держим живыми, пока открыта панель.
+	var/list/appearance_containers
 
 /datum/tile_panel/New(mob/user)
 	owner = user
-	icon_cache = list()
+	appearance_cache = list()
+	appearance_pool = list()
+	appearance_containers = list()
 	..()
 
 /datum/tile_panel/Destroy()
 	if(owner?.tile_panel == src)
 		owner.tile_panel = null
+
+	_clear_appearance_containers()
+
 	owner = null
 	target_turf = null
+	appearance_cache = null
+	appearance_pool = null
+	appearance_containers = null
 	return ..()
 
 /datum/tile_panel/proc/set_target(turf/T)
@@ -128,6 +142,11 @@
 		if(user?.client)
 			user.client.refocus_map()
 
+/datum/tile_panel/ui_close(mob/user)
+	. = ..()
+	_clear_appearance_containers()
+	target_turf = null
+
 /datum/tile_panel/ui_data(mob/user)
 	. = list()
 
@@ -139,17 +158,13 @@
 	.["name"] = target_turf.name
 
 	var/list/atoms = list()
-	var/renders_left = max_icon_renders_per_update
 
-	var/turf_icon_b64 = null
-	if(renders_left > 0)
-		turf_icon_b64 = _get_cached_icon_b64(target_turf)
-		renders_left--
-
+	var/turf_appearance_ref = _get_cached_appearance_ref(target_turf)
 	atoms += list(list(
-		"name" = "[target_turf.name] (floor)",
+		"name" = "[target_turf.name]",
+		"path" = "[target_turf.type]",
 		"ref" = REF(target_turf),
-		"img64" = turf_icon_b64,
+		"appearance_ref" = turf_appearance_ref,
 		"is_turf" = TRUE
 	))
 
@@ -165,22 +180,13 @@
 		if(ismob(owner) && A.invisibility > owner.see_invisible)
 			continue
 
-		var/icon_b64 = null
-		var/refid = REF(A)
-		var/entry = icon_cache[refid]
-		if(islist(entry))
-			var/at = entry["at"]
-			if(isnum(at) && (world.time - at) <= icon_cache_ttl_ds)
-				icon_b64 = entry["b64"]
-
-		if(isnull(icon_b64) && renders_left > 0)
-			icon_b64 = _get_cached_icon_b64(A)
-			renders_left--
+		var/appearance_ref = _get_cached_appearance_ref(A)
 
 		atoms += list(list(
 			"name" = A.name,
-			"ref" = refid,
-			"img64" = icon_b64
+			"path" = "[A.type]",
+			"ref" = REF(A),
+			"appearance_ref" = appearance_ref
 		))
 
 	.["atoms"] = atoms
@@ -199,14 +205,19 @@
 	else
 		L["left"] = "1"
 
-	if(shift) L["shift"] = "1"
-	if(ctrl)  L["ctrl"]  = "1"
-	if(alt)   L["alt"]   = "1"
+	if(shift)
+		L["shift"] = "1"
+	if(ctrl)
+		L["ctrl"] = "1"
+	if(alt)
+		L["alt"] = "1"
 
 	var/icon_x = params["icon-x"]
 	var/icon_y = params["icon-y"]
-	if(!icon_x) icon_x = "16"
-	if(!icon_y) icon_y = "16"
+	if(!icon_x)
+		icon_x = "16"
+	if(!icon_y)
+		icon_y = "16"
 	L["icon-x"] = "[icon_x]"
 	L["icon-y"] = "[icon_y]"
 
@@ -313,65 +324,122 @@
 		return
 	if(!_is_open())
 		return
+
 	last_refresh_at = world.time
 	SStgui.try_update_ui(owner, src, null)
 
-/datum/tile_panel/proc/_atom_icon2base64(atom/A)
+/datum/tile_panel/proc/_clear_appearance_containers()
+	if(!owner?.hud_used?.vis_holder)
+		appearance_cache = list()
+		appearance_pool = list()
+		appearance_containers = list()
+		return
+
+	for(var/atom/movable/screen/container as anything in appearance_containers)
+		if(QDELETED(container))
+			continue
+		owner.hud_used.vis_holder.vis_contents -= container
+		qdel(container)
+
+	appearance_cache = list()
+	appearance_pool = list()
+	appearance_containers = list()
+
+/datum/tile_panel/proc/_build_visual_cache_key(atom/A)
 	if(!A || QDELETED(A))
 		return null
 
-	var/icon/icon_obj = null
+	var/mutable_appearance/ap = A.appearance
+	if(!ap)
+		return "[A.type]|[A.icon]|[A.icon_state]|[A.dir]|[A.color]|[A.alpha]|0|0"
 
-	if(ismob(A) || isturf(A))
-		icon_obj = getFlatIcon(A)
-	else
-		var/icon/i = A.icon
-		var/state = A.icon_state
-		var/d = A.dir || SOUTH
+	var/list/key_parts = list(
+		"[A.type]",
+		"[ap.icon]",
+		"[ap.icon_state]",
+		"[ap.dir]",
+		"[ap.color]",
+		"[ap.alpha]",
+		"[ap.pixel_x]",
+		"[ap.pixel_y]",
+		"[ap.layer]",
+		"[ap.plane]",
+		"[ap.transform]",
+		"[ap.blend_mode]",
+		"[length(ap.overlays)]",
+		"[length(ap.underlays)]"
+	)
 
-		if(i && state)
-			var/list/states = icon_states(i)
-			if(islist(states) && (state in states))
-				icon_obj = icon(i, state, d, 1)
+	return key_parts.Join("|")
 
-		if(!icon_obj)
-			var/mutable_appearance/ap = A.appearance
-			if(ap)
-				var/icon/ap_icon = ap.icon
-				var/ap_state = ap.icon_state
-				var/ap_dir = ap.dir || d
-				if(ap_icon && ap_state)
-					var/list/ap_states = icon_states(ap_icon)
-					if(islist(ap_states) && (ap_state in ap_states))
-						icon_obj = icon(ap_icon, ap_state, ap_dir, 1)
-
-		if(!icon_obj)
-			icon_obj = getFlatIcon(A)
-
-	if(!icon_obj)
+/datum/tile_panel/proc/_make_filtered_appearance(atom/A)
+	if(!A || QDELETED(A))
 		return null
 
-	return icon2base64(icon_obj)
+	if(isatom(A))
+		return copy_appearance_filter_overlays(A.appearance)
 
-/datum/tile_panel/proc/_get_cached_icon_b64(atom/A)
+	return new /mutable_appearance(A.appearance)
+
+/datum/tile_panel/proc/_create_appearance_container(atom/A, visual_key)
+	if(!owner?.hud_used?.vis_holder)
+		return null
+
+	var/mutable_appearance/ma = _make_filtered_appearance(A)
+	if(!ma)
+		return null
+
+	var/atom/movable/screen/container = new
+	container.appearance = ma
+
+	owner.hud_used.vis_holder.vis_contents += container
+	appearance_containers += container
+
+	if(visual_key)
+		appearance_pool[visual_key] = container
+
+	return container
+
+/datum/tile_panel/proc/_get_cached_appearance_ref(atom/A)
 	if(!A || QDELETED(A))
+		return null
+	if(!owner?.client || !owner?.hud_used?.vis_holder)
 		return null
 
 	var/refid = REF(A)
-	var/now = world.time
-	var/entry = icon_cache[refid]
-	if(islist(entry))
-		var/at = entry["at"]
-		if(isnum(at) && (now - at) <= icon_cache_ttl_ds)
-			return entry["b64"]
-
-	var/b64 = _atom_icon2base64(A)
-	if(!b64)
-		icon_cache -= refid
+	var/visual_key = _build_visual_cache_key(A)
+	if(!visual_key)
 		return null
 
-	icon_cache[refid] = list("b64" = b64, "at" = now)
-	return b64
+	var/list/ref_entry = appearance_cache[refid]
+	if(islist(ref_entry))
+		if(ref_entry["key"] == visual_key)
+			var/atom/movable/screen/existing_ref_container = ref_entry["container"]
+			if(existing_ref_container && !QDELETED(existing_ref_container))
+				return ref_entry["appearance_ref"]
+
+	var/atom/movable/screen/pooled_container = appearance_pool[visual_key]
+	if(pooled_container && !QDELETED(pooled_container))
+		var/pooled_ref = "\ref[pooled_container]"
+		appearance_cache[refid] = list(
+			"key" = visual_key,
+			"appearance_ref" = pooled_ref,
+			"container" = pooled_container
+		)
+		return pooled_ref
+
+	var/atom/movable/screen/new_container = _create_appearance_container(A, visual_key)
+	if(!new_container)
+		return null
+
+	var/new_ref = "\ref[new_container]"
+	appearance_cache[refid] = list(
+		"key" = visual_key,
+		"appearance_ref" = new_ref,
+		"container" = new_container
+	)
+
+	return new_ref
 
 #undef TILE_PANEL_UI_ID
 #undef TILE_PANEL_UI_NAME
