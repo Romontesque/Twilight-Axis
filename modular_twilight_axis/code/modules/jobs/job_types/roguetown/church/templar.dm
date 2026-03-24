@@ -1,6 +1,6 @@
 /datum/job/roguetown/templar/New()
 	job_subclasses += list(
-		/datum/advclass/templar/vigilant,
+		/datum/advclass/templar/pathfinder,
 		/datum/advclass/noctite_spellblade
 		)
 	. = ..()
@@ -41,12 +41,12 @@
 	H.change_stat(STATKEY_SPD, 1)
 	H.change_stat(STATKEY_CON, 1)
 
-/* < vigilant subclass > */
+/* < pathfinder subclass > */
 
-/datum/advclass/templar/vigilant
-	name = "Vigilant"
-	tutorial = "You are a vigilant of the Church, the secretive counterspies of the Holy See. Your underhanded methods earn you the scorn of some of your brothers, but they know not of the wars you fight away from their gaze."
-	outfit = /datum/outfit/job/roguetown/templar/vigilant
+/datum/advclass/templar/pathfinder
+	name = "Pathfinder"
+	tutorial = "You are a pathfinder of the Church, the secretive counterspies of the Holy See. Your underhanded methods earn you the scorn of some of your brothers, but they know not of the wars you fight away from their gaze."
+	outfit = /datum/outfit/job/roguetown/templar/pathfinder
 	subclass_languages = list(/datum/language/valorian)
 	traits_applied = list(TRAIT_DODGEEXPERT)
 	subclass_stats = list(
@@ -79,9 +79,9 @@
 	subclass_stashed_items = list(
 		"The Verses and Acts of the Ten" = /obj/item/book/rogue/bibble,
 	)
-	extra_context = "This subclass can pick twin daggers, gaining Dual Wielder trait and increased speed, or ranged options, gaining increased perception and Mastery of their chosen weapon. Vigilants of Eora can alternatively choose their signature rapier, the Heartstring."
+	extra_context = "This subclass can pick twin daggers, gaining Dual Wielder trait and increased speed, or ranged options, gaining increased perception and Mastery of their chosen weapon. Pathfinders of Eora can alternatively choose their signature rapier, the Heartstring."
 
-/datum/outfit/job/roguetown/templar/vigilant/pre_equip(mob/living/carbon/human/H)
+/datum/outfit/job/roguetown/templar/pathfinder/pre_equip(mob/living/carbon/human/H)
 	..()
 	wrists = /obj/item/clothing/neck/roguetown/psicross/undivided
 	cloak = /obj/item/clothing/cloak/undivided
@@ -184,7 +184,7 @@
 	if(H.mind)
 		SStreasury.give_money_account(ECONOMIC_LOWER_MIDDLE_CLASS, H, "Church Funding.")
 
-/datum/outfit/job/roguetown/templar/vigilant/choose_loadout(mob/living/carbon/human/H)
+/datum/outfit/job/roguetown/templar/pathfinder/choose_loadout(mob/living/carbon/human/H)
 	. = ..()
 	var/weapons = list("Dagger + Parrying Dagger","Rapier + Parrying Dagger","Recurve Bow + Dagger","Slurbow + Dagger")
 	switch(H.patron?.type)
