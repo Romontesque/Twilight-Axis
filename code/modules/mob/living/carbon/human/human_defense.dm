@@ -74,6 +74,9 @@
 			used.take_damage(intdamage, damage_flag = d_type, sound_effect = FALSE, armor_penetration = 100)
 	else
 		// DR types: blunt, fire, acid
+		if(def_zone == BODY_ZONE_PRECISE_R_EYE || def_zone == BODY_ZONE_PRECISE_L_EYE)
+			def_zone = BODY_ZONE_HEAD
+		// TA EDIT, basically lore-wise eyes are just too hard to precisely hit with blunt weapon, OOC-sided we got no armour for eyes
 		var/list/layers = get_best_worn_armor_layered(def_zone, d_type)
 		if(length(layers))
 			for(var/C in layers)
@@ -124,6 +127,7 @@
 	if(physiology)
 		protection += physiology.armor.getRating(d_type)
 
+	protection += get_trophy_armor_bonus_for_zone(def_zone, d_type)
 	return protection
 
 /*
@@ -148,6 +152,10 @@
 
 
 /mob/living/carbon/human/bullet_act(obj/projectile/P, def_zone = BODY_ZONE_CHEST)
+
+	if(HAS_TRAIT(src, "ethereal")) //TA EDIT
+		return BULLET_ACT_FORCE_PIERCE
+	
 	if(dna && dna.species)
 		var/spec_return = dna.species.bullet_act(P, src, def_zone)
 		if(spec_return)
@@ -246,6 +254,7 @@
 		hitpush = FALSE
 		skipcatch = TRUE
 		blocked = TRUE
+		return TRUE
 
 	//Thrown item deflection -- this RETURNS if successful!
 	var/obj/item/W = get_active_held_item()
@@ -260,7 +269,7 @@
 				I.get_deflected(src)
 				do_sparks(2, TRUE, current_turf)
 				visible_message(span_warning("[src] deflects \the [I]!"))
-				return
+				return TRUE
 
 	if(I && !blocked)
 		if(((throwingdatum ? throwingdatum.speed : I.throw_speed) >= EMBED_THROWSPEED_THRESHOLD) || I.embedding.embedded_ignore_throwspeed_threshold)
@@ -273,7 +282,10 @@
 //					visible_message("<span class='danger'>[I] embeds itself in [src]'s [L.name]!</span>","<span class='danger'>[I] embeds itself in my [L.name]!</span>")
 				hitpush = FALSE
 				skipcatch = TRUE //can't catch the now embedded item
-
+				return TRUE
+	if(blocked)
+		return TRUE
+	
 	return ..()
 
 /mob/living/carbon/human/grippedby(mob/living/user, instant = FALSE)
@@ -286,6 +298,12 @@
 /mob/living/carbon/human/attacked_by(obj/item/I, mob/living/user)
 	if(!I || !user)
 		return 0
+	
+	if(HAS_TRAIT(src, "ethereal"))//TA EDIT
+		user.visible_message(span_danger("[user] tries to strike [src], but the weapon passes right through the mist!"), \
+							 span_warning("My weapon passes right through [src]!"))
+		return FALSE
+	
 	var/obj/item/bodypart/affecting
 	var/useder = user.zone_selected
 	if(!lying_attack_check(user,I))
@@ -312,6 +330,10 @@
 	return dna.species.spec_attacked_by(I, user, affecting, used_intent, src, useder)
 
 /mob/living/carbon/human/attack_hand(mob/user)
+
+	if(HAS_TRAIT(src, "ethereal"))//TA EDIT
+		return FALSE
+
 	if(..())	//to allow surgery to return properly.
 		return
 	retaliate(user)

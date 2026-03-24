@@ -1,4 +1,4 @@
-//ACCESSORIES
+/*//ACCESSORIES
 /datum/loadout_item/wrappings
 	name = "Handwraps"
 	path = /obj/item/clothing/wrists/roguetown/wrappings
@@ -328,3 +328,4 @@
 	path = /obj/item/clothing/cloak/cotehardie
 	sort_category = "Accessories"
 
+*/
