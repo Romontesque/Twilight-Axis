@@ -54,21 +54,17 @@
 	var/refresh_queued = FALSE
 	var/last_context_ref
 	var/refresh_throttle_ds = TILEPANEL_REFRESH_THROTTLE_DS
-
-	/// REF(atom) -> list("key" = visual_key, "appearance_ref" = ..., "container" = /atom/movable/screen)
 	var/list/appearance_cache
-
-	/// visual_key -> /atom/movable/screen
 	var/list/appearance_pool
-
-	/// Все контейнеры, которые мы держим живыми, пока открыта панель.
 	var/list/appearance_containers
+	var/list/row_cache
 
 /datum/tile_panel/New(mob/user)
 	owner = user
 	appearance_cache = list()
 	appearance_pool = list()
 	appearance_containers = list()
+	row_cache = list()
 	..()
 
 /datum/tile_panel/Destroy()
@@ -82,6 +78,7 @@
 	appearance_cache = null
 	appearance_pool = null
 	appearance_containers = null
+	row_cache = null
 	return ..()
 
 /datum/tile_panel/proc/set_target(turf/T)
@@ -158,36 +155,34 @@
 	.["name"] = target_turf.name
 
 	var/list/atoms = list()
+	var/list/current_refs = list()
+	var/list/current_visual_keys = list()
 
-	var/turf_appearance_ref = _get_cached_appearance_ref(target_turf)
-	atoms += list(list(
-		"name" = "[target_turf.name]",
-		"path" = "[target_turf.type]",
-		"ref" = REF(target_turf),
-		"appearance_ref" = turf_appearance_ref,
-		"is_turf" = TRUE
-	))
+	var/list/turf_row = _get_or_build_row(target_turf, TRUE)
+	if(turf_row)
+		atoms += list(turf_row)
+		current_refs[REF(target_turf)] = TRUE
+
+		var/turf_visual_key = _build_visual_cache_key(target_turf)
+		if(turf_visual_key)
+			current_visual_keys[turf_visual_key] = TRUE
 
 	for(var/atom/A in target_turf)
-		if(istype(A, /obj/effect))
-			continue
-		if(istype(A, /atom/movable/lighting_object))
-			continue
-		if(QDELETED(A))
-			continue
-		if(!A.mouse_opacity)
-			continue
-		if(ismob(owner) && A.invisibility > owner.see_invisible)
+		if(!_should_include_atom(A))
 			continue
 
-		var/appearance_ref = _get_cached_appearance_ref(A)
+		var/list/row = _get_or_build_row(A, FALSE)
+		if(!row)
+			continue
 
-		atoms += list(list(
-			"name" = A.name,
-			"path" = "[A.type]",
-			"ref" = REF(A),
-			"appearance_ref" = appearance_ref
-		))
+		atoms += list(row)
+		current_refs[REF(A)] = TRUE
+
+		var/visual_key = _build_visual_cache_key(A)
+		if(visual_key)
+			current_visual_keys[visual_key] = TRUE
+
+	_prune_stale_caches(current_refs, current_visual_keys)
 
 	.["atoms"] = atoms
 
@@ -333,6 +328,7 @@
 		appearance_cache = list()
 		appearance_pool = list()
 		appearance_containers = list()
+		row_cache = list()
 		return
 
 	for(var/atom/movable/screen/container as anything in appearance_containers)
@@ -344,6 +340,22 @@
 	appearance_cache = list()
 	appearance_pool = list()
 	appearance_containers = list()
+	row_cache = list()
+
+/datum/tile_panel/proc/_should_include_atom(atom/A)
+	if(!A)
+		return FALSE
+	if(istype(A, /obj/effect))
+		return FALSE
+	if(istype(A, /atom/movable/lighting_object))
+		return FALSE
+	if(QDELETED(A))
+		return FALSE
+	if(!A.mouse_opacity)
+		return FALSE
+	if(ismob(owner) && A.invisibility > owner.see_invisible)
+		return FALSE
+	return TRUE
 
 /datum/tile_panel/proc/_build_visual_cache_key(atom/A)
 	if(!A || QDELETED(A))
@@ -372,14 +384,32 @@
 
 	return key_parts.Join("|")
 
+/datum/tile_panel/proc/_needs_filtered_appearance(mutable_appearance/ap)
+	if(!ap)
+		return FALSE
+
+	if(length(ap.overlays) || length(ap.underlays))
+		return TRUE
+
+	if(!(ap.plane in list(FLOAT_PLANE, GAME_PLANE, FLOOR_PLANE)))
+		return TRUE
+
+	return FALSE
+
 /datum/tile_panel/proc/_make_filtered_appearance(atom/A)
 	if(!A || QDELETED(A))
 		return null
 
-	if(isatom(A))
-		return copy_appearance_filter_overlays(A.appearance)
+	var/mutable_appearance/ap = A.appearance
+	if(!ap)
+		return null
 
-	return new /mutable_appearance(A.appearance)
+	if(!_needs_filtered_appearance(ap))
+		var/mutable_appearance/ma = new
+		ma.appearance = ap
+		return ma
+
+	return copy_appearance_filter_overlays(ap)
 
 /datum/tile_panel/proc/_create_appearance_container(atom/A, visual_key)
 	if(!owner?.hud_used?.vis_holder)
@@ -440,6 +470,76 @@
 	)
 
 	return new_ref
+
+/datum/tile_panel/proc/_get_or_build_row(atom/A, is_turf = FALSE)
+	if(!A || QDELETED(A))
+		return null
+
+	var/refid = REF(A)
+	var/name = "[A.name]"
+	var/path = "[A.type]"
+	var/visual_key = _build_visual_cache_key(A)
+	var/appearance_ref = _get_cached_appearance_ref(A)
+
+	var/list/entry = row_cache[refid]
+	if(islist(entry))
+		if(entry["name"] == name && entry["path"] == path && entry["key"] == visual_key && entry["is_turf"] == is_turf)
+			var/list/cached_row = entry["row"]
+			if(islist(cached_row))
+				cached_row["appearance_ref"] = appearance_ref
+				return cached_row
+
+	var/list/row = list(
+		"name" = name,
+		"path" = path,
+		"ref" = refid,
+		"appearance_ref" = appearance_ref
+	)
+
+	if(is_turf)
+		row["is_turf"] = TRUE
+
+	row_cache[refid] = list(
+		"row" = row,
+		"name" = name,
+		"path" = path,
+		"key" = visual_key,
+		"is_turf" = is_turf
+	)
+
+	return row
+
+/datum/tile_panel/proc/_prune_stale_caches(list/current_refs, list/current_visual_keys)
+	if(!islist(current_refs))
+		current_refs = list()
+	if(!islist(current_visual_keys))
+		current_visual_keys = list()
+
+	for(var/refid in row_cache)
+		if(!current_refs[refid])
+			row_cache -= refid
+
+	for(var/refid in appearance_cache)
+		if(!current_refs[refid])
+			appearance_cache -= refid
+
+	for(var/visual_key in appearance_pool)
+		var/atom/movable/screen/container = appearance_pool[visual_key]
+		if(!current_visual_keys[visual_key] || QDELETED(container))
+			if(container && !QDELETED(container) && owner?.hud_used?.vis_holder)
+				owner.hud_used.vis_holder.vis_contents -= container
+				qdel(container)
+
+			appearance_pool -= visual_key
+			appearance_containers -= container
+
+	var/list/valid_containers = list()
+	for(var/visual_key in appearance_pool)
+		var/atom/movable/screen/container = appearance_pool[visual_key]
+		if(container && !QDELETED(container))
+			valid_containers += container
+
+	appearance_containers = valid_containers
 
 #undef TILE_PANEL_UI_ID
 #undef TILE_PANEL_UI_NAME
