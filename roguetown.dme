@@ -953,6 +953,7 @@
 #include "code\datums\status_effects\spider_speak.dm"
 #include "code\datums\status_effects\status_effect.dm"
 #include "code\datums\status_effects\debuffs\silenced.dm"
+#include "code\datums\status_effects\debuffs\recent_weapon.dm"
 #include "code\datums\status_effects\rogue\alerts.dm"
 #include "code\datums\status_effects\rogue\debuff.dm"
 #include "code\datums\status_effects\rogue\roguebuff.dm"
