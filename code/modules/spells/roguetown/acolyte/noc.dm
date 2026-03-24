@@ -206,7 +206,7 @@ Somewhat fitting, considering the broadness of their domains. I also just think 
 		if(target.anti_magic_check(TRUE, TRUE))
 			return FALSE
 		target.visible_message(span_warning("[target] starts to fade into thin air!"), span_notice("You start to become invisible!"))
-		var/dur = max((5 * (user.get_skill_level(associated_skill))), 5)
+		var/dur = max((5 * (user.get_skill_level(associated_skill))), 15)
 		if(dur >= recharge_time)
 			recharge_time = dur + 5 SECONDS
 		animate(target, alpha = 0, time = 1 SECONDS, easing = EASE_IN)
@@ -239,7 +239,7 @@ Somewhat fitting, considering the broadness of their domains. I also just think 
 		/obj/effect/proc_holder/spell/invoked/blink,
 	)
 	var/list/offensive_bundle = list(	//This is not meant to make them combat-capable. A weak offensive, and mostly defensive option.
-		/obj/effect/proc_holder/spell/invoked/projectile/arcynebolt, // PLACEHOLDER
+		/datum/action/cooldown/spell/projectile/arcynebolt, // PLACEHOLDER
 		/obj/effect/proc_holder/spell/self/conjure_armor/miracle,
 		/obj/effect/proc_holder/spell/invoked/conjure_weapon/miracle,
 		/obj/effect/proc_holder/spell/invoked/rebuke, // By points, this adds up to 8 points total. However it is the strongest Acolyte combo offensively.
@@ -288,13 +288,13 @@ Somewhat fitting, considering the broadness of their domains. I also just think 
 			var/choice = input(user, "Choose a spell! Choices remaining: [choice_count_visual]") as null|anything in spells
 			if(!isnull(choice))
 				var/picked_spell = spells[choice]
-				var/obj/effect/proc_holder/spell/new_spell = new picked_spell
+				var/datum/new_spell = new picked_spell
 				user?.mind.AddSpell(new_spell)
 				choice_count_visual--
 				spells.Remove(choice)
 	else
 		for(var/spell_type in spells)
-			var/obj/effect/proc_holder/spell/new_spell = new spell_type
+			var/datum/new_spell = new spell_type
 			user?.mind.AddSpell(new_spell)
 	if(!length(spells))
 		user.mind?.RemoveSpell(src.type)

@@ -9,11 +9,11 @@
 	An enchantment cannot be applied to an already enchanted weapon.\n\
 	Force Blade: Increases the force of the weapon by 5.\n\
 	Durability: Increases the integrity and max integrity of the weapon by 100.\n\
-	Arcane Mark: Applies <b>Arcane Mark</b> to struck targets. 12 second cooldown."
+	Arcane Mark: Applies <b>Arcane Mark</b> to struck targets. 7 second cooldown."
 	overlay_state = "enchant_weapon"
 	sound = list('sound/magic/whiteflame.ogg')
 
-	releasedrain = 30
+	releasedrain = SPELLCOST_CONJURE
 	chargedrain = 2
 	chargetime = 3 SECONDS // Can be used mid combat if needed.
 	no_early_release = TRUE

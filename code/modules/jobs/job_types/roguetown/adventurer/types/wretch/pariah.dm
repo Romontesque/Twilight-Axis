@@ -11,6 +11,7 @@
 	outfit = /datum/outfit/job/roguetown/wretch/pariah
 	cmode_music = 'sound/music/combat_blackoak.ogg'
 	maximum_possible_slots = 1
+	class_select_category = CLASS_CAT_BATTLEMAGE
 	category_tags = list(CTAG_WRETCH)
 	traits_applied = list(TRAIT_AZURENATIVE, TRAIT_OUTDOORSMAN, TRAIT_BLACKOAK, TRAIT_DODGEEXPERT, TRAIT_ARCYNE_T2, TRAIT_WOODWALKER)
 	//lower-than-avg stats for wretch but their traits are insanely good
@@ -112,7 +113,7 @@
 			if("macebearer")
 				H.mind.AddSpell(new /obj/effect/proc_holder/spell/invoked/shatter)
 				H.mind.AddSpell(new /obj/effect/proc_holder/spell/invoked/tremor)
-				H.mind.AddSpell(new /obj/effect/proc_holder/spell/invoked/charge)
+				H.mind.AddSpell(new /obj/effect/proc_holder/spell/self/charge)
 				H.mind.AddSpell(new /obj/effect/proc_holder/spell/invoked/cataclysm)
 
 		H.mind.AddSpell(new /obj/effect/proc_holder/spell/self/recall_weapon)

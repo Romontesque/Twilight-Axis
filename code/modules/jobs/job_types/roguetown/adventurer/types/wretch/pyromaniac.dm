@@ -5,6 +5,7 @@
 	allowed_races = RACES_ALL_KINDS
 	outfit = /datum/outfit/job/roguetown/wretch/pyromaniac
 	cmode_music = 'sound/music/Iconoclast.ogg'
+	class_select_category = CLASS_CAT_ROGUE
 	category_tags = list(CTAG_WRETCH)
 	traits_applied = list(TRAIT_MEDIUMARMOR, TRAIT_ALCHEMY_EXPERT, TRAIT_EXPLOSIVE_SUPPLY)
 	subclass_stats = list(
@@ -77,7 +78,7 @@
 				backr = /obj/item/rogueweapon/woodstaff/toper
 				if(H.mind)
 					H.mind.AddSpell(new /obj/effect/proc_holder/spell/targeted/touch/prestidigitation)
-					H.mind.AddSpell(new /obj/effect/proc_holder/spell/invoked/projectile/fireball)
+					H.mind.AddSpell(new /datum/action/cooldown/spell/projectile/fireball)
 					H.mind.AddSpell(new /obj/effect/proc_holder/spell/invoked/projectile/spitfire)
 					H.mind.AddSpell(new /obj/effect/proc_holder/spell/invoked/rebuke)
 					H.mind.AddSpell(new /obj/effect/proc_holder/spell/self/conjure_armor/dragonhide)
