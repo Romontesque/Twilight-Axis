@@ -156,8 +156,7 @@
 		/obj/item/roguekey/mercenary,
 		/obj/item/flashlight/flare/torch/lantern,
 		/obj/item/rogueweapon/huntingknife/idagger/steel/kazengun,
-		/obj/item/rogueweapon/scabbard/sheath/kazengun,
-		/obj/item/storage/belt/rogue/pouch/coins/poor
+		/obj/item/rogueweapon/scabbard/sheath/kazengun
 		)
 	H.merctype = 2
 
