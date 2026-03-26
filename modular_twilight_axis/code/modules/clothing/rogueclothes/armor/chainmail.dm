@@ -34,3 +34,9 @@
 	body_parts_covered = COVERAGE_ALL_BUT_HANDFEET | NECK
 
 /obj/item/clothing/suit/roguetown/armor/citywatch
+
+/obj/item/clothing/suit/roguetown/armor/chainmail/Initialize()
+	. = ..()
+	if(body_parts_covered == COVERAGE_ALL_BUT_HANDLEGS && armor_class == ARMOR_CLASS_MEDIUM) //Модульно урезаю хаубержону арморкласс, для всех его интераций. Хауберк и его ипостаси при этом не задеты, ведь имеют другую область покрытия.
+		armor_class = ARMOR_CLASS_LIGHT
+
