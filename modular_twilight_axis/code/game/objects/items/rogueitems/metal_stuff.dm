@@ -56,7 +56,7 @@
 	name = "steel scrap"
 	desc = "Shingles and scrap, borne from violence upon steel. There may yet still be a use for these pieces.. </br>Steel scrap can be crafted into varios craft kits."
 	icon_state = "scrap_steel"
-	icon = 'icons/roguetown/items/misc.dmi'
+	icon = 'modular_twilight_axis/icons/roguetown/items/misc.dmi'
 	grid_width = 32
 	grid_height = 32
 	dropshrink = 0.7
@@ -65,7 +65,7 @@
 /obj/item/metal_stake
 	name = "metal stake"
 	icon_state = "m_stake"
-	icon = 'icons/roguetown/items/misc.dmi'
+	icon = 'modular_twilight_axis/icons/roguetown/items/misc.dmi'
 	desc = "A heavy, sharp, iron-reinforced stake. It can break steel items to scrap piles."
 	grid_width = 32
 	grid_height = 64
