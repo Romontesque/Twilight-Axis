@@ -441,6 +441,16 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 	category = "Плащи"
 	path = /obj/item/clothing/cloak/tabard/stabard/crusader/t/undivided
 
+/datum/loadout_item/scaledcloak
+	name = "Scaled Cloak"
+	category = "Плащи"
+	path = /obj/item/clothing/cloak/scaledcloak
+
+/datum/loadout_item/sleevedtabard
+	name = "Tabard, Sleeved"
+	category = "Плащи"
+	path = /obj/item/clothing/cloak/tabard/sleevedtabard
+
 //SHOES
 /datum/loadout_item/darkboots
 	name = "Dark Boots"
@@ -487,8 +497,8 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 	category = "Обувь"
 	path = /obj/item/clothing/shoes/roguetown/boots/furlinedanklets
 
-/datum/loadout_item/exoticanklets
-	name = "Exotic Anklets"
+/datum/loadout_item/silkanklets
+	name = "Silk Anklets"
 	category = "Обувь"
 	path = /obj/item/clothing/shoes/roguetown/anklets
 
@@ -555,10 +565,10 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 	category = "Одежда"
 	path = /obj/item/clothing/suit/roguetown/shirt/undershirt/priest
 
-/datum/loadout_item/exoticsilkbra
-	name = "Exotic Silk Bra"
+/datum/loadout_item/silkbra
+	name = "Giltsilk Bra"
 	category = "Одежда"
-	path = /obj/item/clothing/suit/roguetown/shirt/exoticsilkbra
+	path = /obj/item/clothing/suit/roguetown/shirt/silkbra
 
 /datum/loadout_item/desertbra
 	name = "Desert Bra"
@@ -715,6 +725,11 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 	category = "Одежда"
 	path = /obj/item/clothing/suit/roguetown/shirt/undershirt/eastshirt2
 
+/datum/loadout_item/baredrobe
+	name = "Bared Robe"
+	category = "Одежда"
+	path = /obj/item/clothing/suit/roguetown/shirt/robe/bared
+
 //PANTS
 /datum/loadout_item/tights
 	name = "Cloth Tights"
@@ -792,10 +807,10 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 	category = "Аксессуары"
 	path = /obj/item/clothing/gloves/roguetown/bandages
 
-/datum/loadout_item/exoticsilkbelt
-	name = "Exotic Silk Belt"
+/datum/loadout_item/silkbelt
+	name = "Giltsilk Belt"
 	category = "Аксессуары"
-	path = /obj/item/storage/belt/rogue/leather/exoticsilkbelt
+	path = /obj/item/storage/belt/rogue/leather/silkbelt
 
 /datum/loadout_item/ragmask
 	name = "Rag Mask"
@@ -818,10 +833,10 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 	donatitem = TRUE
 	path = /obj/item/clothing/head/roguetown/roguehood/eorahood
 
-/datum/loadout_item/exoticsilkmask
-	name = "Exotic Silk Mask"
+/datum/loadout_item/silkmask
+	name = "Giltsilk Mask"
 	category = "Аксессуары"
-	path = /obj/item/clothing/mask/rogue/exoticsilkmask
+	path = /obj/item/clothing/mask/rogue/silkmask
 
 /datum/loadout_item/duelmaskc
 	name = "Duelist's Mask"
@@ -1409,30 +1424,30 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 /datum/loadout_item/donator_eiren
 	name = "Donator Kit - Regret - Required: Any Zweihander"
 	category = list("Оружие", "Донат")
-	path = /obj/item/enchantingkit/eiren
+	path = /obj/item/enchantingkit/weapon/eiren
 	donatitem = TRUE
 
 /datum/loadout_item/donator_eiren2
 	name = "Donator Kit - Lunae - Required: Sabre"
 	category = list("Оружие", "Донат")
-	path = /obj/item/enchantingkit/eirensabre
+	path = /obj/item/enchantingkit/weapon/eirensabre
 	donatitem = TRUE
 
 /datum/loadout_item/donator_eiren3
 	name = "Donator Kit - Cinis - Required: Sabre"
 	category = list("Оружие", "Донат")
-	path = /obj/item/enchantingkit/eirensabre2
+	path = /obj/item/enchantingkit/weapon/eirensabre2
 	donatitem = TRUE
 
 /datum/loadout_item/donator_waff
 	name = "Donator Kit - Weeper Lathe - Required: Greatsword"
 	category = list("Оружие", "Донат")
-	path = /obj/item/enchantingkit/waff
+	path = /obj/item/enchantingkit/weapon/waff
 	donatitem = TRUE
 
 /datum/loadout_item/donator_inverserun
 	name = "Donator Kit - Votive Thorns - Required: Any Zweihander"
-	path = /obj/item/enchantingkit/inverserun
+	path = /obj/item/enchantingkit/weapon/inverserun
 	category = list("Оружие", "Донат")
 	donatitem = TRUE
 
@@ -1523,7 +1538,7 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 /datum/loadout_item/donat_weaponkitrock
 	name = "Donator Kit - 'Rockhillian Longsword' - Required: Broadsword or Executioner Sword"
 	category = list("Оружие", "Донат")
-	path = /obj/item/enchantingkit/triumph_weaponkit_rock
+	path = /obj/item/enchantingkit/weapon/triumph_weaponkit_rock
 	donatitem = TRUE
 
 /datum/loadout_item/donat_weaponkitsabre
@@ -1548,6 +1563,12 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 	name = "Donator Item - Western Estates Caparison"
 	path = /obj/item/caparison/ryan
 	category = list("Разное", "Донат")
+	donatitem = TRUE
+
+/datum/loadout_item/donator_drow_armorkit
+	name = "Donator Item - Drowcraft Armor - Required: Hardened Leather Armor Or Studded Leather Armor"
+	path = /obj/item/enchantingkit/triumph_armorkit_drow
+	category = list("Броня", "Донат")
 	donatitem = TRUE
 
 /datum/loadout_item/donator_ryan/psy_helm
@@ -1601,7 +1622,7 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 /datum/loadout_item/donator_stinketh_shashka
 	name = "Donator Kit - Fencer's Shashka - Required: Szöréndnížine Sabre Or Aavnic Shashka"
 	category = list("Оружие", "Донат")
-	path = /obj/item/enchantingkit/stinketh_shashka
+	path = /obj/item/enchantingkit/weapon/stinketh_shashka
 	donatitem = TRUE
 
 /datum/loadout_item/donator_stinketh_pike
@@ -1631,6 +1652,30 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 /datum/loadout_item/donator_weaponkitaxealt
 	name = "Donator Kit - Doubleheaded Axe - Required: Iron Axe, Bronze Axe, Steel Axe, Battle Axe, Silver War Axe or a Psydonic War Axe."
 	path = /obj/item/enchantingkit/triumph_weaponkit_axedouble
+	category = list("Оружие", "Донат")
+	donatitem = TRUE
+
+/datum/loadout_item/donator_weaponkitwodao
+	name = "Donator Kit - Wodao - Required: Sabre"
+	path = /obj/item/enchantingkit/weapon/triumph_weaponkit_wodao
+	category = list("Оружие", "Донат")
+	donatitem = TRUE
+
+/datum/loadout_item/donator_weaponkitdadao
+	name = "Donator Kit - Dadao - Required: Iron Hunting Sword, Iron Dueling Messer, Steel Messer, Steel Hunting Sword Or Falx"
+	path = /obj/item/enchantingkit/weapon/triumph_weaponkit_dadao
+	category = list("Оружие", "Донат")
+	donatitem = TRUE
+
+/datum/loadout_item/donator_weaponkitgdadao
+	name = "Donator Kit - Greatdadao- Required: Kriegmesser or Rhomphaia"
+	path = /obj/item/enchantingkit/weapon/triumph_weaponkit_gdadao
+	category = list("Оружие", "Донат")
+	donatitem = TRUE
+
+/datum/loadout_item/donator_weaponkitgdadao
+	name = "Donator Kit - Avantyne-Threaded Sword - Required: Longsword"
+	path = /obj/item/enchantingkit/dakken_alloybsword
 	category = list("Оружие", "Донат")
 	donatitem = TRUE
 
@@ -1969,6 +2014,7 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 	path = /obj/item/clothing/cloak/apron/waist/fancymaid
 	donatitem = TRUE
 
+
 /datum/loadout_item/donat/scarf
 	name = "Шарф"
 	category = list("Аксессуары", "Донат")
@@ -2000,14 +2046,14 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 	donatitem = TRUE
 
 /datum/loadout_item/donat/cloak_etrusco
-	name = "Этрусский плащ"
+	name = "Этруский плащ"
 	category = list("Плащи", "Донат")
 	path = /obj/item/clothing/cloak/duelcape
 	donatitem = TRUE
 
 // Маски
 
-/datum/loadout_item/donat/naledimask
+/datum/loadout_item/naledimask
 	name = "Маска Наледи"
 	category = list("Головные уборы", "Донат")
 	path = /obj/item/clothing/mask/rogue/lordmask/naledi/decorated
@@ -2141,7 +2187,7 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 	donatitem = TRUE
 
 /datum/loadout_item/donat/etrusca_hat
-	name = "Этрусская шляпа"
+	name = "Этруская шляпа"
 	category = list("Головные уборы", "Донат")
 	path = /obj/item/clothing/head/roguetown/duelhat/etrusca
 	donatitem = TRUE

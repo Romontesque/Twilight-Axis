@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Button, Stack } from 'tgui-core/components';
 
 import { useBackend } from '../backend';
@@ -7,13 +7,14 @@ import { Window } from '../layouts';
 import { ExaminePanelData } from './ExaminePanelData';
 import { FlavorTextPage } from './ExaminePanelPages';
 import { ImageGalleryPage } from './ExaminePanelPages';
-import { NSFWHeadshotPage } from './ExaminePanelPages';
 
 enum Page {
   FlavorText,
   ImageGallery,
-  NSFWHeadshot,
 }
+
+const isValidAssetValue = (value?: string | null) =>
+  !!value && value !== '0' && value !== '00';
 
 export const ExaminePanel = (props) => {
   const { act, data } = useBackend<ExaminePanelData>();
@@ -25,17 +26,30 @@ export const ExaminePanel = (props) => {
     img_gallery,
     nsfw_img_gallery,
     examine_theme,
-    is_naked,
-    nsfw_headshot,
   } = data;
 
   const [currentPage, setCurrentPage] = useState(Page.FlavorText);
 
-  const hasSfwGallery = !!img_gallery?.length;
-  const hasNsfwGallery = !!nsfw_img_gallery?.length;
-  const hasAnyGallery = hasSfwGallery || hasNsfwGallery;
-  const hasNudeshot = !!nsfw_headshot;
-  const showNudeshot = is_naked && hasNudeshot;
+  const safeSfwGallery = useMemo(
+    () => (img_gallery || []).filter(isValidAssetValue),
+    [img_gallery],
+  );
+
+  const safeNsfwGallery = useMemo(
+    () => (nsfw_img_gallery || []).filter(isValidAssetValue),
+    [nsfw_img_gallery],
+  );
+
+  const hasSfwGallery = safeSfwGallery.length > 0;
+  const hasNsfwGallery = safeNsfwGallery.length > 0;
+  const hasAnyGallery = Boolean(hasSfwGallery || hasNsfwGallery);
+  const shouldShowTabs = Boolean(hasAnyGallery);
+
+  useEffect(() => {
+    if (currentPage === Page.ImageGallery && !hasAnyGallery) {
+      setCurrentPage(Page.FlavorText);
+    }
+  }, [currentPage, hasAnyGallery]);
 
   let pageContents;
 
@@ -45,9 +59,6 @@ export const ExaminePanel = (props) => {
       break;
     case Page.ImageGallery:
       pageContents = <ImageGalleryPage />;
-      break;
-    case Page.NSFWHeadshot:
-      pageContents = <NSFWHeadshotPage />;
       break;
     default:
       pageContents = <FlavorTextPage />;
@@ -85,7 +96,7 @@ export const ExaminePanel = (props) => {
     >
       <Window.Content>
         <Stack vertical fill>
-          {(hasAnyGallery || showNudeshot) && (
+          {shouldShowTabs && (
             <>
               <Stack style={{ marginBottom: '4px' }}>
                 <Stack.Item grow>
@@ -106,18 +117,6 @@ export const ExaminePanel = (props) => {
                       setPage={setCurrentPage}
                     >
                       Image Gallery
-                    </PageButton>
-                  </Stack.Item>
-                )}
-
-                {showNudeshot && (
-                  <Stack.Item grow>
-                    <PageButton
-                      currentPage={currentPage}
-                      page={Page.NSFWHeadshot}
-                      setPage={setCurrentPage}
-                    >
-                      Nudeshot
                     </PageButton>
                   </Stack.Item>
                 )}
