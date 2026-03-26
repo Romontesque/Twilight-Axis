@@ -209,8 +209,6 @@
 						if("arcyne gunpowder")
 							if(ishuman(T))
 								var/mob/living/carbon/human/H = T
-								if(istype(H.wear_ring, /obj/item/clothing/ring/fate_weaver))
-									H.wear_ring.obj_break()
 								H.set_silence(5 SECONDS)
 						if("terrorpowder")
 							gunpowder_npc_critfactor += 1
@@ -337,8 +335,6 @@
 			explosion(T, devastation_range = 0, heavy_impact_range = 0, light_impact_range = 1, smoke = TRUE, soundin = pick('sound/misc/explode/bottlebomb (1).ogg','sound/misc/explode/bottlebomb (2).ogg'))
 			for(var/mob/living/carbon/human/L in range(2, T))
 				if(!(L == target))
-					if(istype(L.wear_ring, /obj/item/clothing/ring/fate_weaver))
-						L.wear_ring.obj_break()
 					L.set_silence(5 SECONDS)
 		else
 			explosion(T, devastation_range = 0, heavy_impact_range = 0, light_impact_range = 1, smoke = TRUE, soundin = pick('sound/misc/explode/bottlebomb (1).ogg','sound/misc/explode/bottlebomb (2).ogg'))

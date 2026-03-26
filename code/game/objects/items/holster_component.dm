@@ -237,13 +237,6 @@
 /datum/component/holster/handstaff/puke_sword(mob/living/user)
 	. = ..()
 
-/datum/component/holster/handstaff/eat_sword(mob/living/user, obj/A)
-	. = ..()
-	if(.)
-		var/obj/item/rogueweapon/RW = parent
-		RW.cast_time_reduction = RUBY_CAST_TIME_REDUCTION
-
-
 // TA EDIT START
 
 /datum/component/holster/proc/signal_update_icon(atom/source, mob/living/user)
