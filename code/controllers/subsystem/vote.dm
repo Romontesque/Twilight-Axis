@@ -27,7 +27,7 @@ SUBSYSTEM_DEF(vote)
 	var/list/vote_powers = list()
 	var/list/storyteller_vote_log = list()
 	var/list/generated_actions = list()
-	var/static/list/everyone_is_equal = list("custom")
+	var/static/list/everyone_is_equal = list("custom", "map") // TA EDIT
 
 /datum/controller/subsystem/vote/fire()	//called by master_controller
 	if(mode)
@@ -64,6 +64,7 @@ SUBSYSTEM_DEF(vote)
 	vote_height = initial(vote_height)
 	panel_refresh_interval = initial(panel_refresh_interval)
 	next_panel_refresh = 0
+	started_time = null // TA EDIT
 	mode = null
 	question = null
 	choices.Cut()
@@ -391,6 +392,8 @@ SUBSYSTEM_DEF(vote)
 					to_chat(world, "\n<font color='purple'>[ROUND_END_TIME_VERBAL]</font>")
 					SSgamemode.roundvoteend = TRUE
 					SSgamemode.round_ends_at = world.time + ROUND_END_TIME
+					world.TgsAnnounceVoteEndRound()
+					addtimer(CALLBACK(src, PROC_REF(initiate_vote), "map", "Psydon"), 10) // TA EDIT
 			if("storyteller")
 				save_storyteller_vote_log(., "completed")
 				SSgamemode.storyteller_vote_result(.)
@@ -567,6 +570,7 @@ SUBSYSTEM_DEF(vote)
 					if(VM.config_min_users > 0 && player_count <= VM.config_min_users)
 						continue
 					choices.Add(VM.map_name)
+				vote_alert.file = 'sound/misc/levelup2.ogg' // TA EDIT
 			if("custom")
 				question = stripped_input(usr,"What is the vote for?")
 				if(!question)
@@ -577,7 +581,10 @@ SUBSYSTEM_DEF(vote)
 						break
 					choices.Add(option)
 			if("endround")
-				initiator_key = pick("Psydon", "Zizo")
+				if(SSmapping.retainer.cult_ascended == TRUE)
+					initiator_key = "AHAHAHAHAHAHAHAHAHHA"
+				else
+					initiator_key = pick("Psydon", "Zizo")
 				choices.Add("Continue Playing","End Round")
 				vote_alert.file = 'sound/roundend/roundend-vote-sound.ogg'
 			if("storyteller")
@@ -618,7 +625,7 @@ SUBSYSTEM_DEF(vote)
 		return TRUE
 	return FALSE
 
-// Helper for sending an active vote to someone who has just logged in 
+// Helper for sending an active vote to someone who has just logged in
 /datum/controller/subsystem/vote/proc/send_vote(client/C)
 	if(!mode || !C)
 		return

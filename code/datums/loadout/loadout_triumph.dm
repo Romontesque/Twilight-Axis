@@ -1,4 +1,4 @@
-//////////////////
+/*//////////////////
 //  TRIUMPHS !  //
 //////////////////
 
@@ -300,3 +300,5 @@
 	path = /obj/item/enchantingkit/weapon/triumph_weaponkit_gdadao
 	triumph_cost = 3
 	sort_category = "Triumphs"
+
+*/

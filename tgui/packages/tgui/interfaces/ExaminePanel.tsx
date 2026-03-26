@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Button, Stack } from 'tgui-core/components';
 
 import { useBackend } from '../backend';
@@ -13,10 +13,43 @@ enum Page {
   ImageGallery,
 }
 
+const isValidAssetValue = (value?: string | null) =>
+  !!value && value !== '0' && value !== '00';
+
 export const ExaminePanel = (props) => {
   const { act, data } = useBackend<ExaminePanelData>();
-  const { is_vet, character_name, is_playing, has_song, img_gallery, examine_theme } = data;
+  const {
+    is_vet,
+    character_name,
+    is_playing,
+    has_song,
+    img_gallery,
+    nsfw_img_gallery,
+    examine_theme,
+  } = data;
+
   const [currentPage, setCurrentPage] = useState(Page.FlavorText);
+
+  const safeSfwGallery = useMemo(
+    () => (img_gallery || []).filter(isValidAssetValue),
+    [img_gallery],
+  );
+
+  const safeNsfwGallery = useMemo(
+    () => (nsfw_img_gallery || []).filter(isValidAssetValue),
+    [nsfw_img_gallery],
+  );
+
+  const hasSfwGallery = safeSfwGallery.length > 0;
+  const hasNsfwGallery = safeNsfwGallery.length > 0;
+  const hasAnyGallery = Boolean(hasSfwGallery || hasNsfwGallery);
+  const shouldShowTabs = Boolean(hasAnyGallery);
+
+  useEffect(() => {
+    if (currentPage === Page.ImageGallery && !hasAnyGallery) {
+      setCurrentPage(Page.FlavorText);
+    }
+  }, [currentPage, hasAnyGallery]);
 
   let pageContents;
 
@@ -27,55 +60,72 @@ export const ExaminePanel = (props) => {
     case Page.ImageGallery:
       pageContents = <ImageGalleryPage />;
       break;
+    default:
+      pageContents = <FlavorTextPage />;
+      break;
   }
 
   return (
-    <Window title={character_name} width={1000} height={700} theme={examine_theme || undefined} buttons={
-      <>
-      {!!is_vet && (
-        <Button
-          color="gold"
-          icon="crown"
-          tooltip="This player is age-verified!"
-          tooltipPosition="bottom-start"
-          onClick={() => act('vet_chat')}
-        />
-      )}
-      <Button
-      color="green"
-      icon="music"
-      tooltip="Music player"
-      tooltipPosition="bottom-start"
-      onClick={() => act('toggle')}
-      disabled={!has_song}
-      selected={!is_playing}
-      />
-      </>}>
+    <Window
+      title={character_name}
+      width={1000}
+      height={700}
+      theme={examine_theme || undefined}
+      buttons={
+        <>
+          {!!is_vet && (
+            <Button
+              color="gold"
+              icon="crown"
+              tooltip="This player is age-verified!"
+              tooltipPosition="bottom-start"
+              onClick={() => act('vet_chat')}
+            />
+          )}
+          <Button
+            color="green"
+            icon="music"
+            tooltip="Music player"
+            tooltipPosition="bottom-start"
+            onClick={() => act('toggle')}
+            disabled={!has_song}
+            selected={!is_playing}
+          />
+        </>
+      }
+    >
       <Window.Content>
         <Stack vertical fill>
-          {img_gallery.length > 0 && (
-          <Stack style={{ marginBottom: '4px' }}>
-            <Stack.Item grow>
-              <PageButton
-              currentPage={currentPage}
-              page={Page.FlavorText}
-              setPage={setCurrentPage}
-              >
-                Flavor Text
-              </PageButton>
-            </Stack.Item>
-            <Stack.Item grow>
-              <PageButton
-              currentPage={currentPage}
-              page={Page.ImageGallery}
-              setPage={setCurrentPage}
-              >
-                Image Gallery
-              </PageButton>
-            </Stack.Item>
-          </Stack>
+          {shouldShowTabs && (
+            <>
+              <Stack style={{ marginBottom: '4px' }}>
+                <Stack.Item grow>
+                  <PageButton
+                    currentPage={currentPage}
+                    page={Page.FlavorText}
+                    setPage={setCurrentPage}
+                  >
+                    Flavor Text
+                  </PageButton>
+                </Stack.Item>
+
+                {hasAnyGallery && (
+                  <Stack.Item grow>
+                    <PageButton
+                      currentPage={currentPage}
+                      page={Page.ImageGallery}
+                      setPage={setCurrentPage}
+                    >
+                      Image Gallery
+                    </PageButton>
+                  </Stack.Item>
+                )}
+              </Stack>
+
+              <Stack.Divider />
+            </>
           )}
-          {img_gallery.length > 0 && (<Stack.Divider />)}
+
           <Stack.Item grow position="relative" overflowX="hidden" overflowY="auto">
             {pageContents}
           </Stack.Item>
