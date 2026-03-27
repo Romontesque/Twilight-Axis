@@ -197,10 +197,9 @@
 /datum/crafting_recipe/roguetown/survival/splintlegs
 	name = "splintlegs"
 	result = list(/obj/item/craft_kit/splintlegs = 1)
-	reqs = list(/obj/item/clothing/under/roguetown/trou, /obj/item/scrap = 4)
+	reqs = list(/obj/item/clothing/under/roguetown/trou/leather, /obj/item/scrap = 4)
 	craftdiff = 3
 	req_table = TRUE
-	bypass_dupe_test = TRUE
 
 /datum/crafting_recipe/roguetown/survival/chainlegs
 	name = "iron chainlegs"

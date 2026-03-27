@@ -15,7 +15,7 @@
 
 /obj/item/craft_kit/Initialize()
 	. = ..()
-	name = "[result] craftkit"
+	name = "[result.name] craftkit"
 
 /obj/item/craft_kit/attackby(obj/O, mob/living/user, params)
 	if(!isitem(O))
@@ -37,7 +37,7 @@
 					quality -= rand(1,5)
 				var/obj/item/item_result = new result(get_turf(src))
 				if(quality < 0)
-					quality = quality * 15
+					quality = quality * 5
 					item_result.max_integrity += quality
 					item_result.obj_integrity += quality + rand(-10, -100)
 				qdel(src)
