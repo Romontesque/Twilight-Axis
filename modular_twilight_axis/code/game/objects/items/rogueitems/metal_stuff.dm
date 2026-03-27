@@ -110,6 +110,7 @@
 				new /obj/item/steel_scrap(get_turf(I))
 				new /obj/item/steel_scrap(get_turf(I))
 			qdel(I)
+			return
 		if(I.anvilrepair)
 			if(!I.smeltresult || I.smeltresult == /obj/item/ash)
 				return
@@ -125,6 +126,7 @@
 				return
 			to_chat(user, span_warning("The [user] breaks an [I] using stake into small parts!"))
 			qdel(I)
+			return
 
 /obj/item/storage/belt/rogue/pouch/i_scrap
 	populate_contents = list(
@@ -153,6 +155,7 @@
 			new /obj/item/steel_scrap(get_turf(I))
 			new /obj/item/steel_scrap(get_turf(I))
 		qdel(src)
+		return
 	..()
 
 //IRON
