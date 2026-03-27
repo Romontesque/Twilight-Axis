@@ -458,7 +458,6 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 
 	if(NewLoc)
 		forceMove(NewLoc)
-		update_parallax_contents()
 	else
 		forceMove(get_turf(src))  //Get out of closets and such as a ghost
 		if((direct & NORTH) && y < world.maxy)
@@ -616,7 +615,6 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		return
 
 	usr.forceMove(pick(L))
-	update_parallax_contents()
 
 /mob/dead/observer/verb/follow()
 	set category = "Ghost"
@@ -698,7 +696,6 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 
 			if(T && isturf(T))	//Make sure the turf exists, then move the source to that destination.
 				A.forceMove(T)
-				A.update_parallax_contents()
 			else
 				to_chat(A, span_danger("This mob is not located in the game world."))
 

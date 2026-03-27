@@ -17,13 +17,21 @@ GLOBAL_DATUM(recipe_wiki, /datum/recipe_wiki)
 		if(!length(book.types))
 			qdel(book)
 			continue
-		book_entries += list(list(
-			"name" = book.name,
-			"wiki_name" = book.wiki_name || book.name,
-			"types" = book.types.Copy(),
-			"path" = book_type,
-			"wiki_section" = book.wiki_section
-		))
+		var/book_key = "[book_type]"
+		if(book.can_spawn)
+			book_entries += list(list(
+				"name" = book.name,
+				"wiki_name" = book.wiki_name || book.name,
+				"types" = book.types.Copy(),
+				"path" = book_type,
+				"wiki_section" = book.wiki_section
+			))
+		// Cache recipe data for all books, even those hidden from the library
+		if(!cached_book_recipes[book_key])
+			if(book_type == /obj/item/recipe_book/miracle_compendium)
+				cached_book_recipes[book_key] = build_miracle_list(book.types)
+			else
+				cached_book_recipes[book_key] = build_recipe_list(book.types)
 		qdel(book)
 	// Spell List entry - opens the read-only Aspect Picker instead of a recipe list
 	book_entries += list(list(
@@ -45,7 +53,7 @@ GLOBAL_DATUM(recipe_wiki, /datum/recipe_wiki)
 	return GLOB.recipe_wiki
 
 /// Open the recipe viewer for a specific book's types. Used by physical recipe book items.
-/datum/recipe_wiki/proc/show_to_user(mob/user, list/type_filter, title = "Recipe Book", book_path = null, locked_book = FALSE)
+/datum/recipe_wiki/proc/show_to_user(mob/user, list/type_filter, title = "Recipe Book", book_type_path, locked_book = FALSE)
 	if(!user?.client)
 		return
 	var/ckey = user.client.ckey
@@ -57,7 +65,7 @@ GLOBAL_DATUM(recipe_wiki, /datum/recipe_wiki)
 	state["filter"] = type_filter
 	state["title"] = title
 	state["page"] = "book"
-	state["book_path"] = book_path ? "[book_path]" : null
+	state["book_path"] = book_type_path ? "[book_type_path]" : null
 	state["locked_book"] = locked_book
 	ui_interact(user)
 
