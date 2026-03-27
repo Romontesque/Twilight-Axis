@@ -289,7 +289,7 @@
 //PANTS
 
 /datum/crafting_recipe/roguetown/survival/steel_chainlegs
-	name = "steel chainkilt to chainlegs"
+	name = "steel chainlegs"
 	result = list(/obj/item/craft_kit/steel/chainlegs = 1)
 	reqs = list(/obj/item/steel_scrap = 5)
 	craftdiff = 4

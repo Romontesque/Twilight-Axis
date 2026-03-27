@@ -1,7 +1,7 @@
 /obj/item/craft_kit
 	name = "iron craftkit"
 	desc = "An empty metal box that is suitable for storing various pieces of hardware and other scrap. \
-	Fill with iron objects to create a repair kit."
+	Fill with reguired metal objects to create a varios items"
 	icon_state = "craft_kit_iron"
 	icon = 'modular_twilight_axis/icons/roguetown/items/misc.dmi'
 	grid_width = 64
@@ -15,7 +15,8 @@
 
 /obj/item/craft_kit/Initialize()
 	. = ..()
-	name = "[result.name] craftkit"
+	var/obj/item/result_item = result
+	name = "[result_item?.name] craftkit"
 
 /obj/item/craft_kit/attackby(obj/O, mob/living/user, params)
 	if(!isitem(O))
@@ -110,7 +111,7 @@
 				new /obj/item/steel_scrap(get_turf(I))
 			qdel(I)
 		if(I.anvilrepair)
-			if(!I.smeltresult)
+			if(!I.smeltresult || I.smeltresult == /obj/item/ash)
 				return
 			if(!do_after(user, 4 SECONDS, target = I))
 				return
