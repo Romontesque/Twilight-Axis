@@ -1,7 +1,9 @@
-/obj/structure/roguemachine/budget2change(budget, mob/user, specify)
+/proc/budget2change(budget, mob/user, specify, putinhands = TRUE, custom_turf = FALSE)
 	var/turf/T
-	if(!user || (!ismob(user)))
-		T = get_turf(src)
+	if(!ismob(user) && !custom_turf)
+		CRASH("budget2change called without a valid user or custom turf.")
+	if(custom_turf)
+		T = custom_turf
 	else
 		T = get_turf(user)
 	if(!budget || budget <= 0)
@@ -38,7 +40,7 @@
 					while(budget > 0)
 						var/stack_size = min(budget, 20)
 						var/obj/item/roguecoin/copper_stack = new /obj/item/roguecoin/copper(T, stack_size)
-						if(user && budget == stack_size) // Only put first stack in hands
+						if(user && budget == stack_size && putinhands) // Only put first stack in hands
 							user.put_in_hands(copper_stack)
 						budget -= stack_size
 	else
@@ -76,7 +78,7 @@
 					while(zenars > 0)
 						var/stack_size = min(zenars, 20)
 						var/obj/item/roguecoin/silver_stack = new /obj/item/roguecoin/silver(T, stack_size)
-						if(user && zenars == stack_size) // Only put first stack in hands
+						if(user && zenars == stack_size && putinhands) // Only put first stack in hands
 							user.put_in_hands(silver_stack)
 						zenars -= stack_size
 			if(budget >= 1)
@@ -88,7 +90,7 @@
 					while(budget > 0)
 						var/stack_size = min(budget, 20)
 						var/obj/item/roguecoin/copper_stack = new /obj/item/roguecoin/copper(T, stack_size)
-						if(user && budget == stack_size) // Only put first stack in hands
+						if(user && budget == stack_size && putinhands) // Only put first stack in hands
 							user.put_in_hands(copper_stack)
 						budget -= stack_size
 	if(!type_to_put || zenars_to_put < 1)
@@ -97,7 +99,7 @@
 	while(zenars_to_put > 0)
 		var/stack_size = min(zenars_to_put, 20)
 		var/obj/item/roguecoin/G = new type_to_put(T, stack_size)
-		if(user && zenars_to_put == stack_size) // Only put first stack in hands
+		if(user && zenars_to_put == stack_size && putinhands) // Only put first stack in hands
 			user.put_in_hands(G)
 		zenars_to_put -= stack_size
 	playsound(T, 'sound/misc/coindispense.ogg', 100, FALSE, -1)
