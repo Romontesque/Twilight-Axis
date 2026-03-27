@@ -1,4 +1,4 @@
-/obj/item/obj_destruction(damage_flag) //Переопределяет разрушение для создания стального лома.
+/obj/item/obj_destruction(damage_flag) // Overrides item breaking logic for steel scrap.
 	if (damage_flag == "acid")
 		obj_destroyed = TRUE
 		acid_melt()
