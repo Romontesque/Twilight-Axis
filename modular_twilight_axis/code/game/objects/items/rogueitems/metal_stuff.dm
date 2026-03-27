@@ -197,6 +197,11 @@
 /obj/item/craft_kit/kilt
 	result = /obj/item/clothing/under/roguetown/chainlegs/iron/kilt
 
+//feets
+
+/obj/item/craft_kit/lplateboots
+	result = /obj/item/clothing/shoes/roguetown/boots/armor/iron
+
 //STEEL
 /*
 /obj/item/craft_kit/steel/

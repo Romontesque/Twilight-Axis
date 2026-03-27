@@ -217,6 +217,15 @@
 	craftdiff = 3
 	req_table = TRUE
 
+//BOOTS
+
+/datum/crafting_recipe/roguetown/survival/lplateboots
+	name = "light plated boots"
+	result = list(/obj/item/craft_kit/lplateboots = 1)
+	reqs = list(/obj/item/clothing/shoes/roguetown/boots/leather = 1, /obj/item/scrap = 2)
+	craftdiff = 3
+	req_table = TRUE
+
 //////////////////////////////////////// CONVERT ////////////////////////////////////////
 
 /datum/crafting_recipe/roguetown/survival/i_chainlegs
