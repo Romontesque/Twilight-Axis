@@ -126,6 +126,35 @@
 			to_chat(user, span_warning("The [user] breaks an [I] using stake into small parts!"))
 			qdel(I)
 
+/obj/item/storage/belt/rogue/pouch/i_scrap
+	populate_contents = list(
+	/obj/item/ingot/iron,
+	/obj/item/ingot/iron
+	)
+
+/obj/item/storage/belt/rogue/pouch/s_scrap
+	populate_contents = list(
+	/obj/item/ingot/steel,
+	/obj/item/ingot/steel
+	)
+
+/obj/item/ingot/attackby(obj/item/I, mob/user, params) //переопределяет аттакбай слитков, для возможности их разлома колышками
+	. = ..()
+	if(istype(I, /obj/item/metal_stake) || istype(I, /obj/item/grown/log/tree/stake))
+		if(!do_after(user, 4 SECONDS, target = src))
+			return
+		to_chat(user, span_warning("The [user] breaks an [I] using stake into small parts!"))
+		if(istype(src, /obj/item/ingot/iron))
+			new /obj/item/scrap(get_turf(I))
+			new /obj/item/scrap(get_turf(I))
+			new /obj/item/scrap(get_turf(I))
+		if(istype(src, /obj/item/ingot/steel))
+			new /obj/item/steel_scrap(get_turf(I))
+			new /obj/item/steel_scrap(get_turf(I))
+			new /obj/item/steel_scrap(get_turf(I))
+		qdel(src)
+	..()
+
 //IRON
 /*
 /obj/item/craft_kit/
@@ -148,6 +177,11 @@
 
 /obj/item/craft_kit/plate
 	result = /obj/item/clothing/suit/roguetown/armor/plate/full/iron
+
+//arms
+
+/obj/item/craft_kit/splintarms
+	result = /obj/item/clothing/wrists/roguetown/bracers/splint
 
 //legs
 

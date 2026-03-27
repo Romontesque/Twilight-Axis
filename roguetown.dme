@@ -3264,6 +3264,7 @@
 #include "modular_twilight_axis\code\modules\clothing\rogueclothes\shirts\shirts.dm"
 #include "modular_twilight_axis\code\modules\clothing\rogueclothes\storage\storage.dm"
 #include "modular_twilight_axis\code\modules\clothing\rogueclothes\wrists\wrists.dm"
+#include "modular_twilight_axis\code\modules\virtues\crafter.dm"
 #include "modular_twilight_axis\code\modules\erp_system\_defines.dm"
 #include "modular_twilight_axis\code\modules\erp_system\actions\erp_action_core.dm"
 #include "modular_twilight_axis\code\modules\erp_system\actions\erp_action_editor_schema.dm"

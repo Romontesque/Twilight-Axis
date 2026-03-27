@@ -192,6 +192,15 @@
 	craftdiff = 4
 	req_table = TRUE
 
+//WRISTS
+
+/datum/crafting_recipe/roguetown/survival/splintarms
+	name = "splintarms"
+	result = list(/obj/item/craft_kit/splintarms = 1)
+	reqs = list(/obj/item/clothing/wrists/roguetown/bracers/leather, /obj/item/scrap = 4)
+	craftdiff = 3
+	req_table = TRUE
+
 //PANTS
 
 /datum/crafting_recipe/roguetown/survival/splintlegs
