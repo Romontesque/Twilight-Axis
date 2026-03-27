@@ -246,7 +246,7 @@
 
 /datum/crafting_recipe/roguetown/survival/steel_cuirass
 	name = "steel cuirass"
-	result = list(/obj/item/craft_kit/steel/haubergeon = 1)
+	result = list(/obj/item/craft_kit/steel/cuirass = 1)
 	reqs = list(/obj/item/steel_scrap = 5, /obj/item/clothing/suit/roguetown/armor/chainmail = 1)
 	craftdiff = 4
 	req_table = TRUE

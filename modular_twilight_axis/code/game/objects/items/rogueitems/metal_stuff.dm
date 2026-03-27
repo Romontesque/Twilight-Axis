@@ -21,6 +21,8 @@
 /obj/item/craft_kit/attackby(obj/O, mob/living/user, params)
 	if(!isitem(O))
 		return
+	if(!result)
+		return
 	var/obj/item/I = O
 	if(I.anvilrepair || I.type == scrap)
 		if(I.smeltresult == material || I.type == scrap)
@@ -101,14 +103,13 @@
 			if(!do_after(user, 4 SECONDS, target = I))
 				return
 			to_chat(user, span_warning("The [user] breaks an [I] using stake into small parts!"))
+			var/scrap_type = null
 			if(istype(I, /obj/item/ingot/iron))
-				new /obj/item/scrap(get_turf(I))
-				new /obj/item/scrap(get_turf(I))
-				new /obj/item/scrap(get_turf(I))
+				scrap_type = /obj/item/scrap
 			if(istype(I, /obj/item/ingot/steel))
-				new /obj/item/steel_scrap(get_turf(I))
-				new /obj/item/steel_scrap(get_turf(I))
-				new /obj/item/steel_scrap(get_turf(I))
+				scrap_type = /obj/item/steel_scrap
+			for(var/i in 1 to 3)
+				new scrap_type(get_turf(I))
 			qdel(I)
 			return
 		if(I.anvilrepair)
@@ -146,14 +147,13 @@
 		if(!do_after(user, 4 SECONDS, target = src))
 			return
 		to_chat(user, span_warning("The [user] breaks an [I] using stake into small parts!"))
+		var/scrap_type = null
 		if(istype(src, /obj/item/ingot/iron))
-			new /obj/item/scrap(get_turf(I))
-			new /obj/item/scrap(get_turf(I))
-			new /obj/item/scrap(get_turf(I))
+			scrap_type = /obj/item/scrap
 		if(istype(src, /obj/item/ingot/steel))
-			new /obj/item/steel_scrap(get_turf(I))
-			new /obj/item/steel_scrap(get_turf(I))
-			new /obj/item/steel_scrap(get_turf(I))
+			scrap_type = /obj/item/steel_scrap
+		for(var/i in 1 to 3)
+			new scrap_type(get_turf(src))
 		qdel(src)
 		return
 	..()
