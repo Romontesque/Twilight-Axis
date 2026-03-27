@@ -1,10 +1,11 @@
 /obj/item/clothing/under/roguetown/gambeson
-	slot_flags = ITEM_SLOT_ARMOR|ITEM_SLOT_SHIRT
 	name = "gamboised cuisses"
 	desc = "A heavy fabric trousers, stuffed with padding. Protect the legs from blows and weather. Worn under armor or alone."
 	icon_state = "gambeson"
-	icon = 'modular_twilight_axis/icons/roguetown//pants.dmi"
+	icon = 'modular_twilight_axis/icons/roguetown/clothing/pants.dmi'
+	mob_overlay_icon = 'modular_twilight_axis/icons/roguetown/clothing/onmob/pants.dmi'
 	body_parts_covered = COVERAGE_ALL_UNDERGROIN
+	slot_flags = ITEM_SLOT_PANTS
 	armor = ARMOR_PADDED
 	blocksound = SOFTUNDERHIT
 	blade_dulling = DULLING_BASHCHOP
