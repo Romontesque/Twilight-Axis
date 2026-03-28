@@ -258,17 +258,19 @@ export const OriginPicker = () => {
                 style={{
                   display: 'flex',
                   flexDirection: 'column',
+                  gap: '0.75rem',
                   height: '100%',
-                  gap: '0.7rem',
+                  minHeight: 0,
                 }}>
                 <div
                   style={{
                     position: 'relative',
-                    flex: '0 0 640px',
+                    width: '100%',
+                    flex: 1,
                     minHeight: '640px',
+                    border: '1px solid rgba(255,255,255,0.12)',
+                    borderRadius: '8px',
                     overflow: 'hidden',
-                    borderRadius: '12px',
-                    border: '1px solid rgba(255,255,255,0.1)',
                     background: '#111',
                   }}>
                   <img
@@ -282,55 +284,49 @@ export const OriginPicker = () => {
                       userSelect: 'none',
                     }}
                   />
+                  {visibleMapStates.map((state) => {
+                    const previewableOrigin =
+                      state.origins.find((origin) => origin.selected) ||
+                      state.origins.find((origin) => origin.available) ||
+                      state.origins[0];
 
-                  <div
-                    style={{
-                      position: 'absolute',
-                      inset: 0,
-                    }}>
-                    {visibleMapStates.map((state) => {
-                      const previewableOrigin =
-                        state.origins.find((origin) => origin.selected) ||
-                        state.origins.find((origin) => origin.available) ||
-                        state.origins[0];
+                    if (!previewableOrigin) {
+                      return null;
+                    }
 
-                      if (!previewableOrigin) {
-                        return null;
-                      }
+                    const isFocused = state.id === focusedStateId;
+                    const isSelected = state.origins.some((origin) => origin.selected);
+                    const isAvailable = state.origins.some((origin) => origin.available);
 
-                      const isFocused = state.id === focusedStateId;
-                      const isSelected = state.origins.some((origin) => origin.selected);
-                      const isAvailable = state.origins.some((origin) => origin.available);
-
-                      return (
-                        <button
-                          key={state.id}
-                          type="button"
-                          style={{
-                            ...markerStyle(isFocused, isSelected, isAvailable),
-                            left: `${state.x}%`,
-                            top: `${state.y}%`,
-                          }}
-                          onMouseEnter={() => {
-                            setHoveredStateId(state.id);
-                            focusOrigin(previewableOrigin);
-                          }}
-                          onMouseLeave={() => setHoveredStateId(null)}
-                          onClick={() => handleOriginClick(previewableOrigin)}
-                        />
-                      );
-                    })}
-                  </div>
+                    return (
+                      <button
+                        key={state.id}
+                        type="button"
+                        style={{
+                          ...markerStyle(isFocused, isSelected, isAvailable),
+                          left: `${state.x}%`,
+                          top: `${state.y}%`,
+                        }}
+                        onMouseEnter={() => {
+                          setHoveredStateId(state.id);
+                          focusOrigin(previewableOrigin);
+                        }}
+                        onMouseLeave={() => setHoveredStateId(null)}
+                        onClick={() => handleOriginClick(previewableOrigin)}
+                        title={state.name}
+                      />
+                    );
+                  })}
                 </div>
 
-                <Section title="Лор выбранного происхождения" scrollable>
+                <Section title="Лор выбранного происхождения" fill scrollable>
                   {previewOrigin ? (
                     <div
                       style={{
                         display: 'flex',
                         flexDirection: 'column',
                         gap: '0.6rem',
-                        lineHeight: 1.45,
+                        minHeight: 0,
                       }}>
                       <div style={{ fontWeight: 700, fontSize: '1.1rem' }}>
                         {previewOrigin.display_name}
@@ -350,7 +346,14 @@ export const OriginPicker = () => {
                         </div>
                       )}
 
-                      <div>{renderOriginDescription(previewOrigin.origin_desc || previewOrigin.desc)}</div>
+                      <div
+                        style={{
+                          lineHeight: 1.45,
+                          whiteSpace: 'normal',
+                          overflowWrap: 'anywhere',
+                        }}>
+                        {renderOriginDescription(previewOrigin.origin_desc || previewOrigin.desc)}
+                      </div>
                     </div>
                   ) : (
                     <div>Нет происхождений для отображения.</div>
