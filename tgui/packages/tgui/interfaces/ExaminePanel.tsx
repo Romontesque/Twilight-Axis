@@ -5,7 +5,8 @@ import { useBackend } from '../backend';
 import { PageButton } from '../components/PageButton';
 import { Window } from '../layouts';
 import { ExaminePanelData } from './ExaminePanelData';
-import { FlavorTextPage, ImageGalleryPage } from './ExaminePanelPages';
+import { FlavorTextPage } from './ExaminePanelPages';
+import { ImageGalleryPage } from './ExaminePanelPages';
 
 enum Page {
   FlavorText,
@@ -14,9 +15,8 @@ enum Page {
 
 export const ExaminePanel = (props) => {
   const { act, data } = useBackend<ExaminePanelData>();
-  const { is_vet, character_name, is_playing, has_song, img_gallery, nsfw_img_gallery, examine_theme } = data;
+  const { is_vet, character_name, is_playing, has_song, img_gallery, examine_theme } = data;
   const [currentPage, setCurrentPage] = useState(Page.FlavorText);
-  const hasAnyGalleryImages = img_gallery.length > 0 || nsfw_img_gallery.length > 0;
 
   let pageContents;
 
@@ -53,7 +53,7 @@ export const ExaminePanel = (props) => {
       </>}>
       <Window.Content>
         <Stack vertical fill>
-          {hasAnyGalleryImages && (
+          {img_gallery.length > 0 && (
           <Stack style={{ marginBottom: '4px' }}>
             <Stack.Item grow>
               <PageButton
@@ -75,7 +75,7 @@ export const ExaminePanel = (props) => {
             </Stack.Item>
           </Stack>
           )}
-          {hasAnyGalleryImages && (<Stack.Divider />)}
+          {img_gallery.length > 0 && (<Stack.Divider />)}
           <Stack.Item grow position="relative" overflowX="hidden" overflowY="auto">
             {pageContents}
           </Stack.Item>

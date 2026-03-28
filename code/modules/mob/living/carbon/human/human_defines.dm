@@ -134,7 +134,6 @@
 	/// Per-character theme override for examine panel viewers
 	var/examine_theme
 	var/list/img_gallery = list()
-	var/list/nsfw_img_gallery = list()
 	
 
 	possible_rmb_intents = list(/datum/rmb_intent/feint,\
