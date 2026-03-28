@@ -371,12 +371,13 @@
 					should_update = TRUE
 
 		if("Penis")
-			var/list/valid_penis_types = list("none")
-			for(var/penis_path in subtypesof(/datum/sprite_accessory/penis))
-				var/datum/sprite_accessory/penis/penis = new penis_path()
-				valid_penis_types[penis.name] = penis_path
+			var/list/valid_penis_organs = list("none")
+			for(var/penis_type in subtypesof(/obj/item/organ/penis))
+				var/obj/item/organ/penis/temp_penis = new penis_type
+				valid_penis_organs[temp_penis.name] = penis_type
+				qdel(temp_penis)
 
-			var/new_style = input(H, "Choose your penis type", "Penis Customization") as null|anything in valid_penis_types
+			var/new_style = input(H, "Choose your penis type", "Penis Customization") as null|anything in valid_penis_organs
 			if(new_style)
 				if(new_style == "none")
 					var/obj/item/organ/penis/penis = H.getorganslot(ORGAN_SLOT_PENIS)
@@ -386,22 +387,44 @@
 						H.update_body()
 						should_update = TRUE
 				else
-					var/obj/item/organ/penis/penis = H.getorganslot(ORGAN_SLOT_PENIS)
-					if(!penis)
-						penis = new()
-						penis.Insert(H, TRUE, FALSE)
-					penis.accessory_type = valid_penis_types[new_style]
-					var/datum/sprite_accessory/penis/penis_type = SPRITE_ACCESSORY(penis.accessory_type)
-					
-					penis.accessory_colors = mirror_pick_accessory_colors(H, penis_type, penis.accessory_colors)
-					//TA edit start - new ERP SYSTEM
-					if(penis.sex_organ)
-						var/datum/erp_sex_organ/penis/SP = penis.sex_organ
-						SP.refresh_from_organ(penis)
-					else
-						penis.refresh_sex_organ()
+					var/selected_type = valid_penis_organs[new_style]
 
-					//TA edit end - new ERP SYSTEM
+					var/obj/item/organ/penis/old_penis = H.getorganslot(ORGAN_SLOT_PENIS)
+					var/old_size = DEFAULT_PENIS_SIZE
+					var/old_colors = null
+					var/old_functional = TRUE
+					var/old_manual_override = FALSE
+					var/old_erect_state = ERECT_STATE_NONE
+
+					if(old_penis)
+						old_size = old_penis.penis_size
+						old_colors = old_penis.accessory_colors
+						old_functional = old_penis.functional
+						old_manual_override = old_penis.manual_erection_override
+						old_erect_state = old_penis.erect_state
+
+						old_penis.Remove(H)
+						qdel(old_penis)
+
+					var/obj/item/organ/penis/new_penis = new selected_type
+					new_penis.penis_size = old_size
+					new_penis.functional = old_functional
+					new_penis.Insert(H, TRUE, FALSE)
+
+					var/datum/sprite_accessory/penis/penis_accessory = SPRITE_ACCESSORY(new_penis.accessory_type)
+					new_penis.accessory_colors = mirror_pick_accessory_colors(H, penis_accessory, old_colors)
+
+					if(old_manual_override)
+						new_penis.set_manual_erect_state(old_erect_state)
+					else
+						new_penis.on_arousal_changed()
+
+					if(new_penis.sex_organ)
+						var/datum/erp_sex_organ/penis/SP = new_penis.sex_organ
+						SP.refresh_from_organ(new_penis)
+					else
+						new_penis.refresh_sex_organ()
+
 					H.update_body()
 					should_update = TRUE
 
