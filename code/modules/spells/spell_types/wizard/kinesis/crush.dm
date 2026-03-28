@@ -32,7 +32,7 @@
 	spell_impact_intensity = SPELL_IMPACT_HIGH
 	displayed_damage = 60
 
-	spell_requirements = SPELL_REQUIRES_NO_ANTIMAGIC | SPELL_REQUIRES_HUMAN
+	spell_requirements = SPELL_REQUIRES_NO_ANTIMAGIC | SPELL_REQUIRES_HUMAN | SPELL_REQUIRES_SAME_Z
 
 	var/telegraph_delay = TELEGRAPH_SKILLSHOT
 	var/crush_damage = 60

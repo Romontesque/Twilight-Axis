@@ -5,10 +5,12 @@ export const GrimoireVariantSection = ({
   variants,
   fixedSpells,
   userTier,
+  variantOverride,
 }: {
   variants: Variant[];
   fixedSpells: Spell[];
   userTier: number;
+  variantOverride?: string;
 }) => (
   <div>
     <div className="AspectPicker__divider" />
@@ -18,8 +20,8 @@ export const GrimoireVariantSection = ({
         <div
           className={cls(
             'AspectPicker__variant-name',
-            variant.name === 'mastery' &&
-              userTier >= 4 &&
+            ((variant.name === 'mastery' && userTier >= 4) ||
+              variant.name === variantOverride) &&
               'AspectPicker__variant-name--active',
           )}
         >
@@ -27,6 +29,8 @@ export const GrimoireVariantSection = ({
           {variant.name === 'mastery' &&
             userTier >= 4 &&
             ' \u2014 granted by your tier'}
+          {variant.name === variantOverride &&
+            ' \u2014 granted by your tradition'}
         </div>
         {variant.swaps.map((swap) => {
           const isAdditive = !swap.from;

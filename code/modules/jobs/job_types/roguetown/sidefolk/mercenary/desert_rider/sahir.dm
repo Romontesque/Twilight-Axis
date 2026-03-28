@@ -50,7 +50,7 @@
 		/obj/item/rogueweapon/huntingknife/idagger/navaja,
 		/obj/item/rogueweapon/scabbard/sheath,
 		/obj/item/clothing/neck/roguetown/shalal,
-		/obj/item/spellbook_unfinished/pre_arcyne,
+		/obj/item/book/spellbook,
 		/obj/item/flashlight/flare/torch,
 		/obj/item/storage/belt/rogue/pouch/coins/poor
 		)

@@ -37,7 +37,7 @@
 	beltl = /obj/item/flashlight/flare/torch/lantern
 	beltr = /obj/item/rogueweapon/huntingknife/idagger
 	if(H.mind)
-		H.mind.AddSpell(new /obj/effect/proc_holder/spell/targeted/touch/prestidigitation)
+		H.mind.AddSpell(new /datum/action/cooldown/spell/touch/prestidigitation)
 	backpack_contents = list(
 		/obj/item/paper/scroll = 3,
 		/obj/item/book/rogue/knowledge1 = 1,

@@ -31,7 +31,7 @@
 	spell_impact_intensity = SPELL_IMPACT_MEDIUM
 	displayed_damage = 60
 
-	spell_requirements = SPELL_REQUIRES_NO_ANTIMAGIC | SPELL_REQUIRES_HUMAN
+	spell_requirements = SPELL_REQUIRES_NO_ANTIMAGIC | SPELL_REQUIRES_HUMAN | SPELL_REQUIRES_SAME_Z
 
 	/// Ticks of warning before the crush lands
 	var/telegraph_delay = TELEGRAPH_SKILLSHOT

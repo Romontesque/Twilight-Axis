@@ -10,6 +10,7 @@
 	desc = "Conjure a cramped but functional shelter from arcyne force.\n\
 	Contains a bed, a hearth, and an oven. Bring your own cooking tools.\n\
 	The shelter lasts for 15 minutes. Door always faces south."
+	button_icon = 'icons/mob/actions/mage_conjure.dmi'
 	button_icon_state = "great_shelter"
 	sound = 'sound/spellbooks/crystal.ogg'
 	spell_color = GLOW_COLOR_HEARTH
@@ -38,7 +39,7 @@
 	spell_tier = 1
 	spell_impact_intensity = SPELL_IMPACT_NONE
 
-	spell_requirements = SPELL_REQUIRES_NO_ANTIMAGIC | SPELL_REQUIRES_HUMAN | SPELL_REQUIRES_NO_MOVE
+	spell_requirements = SPELL_REQUIRES_NO_ANTIMAGIC | SPELL_REQUIRES_HUMAN | SPELL_REQUIRES_NO_MOVE | SPELL_REQUIRES_SAME_Z
 
 /datum/action/cooldown/spell/great_shelter/before_cast(atom/cast_on)
 	. = ..()

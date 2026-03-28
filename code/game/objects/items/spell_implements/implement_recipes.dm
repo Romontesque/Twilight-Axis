@@ -105,6 +105,6 @@
 // Blacksteel staff upgrade - special recipe
 /datum/crafting_recipe/roguetown/arcana/blacksteel_upgrade
 	name = "upgrade blacksteel staff (dorpel)"
-	result = /obj/item/rogueweapon/woodstaff/implement/grand
+	result = /obj/item/rogueweapon/woodstaff/implement/grand/blacksteel
 	reqs = list(/obj/item/rogueweapon/woodstaff/implement/greater/blacksteel = 1,
 				/obj/item/roguegem/diamond = 1)

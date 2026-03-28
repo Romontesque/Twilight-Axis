@@ -41,7 +41,7 @@
 	if(!istype(H))
 		return FALSE
 
-	// Cryomancy countersynergy: reduce fire stacks on caster
+	// Reduce fire stacks on caster
 	if(H.fire_stacks > 0)
 		H.adjust_fire_stacks(-1)
 		to_chat(H, span_notice("The frost becalms the flame on me."))
@@ -81,7 +81,7 @@
 			if(spell_guard_check(victim, FALSE, H))
 				blocked = TRUE
 				break
-			// Countersynergy: shatter frost if target has fire
+			// Shatter frost if target has fire
 			if(victim.on_fire)
 				victim.extinguish_mob()
 				victim.visible_message(span_warning("The frost extinguishes [victim]!"))

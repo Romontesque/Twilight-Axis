@@ -29,7 +29,7 @@
 
 	point_cost = 1
 
-	spell_requirements = SPELL_REQUIRES_NO_ANTIMAGIC | SPELL_REQUIRES_HUMAN
+	spell_requirements = SPELL_REQUIRES_NO_ANTIMAGIC | SPELL_REQUIRES_HUMAN | SPELL_REQUIRES_SAME_Z
 
 	var/obj/item/item
 	var/item_type = /obj/item/flashlight/flare/light

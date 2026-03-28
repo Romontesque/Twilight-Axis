@@ -13,6 +13,7 @@
 #define GLOW_COLOR_ILLUSION "#CE93D8" // Illusory pink-purple
 #define GLOW_COLOR_HEARTH "#FF8A65" // Warm hearthfire salmon
 #define GLOW_COLOR_LIGHT "#FFFDE7" // Pale warm white, for light spells
+#define GLOW_COLOR_WARD "#D4A844" // Warm amber-gold, for battlewardry / protective ward spells
 
 // Constants for spell glow intensity. These are literally 1 2 3 4 but it is for documenting design purposes
 #define GLOW_INTENSITY_LOW 1 // For spam projectiles or generic buffs
@@ -41,7 +42,7 @@
 // Standardized spell stamina costs
 #define SPELLCOST_CANTRIP            5
 #define SPELLCOST_MINOR_PROJECTILE   10 // Should feels good to spam and not stamcrit you
-#define SPELLCOST_MAJOR_PROJECTILE   20 // 25 seems decent
+#define SPELLCOST_MAJOR_PROJECTILE   20 // 20 seems decent
 #define SPELLCOST_SUPER_PROJECTILE   45 // Only used for GFB for now as an intermediary
 #define SPELLCOST_ULTIMATE           70
 #define SPELLCOST_MINOR_AOE          15
@@ -49,7 +50,7 @@
 #define SPELLCOST_SINGLE_CC          30
 #define SPELLCOST_UTILITY_BUFF       20
 #define SPELLCOST_STAT_BUFF          40
-#define SPELLCOST_CONJURE            20
+#define SPELLCOST_CONJURE            20	
 #define SPELLCOST_TELEPORT           15
 #define SPELLCOST_MINOR_SUMMON       30
 #define SPELLCOST_MAJOR_SUMMON       50
@@ -96,6 +97,18 @@
 #define SPELL_IMPACT_MEDIUM 2  // 4 wisps — staple projectiles, soulshot
 #define SPELL_IMPACT_HIGH   3  // 6 wisps — big hits, fireball, boulder
 
+// Rune Ward types and icon states
+#define RUNE_WARD_STUN "stun"
+#define RUNE_WARD_FIRE "fire"
+#define RUNE_WARD_CHILL "chill"
+#define RUNE_WARD_DAMAGE "damage"
+#define RUNE_WARD_ALARM "alarm"
+#define RUNE_WARD_ICON_STUN "rune_stun"
+#define RUNE_WARD_ICON_FIRE "rune_fire"
+#define RUNE_WARD_ICON_CHILL "rune_chill"
+#define RUNE_WARD_ICON_DAMAGE "rune_damage"
+#define RUNE_WARD_ICON_ALARM "rune_alarm"
+
 // Magic Aspect system - default slot counts (overridden by mage_aspect_config per class)
 #define MAX_MAJOR_ASPECTS 1
 #define MAX_MINOR_ASPECTS 2
@@ -117,6 +130,12 @@
 #define ASPECT_NAME_KINESIS     "Force"
 #define ASPECT_NAME_FERRAMANCY  "Metal"
 #define ASPECT_NAME_AUGMENTATION "Enhancement"
+#define ASPECT_NAME_BATTLEWARDRY "Wards"
+
+// Arcyne ward tier hierarchy - higher tier wards override lower, equal or lower cannot override
+#define ARCYNE_WARD_TIER_OTHER   1 // Other Ward (cast on allies)
+#define ARCYNE_WARD_TIER_BASE    4 // Standard arcyne ward (self-cast)
+#define ARCYNE_WARD_TIER_GREATER 5 // Dragonhide / Crystalhide upgrades
 
 // Variant additive sentinel - used instead of null because DM skips null keys in for-in loops
 #define VARIANT_ADDITIVE "__additive__"

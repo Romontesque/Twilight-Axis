@@ -8,7 +8,6 @@
 	aspect_type = ASPECT_MAJOR
 	attuned_name = ASPECT_NAME_PYROMANCY
 	school_color = GLOW_COLOR_FIRE
-	countersynergy = list(/datum/magic_aspect/cryomancy)
 	binding_chants = list(
 		"Invoco flammam aeternam!",
 		"I implore the flame within to burn bright, rise!",
@@ -46,7 +45,6 @@
 	aspect_type = ASPECT_MAJOR
 	attuned_name = ASPECT_NAME_CRYOMANCY
 	school_color = GLOW_COLOR_ICE
-	countersynergy = list(/datum/magic_aspect/pyromancy)
 	binding_chants = list(
 		"Invoco glaciem aeternam!",
 		"I invoke the cold that lingers deep, come forth!",
@@ -262,5 +260,39 @@
 	variants = list(
 		"mastery" = list(
 			VARIANT_ADDITIVE =/datum/action/cooldown/spell/blade_dance,
+		),
+	)
+
+/datum/magic_aspect/battlewardry
+	name = "Battlewardry"
+	latin_name = "Maior Aspectus Bellitutelae"
+	desc = "Battlewardry is a second-order magical school. Most other schools channel destruction - battlewardry specializes in the prevention of destruction. Battlewardens use a modified, tactical form of ward traps to punish the reckless, and shape the battlefields with force walls while layering protection onto their fortunate allies. Though warding is often associated with passive protection, Battlewardens are anything but passive - under their spells, the battlefield is molded and shaped to their will."
+	aspect_type = ASPECT_MAJOR
+	attuned_name = ASPECT_NAME_BATTLEWARDRY
+	school_color = GLOW_COLOR_WARD
+	binding_chants = list(
+		"Invoco tutelam bellicam!",
+		"I raise the wards of war, protect!",
+		"Bellitutela, in me ligare!",
+	)
+	unbinding_chants = list(
+		"Solvo tutelam vinctam!",
+		"I lower the wards I have raised, rest.",
+		"Bellitutela, a me discedere!",
+	)
+	fixed_spells = list(
+		/datum/action/cooldown/spell/battle_ward,
+		/datum/action/cooldown/spell/forcewall,
+		/datum/action/cooldown/spell/arrow_ward,
+		/datum/action/cooldown/spell/bestow_ward,
+		/datum/action/cooldown/spell/touch/rune_ward,
+	)
+	choice_spells = list(
+		/datum/action/cooldown/spell/projectile/soulshot,
+		/datum/action/cooldown/spell/projectile/greater_arcyne_bolt,
+	)
+	variants = list(
+		"mastery" = list(
+			VARIANT_ADDITIVE =/datum/action/cooldown/spell/arcyne_fortress,
 		),
 	)

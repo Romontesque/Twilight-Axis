@@ -1,7 +1,7 @@
 // Cryomancy shared — frost stack status effects and helper procs
 // Four tiers: frosted1 (-1 SPD), frosted2 (-2 SPD, 1.1x action CD),
 // frosted3 (-3 SPD, 1.2x action CD), frosted4 (frozen: x2 move slow for 8s, 15s immunity)
-// Fire spells shatter frost stacks (countersynergy handled in fire spell on_hit procs)
+// Fire spells shatter frost stacks (handled in fire spell on_hit procs)
 
 #define FROST_OVERLAY_COLOR rgb(136, 191, 255)
 #define FROZEN_DURATION (8 SECONDS)
@@ -53,7 +53,7 @@
 		if(4)
 			target.balloon_alert_to_viewers("<font color='#4cadee'>frozen IV!</font>")
 
-/// Decrement one frost stack from the target. Used by fire spells for countersynergy.
+/// Decrement one frost stack from the target. Used by fire spells.
 /// Returns TRUE if a stack was removed.
 /proc/remove_frost_stack(mob/living/target)
 	if(!isliving(target))

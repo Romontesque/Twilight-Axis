@@ -104,7 +104,8 @@
 		/obj/item/natural/feather,
 		/obj/item/paper,
 		/obj/item/paper,
-		/obj/item/paper
+		/obj/item/paper,
+		/obj/item/book/spellbook
 	)
 
 	if(H.mind)

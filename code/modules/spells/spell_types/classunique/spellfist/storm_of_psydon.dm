@@ -33,7 +33,7 @@
 	spell_tier = 3
 	spell_impact_intensity = SPELL_IMPACT_MEDIUM
 
-	spell_requirements = SPELL_REQUIRES_NO_ANTIMAGIC | SPELL_REQUIRES_HUMAN
+	spell_requirements = SPELL_REQUIRES_NO_ANTIMAGIC | SPELL_REQUIRES_HUMAN | SPELL_REQUIRES_SAME_Z
 
 	var/start_invocation = "'Asifa!"
 	var/dash_range = 7

@@ -28,7 +28,6 @@ export type Aspect = {
   fixed_spells: Spell[];
   choice_spells: Spell[];
   pointbuy_spells: Spell[];
-  countersynergy: string[];
   variants: Variant[];
 };
 
@@ -58,6 +57,7 @@ export type Data = {
   staged_unbind_utilities: string[];
   known_utilities: string[];
   given_utilities: string[];
+  variant_overrides: Record<string, string>;
 };
 
 export type Tab = 'major' | 'minor' | 'utilities';

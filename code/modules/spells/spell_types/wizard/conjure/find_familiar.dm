@@ -30,7 +30,7 @@
 
 	point_cost = 0
 
-	spell_requirements = SPELL_REQUIRES_NO_ANTIMAGIC | SPELL_REQUIRES_HUMAN
+	spell_requirements = SPELL_REQUIRES_NO_ANTIMAGIC | SPELL_REQUIRES_HUMAN | SPELL_REQUIRES_SAME_Z
 
 	var/mob/living/simple_animal/pet/familiar/fam
 	var/familiars = list()

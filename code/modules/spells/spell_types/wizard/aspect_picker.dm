@@ -23,8 +23,10 @@
 	var/list/locked_aspects = list()
 	/// TRUE while performing binding/unbinding chants — prevents ui_close from qdel'ing
 	var/chanting = FALSE
-	/// Named variant override from class config (e.g. "grenzelhoftian")
-	var/variant_override
+	/// Assoc list of variant overrides from class config: aspect_path = variant_name (e.g. /datum/magic_aspect/pyromancy = "grenzelhoftian")
+	var/list/variant_overrides
+	/// Spell paths granted after aspects are bound - ensures proper action bar ordering (e.g. class-granted Message, Magician's Brick)
+	var/list/post_aspect_spells
 
 /datum/aspect_picker/New(mob/living/new_owner, setup = TRUE, list/aspect_config)
 	owner = new_owner
@@ -34,11 +36,16 @@
 		override_max_majors = aspect_config["major"]
 		override_max_minors = aspect_config["minor"]
 		max_utilities = aspect_config["utilities"] || 0
-		variant_override = aspect_config["variant"]
+		if(islist(aspect_config["variants"]))
+			variant_overrides = aspect_config["variants"]
+		if(islist(aspect_config["post_aspect_spells"]))
+			post_aspect_spells = aspect_config["post_aspect_spells"]
 		if(length(aspect_config["locked_aspects"]))
 			for(var/path in aspect_config["locked_aspects"])
 				locked_aspects += path
-				// Auto-stage locked aspects
+				// Auto-stage locked aspects only if not already bound
+				if(new_owner.mind && new_owner.mind.has_aspect(path))
+					continue
 				var/datum/magic_aspect/temp = new path
 				switch(temp.aspect_type)
 					if(ASPECT_MAJOR)
@@ -81,6 +88,13 @@
 	for(var/path in locked_aspects)
 		locked_paths += "[path]"
 	data["locked_aspects"] = locked_paths
+
+	// Send variant overrides so the UI can highlight which variant applies per aspect
+	var/list/variant_override_paths = list()
+	if(LAZYLEN(variant_overrides))
+		for(var/path in variant_overrides)
+			variant_override_paths["[path]"] = variant_overrides[path]
+	data["variant_overrides"] = variant_override_paths
 
 	// Show both already-attuned and staged selections
 	data["attuned_majors"] = list()
@@ -192,10 +206,6 @@
 		for(var/spell_path in A.pointbuy_spells)
 			entry["pointbuy_spells"] += list(build_spell_entry(spell_path))
 
-		entry["countersynergy"] = list()
-		for(var/counter_path in A.countersynergy)
-			entry["countersynergy"] += "[counter_path]"
-
 		// Include variant info so the UI can show spell swaps
 		entry["variants"] = list()
 		for(var/variant_name in A.variants)
@@ -241,32 +251,6 @@
 	sortTim(result, GLOBAL_PROC_REF(cmp_list_name_asc))
 	return result
 
-/// Check if a path conflicts with current/staged aspects via countersynergy (excluding pending unbinds)
-/datum/aspect_picker/proc/has_countersynergy(check_path)
-	var/datum/magic_aspect/check = new check_path
-	// Gather all effective aspect paths: staged picks + live aspects - pending unbinds
-	var/list/effective_paths = staged_majors + staged_minors
-	for(var/datum/magic_aspect/A in owner.mind.major_aspects)
-		effective_paths |= A.type
-	for(var/datum/magic_aspect/A in owner.mind.minor_aspects)
-		effective_paths |= A.type
-	effective_paths -= staged_unbind_aspects
-	for(var/epath in effective_paths)
-		if(epath == check_path)
-			continue
-		var/datum/magic_aspect/other = new epath
-		if(other.type in check.countersynergy)
-			qdel(check)
-			qdel(other)
-			return TRUE
-		if(check.type in other.countersynergy)
-			qdel(check)
-			qdel(other)
-			return TRUE
-		qdel(other)
-	qdel(check)
-	return FALSE
-
 /datum/aspect_picker/ui_act(action, list/params)
 	if(..())
 		return
@@ -283,10 +267,6 @@
 				return
 			// Don't re-select something already live or staged
 			if(owner.mind.has_aspect(path))
-				return
-			// Check countersynergy against staged selections
-			if(has_countersynergy(path))
-				to_chat(owner, span_warning("This aspect conflicts with my current selections."))
 				return
 			// Determine if major or minor
 			var/datum/magic_aspect/temp = new path
@@ -341,7 +321,7 @@
 					var/datum/magic_aspect/temp = new path
 					var/cost = (temp.aspect_type == ASPECT_MAJOR) ? ASPECT_RESET_COST_MAJOR : ASPECT_RESET_COST_MINOR
 					qdel(temp)
-					if(get_staged_reset_cost() + cost > ASPECT_RESET_BUDGET)
+					if(get_staged_reset_cost() + cost > owner.mind.get_aspect_reset_remaining())
 						to_chat(owner, span_warning("I cannot reshape any more attunements without rest."))
 						return
 					staged_unbind_aspects += path
@@ -394,7 +374,7 @@
 			// Can't unbind spells given by aspects — only player-picked utilities
 			if(!is_utility_learned(spell_path))
 				return
-			if(get_staged_reset_cost() + ASPECT_RESET_COST_UTILITY > ASPECT_RESET_BUDGET)
+			if(get_staged_reset_cost() + ASPECT_RESET_COST_UTILITY > owner.mind.get_aspect_reset_remaining())
 				to_chat(owner, span_warning("I cannot reshape any more attunements without rest."))
 				return
 			staged_unbind_utilities += spell_path_str
@@ -475,16 +455,8 @@
 				to_chat(owner, span_warning("You must select something before sealing."))
 				return
 
-			// Validate choice selections — each new aspect with choice_spells must have a pick
-			for(var/path in staged_majors + staged_minors)
-				if(owner.mind.has_aspect(path))
-					continue
-				var/datum/magic_aspect/check = new path
-				if(length(check.choice_spells) && !staged_choices["[path]"])
-					to_chat(owner, span_warning("You must choose a spell for [check.name] before sealing."))
-					qdel(check)
-					return
-				qdel(check)
+			// Choice spell validation removed — attune_aspect() auto-resolves:
+			// prefers an already-inscribed choice spell, else falls back to first in list
 
 			if(chanting)
 				return
@@ -543,6 +515,40 @@
 	SStgui.close_uis(src)
 
 	if(has_unbinds)
+		// Build a list of spells that will survive the reshaping — from aspects being kept and newly staged aspects.
+		// revoke_spells() will skip these so overlapping spells aren't deleted.
+		var/list/surviving_spells = list()
+		// Spells from aspects that are staying (not being unbound)
+		for(var/datum/magic_aspect/A in owner.mind.major_aspects + owner.mind.minor_aspects)
+			if(A.type in staged_unbind_aspects)
+				continue
+			surviving_spells |= A.fixed_spells
+			// Only preserve the choice spell this aspect actually granted, not all options
+			if(A.chosen_spell)
+				surviving_spells |= A.chosen_spell
+		// Spells from newly staged aspects about to be added
+		for(var/staged_path in staged_majors + staged_minors)
+			var/datum/magic_aspect/staged = new staged_path
+			surviving_spells |= staged.fixed_spells
+			// Preserve the explicit choice, or the one the player already has (attune_aspect will auto-resolve)
+			var/chosen = staged_choices["[staged_path]"] ? text2path(staged_choices["[staged_path]"]) : null
+			if(!chosen)
+				for(var/candidate in staged.choice_spells)
+					if(owner.mind.has_spell(candidate))
+						chosen = candidate
+						break
+			if(!chosen && length(staged.choice_spells))
+				chosen = staged.choice_spells[1]
+			if(chosen)
+				surviving_spells |= chosen
+			qdel(staged)
+		// Post-aspect spells from class config
+		for(var/post_path in post_aspect_spells)
+			surviving_spells |= post_path
+		// Utility spells the player learned (not being unbound)
+		for(var/spell_path_str in staged_utilities)
+			surviving_spells |= text2path(spell_path_str)
+
 		// Perform unbinding chants for staged aspect unbinds (not utility unbinds)
 		for(var/unbind_path in staged_unbind_aspects)
 			var/datum/magic_aspect/target
@@ -564,7 +570,7 @@
 			if(!owner.mind.spend_aspect_reset(target))
 				to_chat(owner, span_warning("Not enough reset budget remaining."))
 				continue
-			owner.mind.remove_aspect(target)
+			owner.mind.remove_aspect(target, surviving_spells)
 			qdel(target)
 
 		// Utility unbinds - no chant required
@@ -587,8 +593,10 @@
 				qdel(aspect)
 				chanting = FALSE
 				return
-		// Locked aspects with a variant override use that; otherwise mastery
-		var/variant = ((path in locked_aspects) && variant_override) ? variant_override : (mastery ? "mastery" : null)
+		// Check for class variant override on this specific aspect, otherwise mastery
+		var/variant = LAZYLEN(variant_overrides) ? variant_overrides[path] : null
+		if(!variant && mastery)
+			variant = "mastery"
 		var/choice = staged_choices["[path]"] ? text2path(staged_choices["[path]"]) : null
 		if(!owner.mind.attune_aspect(aspect, variant, choice))
 			qdel(aspect)
@@ -602,7 +610,9 @@
 				qdel(aspect)
 				chanting = FALSE
 				return
-		var/variant = ((path in locked_aspects) && variant_override) ? variant_override : (mastery ? "mastery" : null)
+		var/variant = LAZYLEN(variant_overrides) ? variant_overrides[path] : null
+		if(!variant && mastery)
+			variant = "mastery"
 		var/choice = staged_choices["[path]"] ? text2path(staged_choices["[path]"]) : null
 		if(!owner.mind.attune_aspect(aspect, variant, choice))
 			qdel(aspect)
@@ -633,6 +643,12 @@
 			var/datum/new_spell = new spell_path
 			attuned.mark_aspect_spell(new_spell)
 			owner.mind.AddSpell(new_spell)
+	// Grant post-aspect spells (class-granted spells ordered after aspect spells)
+	for(var/post_path in post_aspect_spells)
+		if(owner.mind.has_spell(post_path))
+			continue
+		owner.mind.AddSpell(new post_path)
+
 	// Apply utility spell selections - no chant required
 	for(var/spell_path_str in staged_utilities)
 		var/spell_path = text2path(spell_path_str)

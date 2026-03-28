@@ -87,7 +87,14 @@
 /obj/item/rogueweapon/woodstaff/implement/greater/blacksteel
 	base_implement_name = "blacksteel staff"
 	name = "blacksteel staff"
-	desc = "A fine wood staff that is reinforced with blacksteel rivets and furnishings often used by War-Magos that have graduated from the Celestial Academy of Magos."
+	desc = "A fine wood staff that is reinforced with blacksteel rivets and furnishings often used by War-Magos that have graduated from the Celestial Academy of Magos. Perched atop it is a less efficient though equally beautiful alchemical Dorpel. Perhaps it could be enhanced with a better Dorpel?"
+	icon_state = "blacksteelstaff"
+	max_integrity = 300
+
+/obj/item/rogueweapon/woodstaff/implement/grand/blacksteel
+	base_implement_name = "refined blacksteel staff"
+	name = "refined blacksteel staff"
+	desc = "A fine wood staff that is reinforced with blacksteel rivets and furnishings often used by War-Magos that have graduated from the Celestial Academy of Magos. Perched atop it is a beautiful Dorpel that shimmers with magical energies."
 	icon_state = "blacksteelstaff"
 	max_integrity = 300
 

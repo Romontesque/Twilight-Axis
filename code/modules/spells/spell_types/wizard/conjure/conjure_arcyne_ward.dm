@@ -20,7 +20,7 @@
 	primary_resource_type = SPELL_COST_STAMINA
 	primary_resource_cost = SPELLCOST_CONJURE
 
-	invocations = list("Aegis Arcynae!")
+	invocations = list("Aegis Congrego!")
 	invocation_type = INVOCATION_SHOUT
 
 	charge_required = TRUE
@@ -34,11 +34,11 @@
 	point_cost = 2
 	spell_tier = 2
 	spell_impact_intensity = SPELL_IMPACT_NONE
-	spell_requirements = SPELL_REQUIRES_NO_ANTIMAGIC | SPELL_REQUIRES_HUMAN
+	spell_requirements = SPELL_REQUIRES_NO_ANTIMAGIC | SPELL_REQUIRES_HUMAN | SPELL_REQUIRES_SAME_Z
 
 	var/obj/item/clothing/suit/roguetown/armor/regenerating/skin/arcyne_ward/conjured_ward
 	var/ward_type = /obj/item/clothing/suit/roguetown/armor/regenerating/skin/arcyne_ward
-	var/dismiss_invocation = "Aegis Dimittae."
+	var/dismiss_invocation = "Aegis Dissipo!"
 
 /datum/action/cooldown/spell/conjure_arcyne_ward/before_cast(atom/cast_on)
 	var/dismissing = conjured_ward && !QDELETED(conjured_ward)
@@ -68,9 +68,14 @@
 		qdel(conjured_ward)
 		return TRUE
 
-	if(H.skin_armor && !istype(H.skin_armor, /obj/item/clothing/suit/roguetown/armor/regenerating/skin/arcyne_ward))
-		to_chat(owner, span_warning("Something else already protects my skin!"))
-		return FALSE
+	if(H.skin_armor)
+		if(!istype(H.skin_armor, /obj/item/clothing/suit/roguetown/armor/regenerating/skin/arcyne_ward))
+			to_chat(owner, span_warning("Something else already protects my skin!"))
+			return FALSE
+		var/obj/item/clothing/suit/roguetown/armor/regenerating/skin/arcyne_ward/existing = H.skin_armor
+		if(existing.arcyne_armor_tier > initial(ward_type:arcyne_armor_tier))
+			to_chat(owner, span_warning("A stronger ward already protects me!"))
+			return FALSE
 
 	// Toggle on - conjure ward, no cooldown (button stays available for dismiss)
 	owner.visible_message(span_notice("An arcyne ward shimmers into existence around [owner]!"))
@@ -95,21 +100,21 @@
 	Cast again to dismiss. Cooldown begins when dismissed or destroyed."
 	button_icon_state = "conjure_dragonhide"
 	spell_color = GLOW_COLOR_METAL
-	invocations = list("Aegis Draconis!")
-	dismiss_invocation = "Aegis Dimittae."
+	invocations = list("Draconis Congrego!")
+	dismiss_invocation = "Draconis Dissipo!"
 	point_cost = 4
 	ward_type = /obj/item/clothing/suit/roguetown/armor/regenerating/skin/arcyne_ward/dragonhide
 
 /datum/action/cooldown/spell/conjure_arcyne_ward/crystalhide
 	name = "Conjure Crystalhide Ward"
 	desc = "Conjure a crystalhide ward - an upgraded arcyne ward crystallized with leyline energy. \
-	Grants plate-tier protection and bolsters intelligence. Shatters violently when broken, knocking back nearby foes. 300 integrity. \
+	Grants brigandine-tier protection and bolsters intelligence. Shatters violently when broken, knocking back nearby foes. 300 integrity. \
 	Otherwise functions as a standard arcyne ward - yields coverage to real armor, regenerates by draining energy. \
 	Cast again to dismiss. Cooldown begins when dismissed or destroyed."
 	button_icon_state = "conjure_dragonhide"
 	spell_color = GLOW_COLOR_ARCANE
-	invocations = list("Aegis Crystallis!")
-	dismiss_invocation = "Aegis Dimittae."
+	invocations = list("Psymagia Congrego!")
+	dismiss_invocation = "Psymagia Dissipo!"
 	charge_time = 5 SECONDS
 	point_cost = 4
 	spell_tier = 3
@@ -143,6 +148,7 @@
 	var/mob/living/carbon/human/ward_owner
 	var/coverage_locked = FALSE
 	var/ward_color = GLOW_COLOR_ARCANE
+	var/arcyne_armor_tier = ARCYNE_WARD_TIER_BASE
 
 /obj/item/clothing/suit/roguetown/armor/regenerating/skin/arcyne_ward/proc/setup_ward(mob/living/carbon/human/H)
 	ward_owner = H
@@ -290,6 +296,7 @@
 	armor = ARMOR_DRAGONHIDE
 	max_integrity = 300
 	ward_color = GLOW_COLOR_FIRE
+	arcyne_armor_tier = ARCYNE_WARD_TIER_GREATER
 	repairmsg_begin = "The dragonhide ward begins to mend itself, drawing from my energy..."
 	repairmsg_continue = "The dragonhide ward weaves draconic scales back together..."
 	repairmsg_end = "The dragonhide ward stabilizes, fully restored."
@@ -307,10 +314,11 @@
 
 /obj/item/clothing/suit/roguetown/armor/regenerating/skin/arcyne_ward/crystalhide
 	name = "crystalhide ward"
-	desc = "An arcyne ward crystallized with leyline energy. Shatters violently when broken."
-	armor = ARMOR_PLATE
+	desc = "An arcyne ward crystallized with leyline energy. Tough against blunt force but less rigid than plate. Shatters violently when broken."
+	armor = ARMOR_BRIGANDINE
 	max_integrity = 300
 	ward_color = GLOW_COLOR_KINESIS
+	arcyne_armor_tier = ARCYNE_WARD_TIER_GREATER
 	repairmsg_begin = "The crystalhide ward begins to mend itself, drawing from my energy..."
 	repairmsg_continue = "The crystalhide ward reforms crystalline lattice..."
 	repairmsg_end = "The crystalhide ward stabilizes, fully restored."

@@ -63,6 +63,7 @@
 	backpack_contents = list(
 		/obj/item/ritechalk = 1,
 		/obj/item/storage/keyring/acolyte = 1,
+		/obj/item/book/spellbook = 1,
 	)
 
 	H.cmode_music = 'sound/music/cmode/church/combat_reckoning.ogg'

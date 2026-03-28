@@ -222,8 +222,6 @@
 /datum/sleep_adv/proc/close_ui()
 	if(!mind.current)
 		return
-	if(mind.aspect_resets_used > 0)
-		mind.aspect_resets_used = 0
 	mind.current << browse(null, "window=dreams")
 
 /datum/sleep_adv/proc/process_sleep()

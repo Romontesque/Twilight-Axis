@@ -6,8 +6,8 @@
 
 /datum/virtue/combat/magical_potential/apply_to_human(mob/living/carbon/human/recipient)
 	if (!recipient.get_skill_level(/datum/skill/magic/arcane))
-		if (!recipient.mind?.has_spell(/obj/effect/proc_holder/spell/targeted/touch/prestidigitation))
-			recipient.mind?.AddSpell(new /obj/effect/proc_holder/spell/targeted/touch/prestidigitation)
+		if (!recipient.mind?.has_spell(/datum/action/cooldown/spell/touch/prestidigitation))
+			recipient.mind?.AddSpell(new /datum/action/cooldown/spell/touch/prestidigitation)
 		if (!HAS_TRAIT(recipient, TRAIT_MEDIUMARMOR) && !HAS_TRAIT(recipient, TRAIT_HEAVYARMOR) && !HAS_TRAIT(recipient, TRAIT_DODGEEXPERT) && !HAS_TRAIT(recipient, TRAIT_CRITICAL_RESISTANCE))
 			ADD_TRAIT(recipient, TRAIT_ARCYNE, TRAIT_GENERIC)
 			add_arcyne_potential_utilities(recipient, 3)

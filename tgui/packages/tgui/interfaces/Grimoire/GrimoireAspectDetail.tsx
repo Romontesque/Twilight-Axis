@@ -9,7 +9,6 @@ export const GrimoireAspectDetail = ({
   aspect,
   isAttuned,
   isLocked,
-  isBlocked,
   isPendingUnbind,
   slotsFull,
   tab,
@@ -22,11 +21,11 @@ export const GrimoireAspectDetail = ({
   getPointbuyUsed,
   act,
   readOnly = false,
+  variantOverride,
 }: {
   aspect: Aspect;
   isAttuned: boolean;
   isLocked: boolean;
-  isBlocked: boolean;
   isPendingUnbind: boolean;
   slotsFull: boolean;
   tab: Tab;
@@ -39,6 +38,7 @@ export const GrimoireAspectDetail = ({
   getPointbuyUsed: (a: Aspect) => number;
   act: (action: string, params: Record<string, unknown>) => void;
   readOnly?: boolean;
+  variantOverride?: string;
 }) => {
   const isMajor = aspect.aspect_type === 'major';
   const unbindCost = isMajor ? 2 : 1;
@@ -120,6 +120,7 @@ export const GrimoireAspectDetail = ({
             variants={aspect.variants}
             fixedSpells={aspect.fixed_spells}
             userTier={userTier}
+            variantOverride={variantOverride}
           />
         )}
 
@@ -175,17 +176,6 @@ export const GrimoireAspectDetail = ({
                 : 'Currently attuned.'}
             </div>
           )
-        ) : isBlocked ? (
-          <div
-            className="AspectPicker__attunement"
-            style={{
-              textAlign: 'center',
-              padding: '8px',
-              color: 'rgba(200,100,100,0.6)',
-            }}
-          >
-            Conflicts with a current attunement.
-          </div>
         ) : slotsFull ? (
           <div
             className="AspectPicker__attunement"

@@ -26,7 +26,7 @@
 	associated_skill = /datum/skill/magic/arcane
 	spell_tier = 1
 	spell_impact_intensity = SPELL_IMPACT_NONE
-	spell_requirements = SPELL_REQUIRES_NO_ANTIMAGIC | SPELL_REQUIRES_HUMAN
+	spell_requirements = SPELL_REQUIRES_NO_ANTIMAGIC | SPELL_REQUIRES_HUMAN | SPELL_REQUIRES_SAME_Z
 
 	var/obj/structure/leyline_anchor_tether/active_portal
 	var/max_range = 7

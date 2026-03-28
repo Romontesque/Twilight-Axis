@@ -14,7 +14,8 @@ GLOBAL_LIST_INIT(utility_spells, (list(
 		/datum/action/cooldown/spell/nondetection,
 		/datum/action/cooldown/spell/darkvision, // Buff but it is fine to also put it in this list
 		/datum/action/cooldown/spell/magicians_brick,
-		/datum/action/cooldown/spell/mirror_transform
+		/datum/action/cooldown/spell/mirror_transform,
+		/datum/action/cooldown/spell/touch/rune_ward
 		)
 ))
 

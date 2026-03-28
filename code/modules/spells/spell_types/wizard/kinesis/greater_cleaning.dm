@@ -24,7 +24,7 @@
 
 	charge_required = TRUE
 	charge_time = CHARGETIME_POKE
-	cooldown_time = 30 SECONDS
+	cooldown_time = 10 SECONDS
 
 	associated_skill = /datum/skill/magic/arcane
 	spell_tier = 1
@@ -32,7 +32,7 @@
 
 	point_cost = 1
 
-	spell_requirements = SPELL_REQUIRES_NO_ANTIMAGIC | SPELL_REQUIRES_HUMAN
+	spell_requirements = SPELL_REQUIRES_NO_ANTIMAGIC | SPELL_REQUIRES_HUMAN | SPELL_REQUIRES_SAME_Z
 
 /datum/action/cooldown/spell/greater_cleaning/cast(atom/cast_on)
 	. = ..()

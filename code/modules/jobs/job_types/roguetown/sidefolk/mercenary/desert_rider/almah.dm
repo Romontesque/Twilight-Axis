@@ -59,7 +59,8 @@
 		/obj/item/rogueweapon/scabbard/sheath,
 		/obj/item/clothing/neck/roguetown/shalal,
 		/obj/item/flashlight/flare/torch,
-		/obj/item/storage/belt/rogue/pouch/coins/poor
+		/obj/item/storage/belt/rogue/pouch/coins/poor,
+		/obj/item/book/spellbook
 		)
 
 	// Spellblade chant selection - almah faction, blade choice is locked to shamshirs

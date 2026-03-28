@@ -33,7 +33,7 @@
 	point_cost = 6
 	spell_impact_intensity = SPELL_IMPACT_HIGH
 
-	spell_requirements = SPELL_REQUIRES_NO_ANTIMAGIC | SPELL_REQUIRES_HUMAN
+	spell_requirements = SPELL_REQUIRES_NO_ANTIMAGIC | SPELL_REQUIRES_HUMAN | SPELL_REQUIRES_SAME_Z
 
 	var/delay = TELEGRAPH_HIGH_IMPACT
 	var/damage = 65
@@ -45,7 +45,7 @@
 	if(!istype(H))
 		return FALSE
 
-	// Cryomancy countersynergy: reduce fire stacks on caster
+	// Reduce fire stacks on caster
 	if(H.fire_stacks > 0)
 		H.adjust_fire_stacks(-1)
 		to_chat(H, span_notice("The frost becalms the flame on me."))

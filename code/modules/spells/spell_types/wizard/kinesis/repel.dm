@@ -14,7 +14,7 @@
 	primary_resource_type = SPELL_COST_STAMINA
 	primary_resource_cost = SPELLCOST_MINOR_PROJECTILE
 
-	invocations = list("Expello!")
+	invocations = list("Exmoveo!")
 	invocation_type = INVOCATION_SHOUT
 
 	charge_required = TRUE

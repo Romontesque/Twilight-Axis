@@ -36,6 +36,7 @@
 		gloves = /obj/item/clothing/gloves/roguetown/fingerless
 
 	r_hand = /obj/item/rogueweapon/woodstaff
+	l_hand = /obj/item/book/spellbook
 
 	if(H.mind)
 		SStreasury.give_money_account(ECONOMIC_DESTITUTE, H, "Savings.")

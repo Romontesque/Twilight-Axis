@@ -17,10 +17,11 @@
 	/// Other variants (e.g. "grenzelhoftian") are passed in via attune_aspect().
 	var/list/variants = list()
 	var/school_color
-	var/list/countersynergy = list()
 	/// Major: Latin, English, Latin. Minor: Latin, English.
 	var/list/binding_chants = list()
 	var/list/unbinding_chants = list()
+	/// The choice spell that was actually picked during attunement. Set by grant_choice_spell().
+	var/chosen_spell
 
 /datum/magic_aspect/proc/get_implement_name(base_name)
 	if(!attuned_name)
@@ -31,6 +32,7 @@
 /datum/magic_aspect/proc/grant_choice_spell(datum/mind/target, spell_path)
 	if(!spell_path || !(spell_path in choice_spells))
 		return
+	chosen_spell = spell_path
 	if(target.has_spell(spell_path))
 		return
 	var/datum/new_spell = new spell_path
@@ -86,12 +88,18 @@
 			else
 				target.AddSpell(upgraded)
 
-/datum/magic_aspect/proc/revoke_spells(datum/mind/target)
+/// Revoke all spells granted by this aspect.
+/// skip_spells: flat list of spell paths that should NOT be removed (granted by another source).
+/datum/magic_aspect/proc/revoke_spells(datum/mind/target, list/skip_spells)
 	for(var/spell_path in choice_spells)
+		if(LAZYLEN(skip_spells) && (spell_path in skip_spells))
+			continue
 		var/datum/existing = target.get_spell(spell_path)
 		if(existing)
 			target.RemoveSpell(existing)
 	for(var/spell_path in fixed_spells)
+		if(LAZYLEN(skip_spells) && (spell_path in skip_spells))
+			continue
 		var/datum/existing = target.get_spell(spell_path)
 		if(existing)
 			target.RemoveSpell(existing)
@@ -99,10 +107,14 @@
 		var/list/swaps = variants[variant_name]
 		for(var/base_path in swaps)
 			var/upgrade_path = swaps[base_path]
+			if(LAZYLEN(skip_spells) && (upgrade_path in skip_spells))
+				continue
 			var/datum/existing = target.get_spell(upgrade_path)
 			if(existing)
 				target.RemoveSpell(existing)
 	for(var/spell_path in pointbuy_spells)
+		if(LAZYLEN(skip_spells) && (spell_path in skip_spells))
+			continue
 		var/datum/existing = target.get_spell(spell_path)
 		if(existing)
 			target.RemoveSpell(existing)
@@ -124,21 +136,6 @@
 	for(var/line in chant_lines)
 		chanter.say(line, forced = "spell")
 		if(!do_after(chanter, 2 SECONDS, target = chanter))
-			return FALSE
-	return TRUE
-
-/datum/magic_aspect/proc/can_attune(datum/mind/target)
-	if(!target)
-		return FALSE
-	var/list/all_attuned = list()
-	if(LAZYLEN(target.major_aspects))
-		all_attuned += target.major_aspects
-	if(LAZYLEN(target.minor_aspects))
-		all_attuned += target.minor_aspects
-	for(var/datum/magic_aspect/existing in all_attuned)
-		if(existing.type in countersynergy)
-			return FALSE
-		if(type in existing.countersynergy)
 			return FALSE
 	return TRUE
 

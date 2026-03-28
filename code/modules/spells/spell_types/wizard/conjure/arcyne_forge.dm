@@ -34,7 +34,7 @@
 	point_cost = 2
 	spell_impact_intensity = SPELL_IMPACT_NONE
 
-	spell_requirements = SPELL_REQUIRES_NO_ANTIMAGIC | SPELL_REQUIRES_HUMAN
+	spell_requirements = SPELL_REQUIRES_NO_ANTIMAGIC | SPELL_REQUIRES_HUMAN | SPELL_REQUIRES_SAME_Z
 
 	var/obj/item/conjured_item
 
@@ -59,6 +59,7 @@
 		"Tongs" = /obj/item/rogueweapon/tongs,
 		"Hammer" = /obj/item/rogueweapon/hammer/iron,
 		"Shovel" = /obj/item/rogueweapon/shovel,
+		"Handsaw" = /obj/item/rogueweapon/handsaw,
 		"Fishing Rod" = /obj/item/fishingrod,
 		"Frying Pan" = /obj/item/cooking/pan,
 		"Pot" = /obj/item/reagent_containers/glass/bucket/pot,

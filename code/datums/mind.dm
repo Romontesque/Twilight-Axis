@@ -370,10 +370,6 @@ GLOBAL_LIST_EMPTY(personal_objective_minds)
 /datum/mind/proc/attune_aspect(datum/magic_aspect/aspect, variant, choice_spell)
 	if(!aspect)
 		return FALSE
-	if(!aspect.can_attune(src))
-		if(current)
-			to_chat(current, span_warning("This aspect conflicts with my current attunements."))
-		return FALSE
 	var/max_majors = LAZYLEN(mage_aspect_config) ? mage_aspect_config["major"] : MAX_MAJOR_ASPECTS
 	var/max_minors = LAZYLEN(mage_aspect_config) ? mage_aspect_config["minor"] : MAX_MINOR_ASPECTS
 	var/has_mastery = LAZYLEN(mage_aspect_config) ? mage_aspect_config["mastery"] : FALSE
@@ -391,6 +387,14 @@ GLOBAL_LIST_EMPTY(personal_objective_minds)
 				return FALSE
 			LAZYADD(minor_aspects, aspect)
 	// Grant choice spell first so it appears first on the action bar
+	// If no explicit choice, auto-resolve: prefer one the player already has, else first in list
+	if(!choice_spell && length(aspect.choice_spells))
+		for(var/candidate in aspect.choice_spells)
+			if(has_spell(candidate))
+				choice_spell = candidate
+				break
+		if(!choice_spell)
+			choice_spell = aspect.choice_spells[1]
 	if(choice_spell)
 		aspect.grant_choice_spell(src, choice_spell)
 	aspect.grant_spells(src)
@@ -402,10 +406,10 @@ GLOBAL_LIST_EMPTY(personal_objective_minds)
 	ensure_mage_basics()
 	return TRUE
 
-/datum/mind/proc/remove_aspect(datum/magic_aspect/aspect)
+/datum/mind/proc/remove_aspect(datum/magic_aspect/aspect, list/skip_spells)
 	if(!aspect)
 		return FALSE
-	aspect.revoke_spells(src)
+	aspect.revoke_spells(src, skip_spells)
 	switch(aspect.aspect_type)
 		if(ASPECT_MAJOR)
 			LAZYREMOVE(major_aspects, aspect)
@@ -912,12 +916,12 @@ GLOBAL_LIST_EMPTY(personal_objective_minds)
 			AddSpell(new /datum/action/cooldown/spell/conjure_arcyne_ward)
 
 	// Prestidigitation - always last
-	var/datum/presto = get_spell(/obj/effect/proc_holder/spell/targeted/touch/prestidigitation)
+	var/datum/presto = get_spell(/datum/action/cooldown/spell/touch/prestidigitation)
 	if(!presto)
-		AddSpell(new /obj/effect/proc_holder/spell/targeted/touch/prestidigitation)
+		AddSpell(new /datum/action/cooldown/spell/touch/prestidigitation)
 	else
 		RemoveSpell(presto)
-		AddSpell(new /obj/effect/proc_holder/spell/targeted/touch/prestidigitation)
+		AddSpell(new /datum/action/cooldown/spell/touch/prestidigitation)
 
 
 /datum/mind/proc/show_spell_tip()

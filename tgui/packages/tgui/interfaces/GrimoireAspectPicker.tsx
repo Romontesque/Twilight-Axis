@@ -36,6 +36,7 @@ export const GrimoireAspectPicker = () => {
     staged_unbind_utilities = [],
     known_utilities = [],
     given_utilities = [],
+    variant_overrides = {},
   } = data;
 
   const [selectedPath, setSelectedPath] = useState<string | null>(null);
@@ -63,29 +64,11 @@ export const GrimoireAspectPicker = () => {
     ? staged_unbind_aspects.includes(selected.path)
     : false;
 
-  const allAttuned = [...attuned_majors, ...attuned_minors];
-  const allAspects = [...major_aspects, ...minor_aspects];
-  // Effective attuned excludes pending unbinds for countersynergy checks
-  const effectiveAttuned = allAttuned.filter(
-    (p) => !staged_unbind_aspects.includes(p),
-  );
-
   const hasAccess = (t: Tab): boolean => {
     if (read_only) return true;
     if (t === 'major') return max_majors > 0;
     if (t === 'minor') return max_minors > 0;
     if (t === 'utilities') return max_utilities > 0;
-    return false;
-  };
-
-  const checkBlocked = (aspect: Aspect): boolean => {
-    for (const counterPath of aspect.countersynergy) {
-      if (effectiveAttuned.includes(counterPath)) return true;
-    }
-    for (const attunedPath of effectiveAttuned) {
-      const attunedAspect = allAspects.find((a) => a.path === attunedPath);
-      if (attunedAspect?.countersynergy.includes(aspect.path)) return true;
-    }
     return false;
   };
 
@@ -199,7 +182,6 @@ export const GrimoireAspectPicker = () => {
                   locked={tabAccessible ? locked_aspects : []}
                   pendingUnbinds={tabAccessible ? staged_unbind_aspects : []}
                   selectedPath={selectedPath}
-                  isBlocked={checkBlocked}
                   onSelect={setSelectedPath}
                 />
               )}
@@ -260,7 +242,7 @@ export const GrimoireAspectPicker = () => {
                     aspect={selected}
                     isAttuned={false}
                     isLocked={true}
-                    isBlocked={false}
+  
                     isPendingUnbind={false}
                     slotsFull={true}
                     tab={tab}
@@ -273,6 +255,7 @@ export const GrimoireAspectPicker = () => {
                     getPointbuyUsed={getPointbuyUsed}
                     act={() => {}}
                     readOnly
+                    variantOverride={variant_overrides[selected.path]}
                   />
                 ) : (
                   <div className="AspectPicker__empty">
@@ -286,7 +269,7 @@ export const GrimoireAspectPicker = () => {
                   aspect={selected}
                   isAttuned={isAttuned}
                   isLocked={isLocked}
-                  isBlocked={checkBlocked(selected)}
+
                   isPendingUnbind={isPendingUnbind}
                   slotsFull={slotsFull}
                   tab={tab}
@@ -299,6 +282,7 @@ export const GrimoireAspectPicker = () => {
                   getPointbuyUsed={getPointbuyUsed}
                   act={wrappedAct}
                   readOnly={read_only}
+                  variantOverride={variant_overrides[selected.path]}
                 />
               ) : (
                 <div className="AspectPicker__empty">

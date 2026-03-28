@@ -2,7 +2,7 @@
 	button_icon = 'icons/mob/actions/mage_ferramancy.dmi'
 	name = "Arcyne Lance"
 	desc = "Hurl a spectral arcyne lance that pierces through up to 3 targets without losing momentum. \
-	Toggle arc mode (Ctrl+G) to lob over obstacles at reduced damage."
+	Toggle arc mode (Ctrl+G) to lob over obstacles at reduced damage. Arced projectiles will not pierce multiple targets."
 	button_icon_state = "arcyne_lance"
 	sound = 'sound/magic/scrapeblade.ogg'
 	spell_color = GLOW_COLOR_METAL
@@ -59,6 +59,7 @@
 	name = "arced arcyne lance"
 	damage = 45
 	arcshot = TRUE
+	max_hits = 1 // Arced version does not pierce
 
 /obj/projectile/magic/arcyne_lance/on_hit(target)
 	if(ismob(target))

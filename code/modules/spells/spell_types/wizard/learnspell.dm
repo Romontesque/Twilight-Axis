@@ -11,7 +11,7 @@
 
 	primary_resource_type = SPELL_COST_NONE
 
-	spell_requirements = SPELL_REQUIRES_HUMAN
+	spell_requirements = SPELL_REQUIRES_HUMAN | SPELL_REQUIRES_SAME_Z
 	spell_impact_intensity = SPELL_IMPACT_NONE
 
 /datum/action/cooldown/spell/learnspell/cast(atom/cast_on)
