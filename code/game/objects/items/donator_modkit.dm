@@ -526,12 +526,14 @@
 //Lmwevil - Beak Mask
 /obj/item/enchantingkit/lmwevil_brassbeak
 	name = "brass beak mask morphing elixir"
+	desc = "A small container of special morphing dust, perfect to make a specifc item. Required: Head Physician's Mask Or Plague Mask"
 	target_items = list(/obj/item/clothing/mask/rogue/courtphysician, /obj/item/clothing/mask/rogue/physician)
 	result_item = /obj/item/clothing/mask/rogue/courtphysician/brassbeak
 
 //Shudderfly - Steel Dagger
 /obj/item/enchantingkit/shudderfly_dagger
 	name = "'Eoran Spike' morphing elixir"
+	desc = "A small container of special morphing dust, perfect to make a specifc item. Required: Steel Dagger"
 	target_items = list(/obj/item/rogueweapon/huntingknife/idagger/steel)
 	result_item = /obj/item/rogueweapon/huntingknife/idagger/steel/shudderfly
 
