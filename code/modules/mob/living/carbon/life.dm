@@ -80,6 +80,7 @@
 						Immobilize(15) // EAT A MICROSTUN. YOU'RE AVOIDING A PAINCRIT.
 						if(HAS_TRAIT(src, TRAIT_PSYDONIAN_GRIT))
 							visible_message(span_info("[src] audibly grits their teeth. ENDURING through their pain."), span_info("Through my faith in HIM, I ENDURE."))
+							src.playsound_local(src, 'sound/misc/psydong.ogg', 100, FALSE)
 						else
 							visible_message(span_info("[src] trembled for a moment, but they remain stood."), span_info("My strong constitution keeps me upright."))
 						stuttering += 5
@@ -878,8 +879,10 @@ GLOBAL_LIST_INIT(ballmer_windows_me_msg, list("Yo man, what if, we like, uh, put
 
 	
 	if(stat >= UNCONSCIOUS || IsKnockdown())
-		drowning_drowniness++
-		if(drowning_drowniness >= 3) adjustOxyLoss(10)
+		if(!HAS_TRAIT(src, TRAIT_WATERBREATHING) && !HAS_TRAIT(src, TRAIT_NOBREATH))
+			drowning_drowniness++
+			if(drowning_drowniness >= 3) 
+				adjustOxyLoss(10)
 	else
 		drowning_drowniness = max(0, drowning_drowniness - 1)
 
