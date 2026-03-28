@@ -128,7 +128,7 @@
 						/obj/item/inqarticles/garrote = 1)
 				H.adjust_skillrank_up_to(/datum/skill/magic/arcane, SKILL_LEVEL_APPRENTICE, TRUE)
 				H.mind?.AddSpell(new /obj/effect/proc_holder/spell/invoked/shadowstep)
-				H.mind?.RemoveSpell(new /obj/effect/proc_holder/spell/targeted/touch/prestidigitation)
+				H.mind?.RemoveSpell(H.mind.get_spell(/datum/action/cooldown/spell/touch/prestidigitation))
 				var/arcane = list("Fetch", "Invisibility", "Repulse", "Leap")
 				var/arcane_choice = input("TAKE YOUR RUNE", "PSYDON'S RUNE") as anything in arcane
 				switch(arcane_choice)
