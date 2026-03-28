@@ -9,20 +9,20 @@
 	traits_applied = list(TRAIT_RITUALIST, TRAIT_HEAVYARMOR)
 	maximum_possible_slots = 2 //Ppl dont like heavy armor antags.
 	// Heretic is by far the best class with access to rituals (as long as they play a god with ritual), holy and heavy armor. So they keep 7 points.
-	subclass_stats = list( //TA Edit
+	subclass_stats = list( //TA EDIT START
 		STATKEY_STR = 2,
 		STATKEY_CON = 2,
 		STATKEY_WIL = 3
 	)
-	subclass_skills = list(
+	subclass_skills = list( 
 		/datum/skill/magic/holy = SKILL_LEVEL_EXPERT,
-		/datum/skill/combat/maces = SKILL_LEVEL_JOURNEYMAN,
-		/datum/skill/combat/swords = SKILL_LEVEL_JOURNEYMAN,
-		/datum/skill/combat/axes = SKILL_LEVEL_JOURNEYMAN,
-		/datum/skill/combat/shields = SKILL_LEVEL_JOURNEYMAN,
-		/datum/skill/combat/whipsflails = SKILL_LEVEL_JOURNEYMAN,
-		/datum/skill/combat/polearms = SKILL_LEVEL_JOURNEYMAN,
-		/datum/skill/combat/staves = SKILL_LEVEL_JOURNEYMAN,
+		/datum/skill/combat/maces = SKILL_LEVEL_EXPERT,
+		/datum/skill/combat/swords = SKILL_LEVEL_EXPERT,
+		/datum/skill/combat/axes = SKILL_LEVEL_EXPERT,
+		/datum/skill/combat/shields = SKILL_LEVEL_EXPERT,
+		/datum/skill/combat/whipsflails = SKILL_LEVEL_EXPERT,
+		/datum/skill/combat/polearms = SKILL_LEVEL_EXPERT,
+		/datum/skill/combat/staves = SKILL_LEVEL_EXPERT, //TA EDIT END
 		/datum/skill/combat/wrestling = SKILL_LEVEL_EXPERT,
 		/datum/skill/misc/swimming = SKILL_LEVEL_JOURNEYMAN,
 		/datum/skill/combat/unarmed = SKILL_LEVEL_JOURNEYMAN,
@@ -49,33 +49,33 @@
 		var/weapon_choice = input(H, "Choose your weapon.", "TAKE UP ARMS") as anything in weapons
 		switch(weapon_choice)
 			if("Longsword")
-				H.adjust_skillrank_up_to(/datum/skill/combat/swords, SKILL_LEVEL_EXPERT, TRUE)
+				H.adjust_skillrank_up_to(/datum/skill/combat/swords, SKILL_LEVEL_MASTER, TRUE) //TA EDIT START
 				beltr = /obj/item/rogueweapon/scabbard/sword
 				if(HAS_TRAIT(H, TRAIT_PSYDONIAN_GRIT))
 					r_hand = /obj/item/rogueweapon/sword/long/psysword
 				else
 					r_hand = /obj/item/rogueweapon/sword/long
 			if("Mace")
-				H.adjust_skillrank_up_to(/datum/skill/combat/maces, SKILL_LEVEL_EXPERT, TRUE)
+				H.adjust_skillrank_up_to(/datum/skill/combat/maces, SKILL_LEVEL_MASTER, TRUE)
 				if(HAS_TRAIT(H, TRAIT_PSYDONIAN_GRIT))
 					beltr = /obj/item/rogueweapon/mace/goden/psymace
 				else
 					beltr = /obj/item/rogueweapon/mace/steel
 			if("Flail")
-				H.adjust_skillrank_up_to(/datum/skill/combat/whipsflails, SKILL_LEVEL_EXPERT, TRUE)
+				H.adjust_skillrank_up_to(/datum/skill/combat/whipsflails, SKILL_LEVEL_MASTER, TRUE)
 				if(HAS_TRAIT(H, TRAIT_PSYDONIAN_GRIT))
 					beltr = /obj/item/rogueweapon/flail/sflail/psyflail
 				else
 					beltr = /obj/item/rogueweapon/flail/sflail
 			if("Axe")
-				H.adjust_skillrank_up_to(/datum/skill/combat/axes, SKILL_LEVEL_EXPERT, TRUE)
+				H.adjust_skillrank_up_to(/datum/skill/combat/axes, SKILL_LEVEL_MASTER, TRUE)
 				if(HAS_TRAIT(H, TRAIT_PSYDONIAN_GRIT))
 					beltr = /obj/item/rogueweapon/stoneaxe/battle/psyaxe
 				else
 					beltr = /obj/item/rogueweapon/stoneaxe/woodcut/steel
 			if("Billhook")
 				l_hand = /obj/item/rogueweapon/scabbard/gwstrap
-				H.adjust_skillrank_up_to(/datum/skill/combat/polearms, SKILL_LEVEL_EXPERT, TRUE)
+				H.adjust_skillrank_up_to(/datum/skill/combat/polearms, SKILL_LEVEL_MASTER, TRUE) //TA EDIT END
 				if(HAS_TRAIT(H, TRAIT_PSYDONIAN_GRIT))
 					r_hand = /obj/item/rogueweapon/spear/psyspear
 				else
