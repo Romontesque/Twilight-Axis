@@ -30,7 +30,7 @@
 	craftdiff = 2
 	sellprice = 10
 
-/datum/crafting_recipe/roguetown/sewing/soundbreakerhat
+/datum/crafting_recipe/roguetown/sewing/pgambesonpants
 	name = "padded gamboised cuisses"
 	category = "Pants"
 	result = list(/obj/item/clothing/under/roguetown/gambeson/heavy)
