@@ -48,6 +48,14 @@
 /proc/chess_square_name(idx)
 	return "[ascii2text(96 + chess_square_file(idx))][chess_square_rank(idx)]"
 
+/proc/chess_wrap_point_24(point)
+	point = text2num("[point]")
+	while(point < 1)
+		point += 24
+	while(point > 24)
+		point -= 24
+	return point
+
 /proc/chess_side_name(color)
 	if(color == CHESS_WHITE)
 		return "Белые"
@@ -207,6 +215,9 @@
 	data["promotion_choices"] = list("queen", "rook", "bishop", "knight")
 	data["game_mode"] = match.game_mode
 	data["game_mode_label"] = match.get_game_mode_label()
+	data["current_rules_text"] = match.get_current_rules_text()
+	data["checkers_flying_kings"] = match.checkers_flying_kings
+	data["nards_long_rules"] = match.nards_long_rules
 	data["mode_options"] = match.get_mode_options()
 	data["switch_mode_target_key"] = match.other_mode()
 	data["switch_mode_target_label"] = match.get_mode_label(match.other_mode())
@@ -294,7 +305,9 @@
 		if("request_mode_switch")
 			play_notify_sound()
 			var/target_mode = params["mode"]
-			if(match.request_mode_switch(target_mode, user))
+			var/checkers_flying_kings = !!text2num(params["checkers_flying_kings"])
+			var/nards_long_rules = !!text2num(params["nards_long_rules"])
+			if(match.request_mode_switch(target_mode, user, checkers_flying_kings, nards_long_rules))
 				clear_all_selections()
 				if(match.pending_mode)
 					last_ui_message = match.get_mode_switch_text()
@@ -619,6 +632,7 @@
 		"legal_targets" = match.get_nards_legal_targets_for_user(user),
 		"can_select_bar" = match.nards_bar_count(match.side_for_user(user)) > 0,
 		"available_rolls" = match.nards_available_rolls ? match.nards_available_rolls.Copy() : list(),
+		"is_long_rules" = match.nards_long_rules,
 		"overturned" = match.overturned,
 		"scatter" = match.get_nards_scatter_data(),
 		"scatter_dice" = match.get_nards_scatter_dice_data()
@@ -749,9 +763,12 @@
 	// Checkers state
 	var/forced_capture_from = 0
 	var/pending_turn_notation = null
+	var/checkers_flying_kings = FALSE
 
 	// Shared mode-switch request
 	var/pending_mode = null
+	var/pending_checkers_flying_kings = FALSE
+	var/pending_nards_long_rules = FALSE
 	var/pending_mode_requester_ckey = null
 	var/pending_mode_requester_name = null
 	var/pending_reset_requester_ckey = null
@@ -779,6 +796,8 @@
 	var/list/nards_available_rolls = list()
 	var/nards_selected_point = 0
 	var/nards_selected_from_bar = FALSE
+	var/nards_long_rules = FALSE
+	var/nards_head_moves_this_turn = 0
 
 /datum/chess_match/New(obj/structure/chessboard/new_owner)
 	owner = new_owner
@@ -796,8 +815,22 @@
 		return "Нарды"
 	return "Неизвестно"
 
+/datum/chess_match/proc/get_mode_label_with_rules(mode, use_checkers_flying_kings = checkers_flying_kings, use_nards_long_rules = nards_long_rules)
+	if(mode == BOARD_MODE_CHECKERS)
+		return use_checkers_flying_kings ? "Шашки (дальняя дамка)" : "Шашки (обычная дамка)"
+	if(mode == BOARD_MODE_NARDS)
+		return use_nards_long_rules ? "Нарды (длинные)" : "Нарды (короткие)"
+	return get_mode_label(mode)
+
 /datum/chess_match/proc/get_game_mode_label()
-	return get_mode_label(game_mode)
+	return get_mode_label_with_rules(game_mode)
+
+/datum/chess_match/proc/get_current_rules_text()
+	if(game_mode == BOARD_MODE_CHECKERS)
+		return checkers_flying_kings ? "Дамка ходит по всей диагонали." : "Дамка ходит только на одну клетку."
+	if(game_mode == BOARD_MODE_NARDS)
+		return nards_long_rules ? "Используются правила длинных нард." : "Используются правила коротких нард."
+	return null
 
 /datum/chess_match/proc/other_mode()
 	if(game_mode == BOARD_MODE_NONE)
@@ -819,6 +852,8 @@
 	pending_mode = null
 	pending_mode_requester_ckey = null
 	pending_mode_requester_name = null
+	pending_checkers_flying_kings = FALSE
+	pending_nards_long_rules = FALSE
 
 /datum/chess_match/proc/clear_reset_requests()
 	pending_reset_requester_ckey = null
@@ -1079,7 +1114,7 @@
 	if(!pending_mode)
 		return null
 	var/requester = pending_mode_requester_name ? pending_mode_requester_name : "Один из игроков"
-	return "[requester] предлагает переключить режим на «[get_mode_label(pending_mode)]». Второй игрок должен подтвердить смену режима."
+	return "[requester] предлагает переключить режим на «[get_mode_label_with_rules(pending_mode, pending_checkers_flying_kings, pending_nards_long_rules)]». Второй игрок должен подтвердить смену режима."
 
 /datum/chess_match/proc/active_game_in_progress()
 	if(game_mode == BOARD_MODE_NONE)
@@ -1106,14 +1141,16 @@
 		return TRUE
 	return !!side_for_user(user)
 
-/datum/chess_match/proc/request_mode_switch(target_mode, mob/user)
+/datum/chess_match/proc/request_mode_switch(target_mode, mob/user, requested_checkers_flying_kings = checkers_flying_kings, requested_nards_long_rules = nards_long_rules)
 	if(overturned)
 		to_chat(user, span_warning("Сначала сбросьте доску после опрокидывания."))
 		return FALSE
 	if(target_mode != BOARD_MODE_CHESS && target_mode != BOARD_MODE_CHECKERS && target_mode != BOARD_MODE_NARDS)
 		return FALSE
-	if(target_mode == game_mode)
-		to_chat(user, span_warning("Этот режим уже выбран."))
+	requested_checkers_flying_kings = !!requested_checkers_flying_kings
+	requested_nards_long_rules = !!requested_nards_long_rules
+	if(target_mode == game_mode && requested_checkers_flying_kings == checkers_flying_kings && requested_nards_long_rules == nards_long_rules)
+		to_chat(user, span_warning("Этот режим и эти правила уже выбраны."))
 		return FALSE
 
 	if(active_game_in_progress())
@@ -1126,26 +1163,28 @@
 		if(!side_for_user(user))
 			to_chat(user, span_warning("Только игроки за доской могут согласовать смену режима."))
 			return FALSE
-		if(pending_mode == target_mode)
+		if(pending_mode == target_mode && pending_checkers_flying_kings == requested_checkers_flying_kings && pending_nards_long_rules == requested_nards_long_rules)
 			if(pending_mode_requester_ckey == user.ckey)
 				to_chat(user, span_warning("Запрос на смену режима уже отправлен."))
 				return FALSE
 			return confirm_mode_switch(user)
 
 		pending_mode = target_mode
+		pending_checkers_flying_kings = requested_checkers_flying_kings
+		pending_nards_long_rules = requested_nards_long_rules
 		pending_mode_requester_ckey = user.ckey
 		pending_mode_requester_name = chess_display_name(user)
 		last_action_message = get_mode_switch_text()
 		return TRUE
 
-	switch_game_mode(target_mode)
+	switch_game_mode(target_mode, requested_checkers_flying_kings, requested_nards_long_rules)
 	last_action_message = "Режим переключён на [get_game_mode_label()]."
 	return TRUE
 
 /datum/chess_match/proc/confirm_mode_switch(mob/user)
 	if(!can_confirm_mode_switch(user))
 		return FALSE
-	switch_game_mode(pending_mode)
+	switch_game_mode(pending_mode, pending_checkers_flying_kings, pending_nards_long_rules)
 	last_action_message = "Режим переключён на [get_game_mode_label()]."
 	return TRUE
 
@@ -1156,8 +1195,10 @@
 	last_action_message = "Запрос на смену режима отменён."
 	return TRUE
 
-/datum/chess_match/proc/switch_game_mode(new_mode)
+/datum/chess_match/proc/switch_game_mode(new_mode, new_checkers_flying_kings = checkers_flying_kings, new_nards_long_rules = nards_long_rules)
 	game_mode = new_mode
+	checkers_flying_kings = !!new_checkers_flying_kings
+	nards_long_rules = !!new_nards_long_rules
 	clear_mode_switch_request()
 	clear_reset_requests()
 	reset_position()
@@ -1199,6 +1240,7 @@
 	nards_selected_from_bar = FALSE
 	nards_scatter = list()
 	nards_scatter_dice = list()
+	nards_head_moves_this_turn = 0
 
 	forced_capture_from = 0
 	pending_turn_notation = null
@@ -1254,6 +1296,10 @@
 
 
 /datum/chess_match/proc/setup_nards_position()
+	if(nards_long_rules)
+		nards_set_point(24, CHESS_WHITE, 15)
+		nards_set_point(12, CHESS_BLACK, 15)
+		return
 	nards_set_point(24, CHESS_WHITE, 2)
 	nards_set_point(13, CHESS_WHITE, 5)
 	nards_set_point(8, CHESS_WHITE, 3)
@@ -1283,6 +1329,27 @@
 	if(!islist(entry))
 		return 0
 	return entry["count"]
+
+/datum/chess_match/proc/nards_head_point(color)
+	if(color == CHESS_WHITE)
+		return 24
+	if(nards_long_rules)
+		return 12
+	return 1
+
+/datum/chess_match/proc/nards_point_is_in_home(color, point)
+	if(color == CHESS_WHITE)
+		return (point >= 1 && point <= 6)
+	if(nards_long_rules)
+		return (point >= 13 && point <= 18)
+	return (point >= 19 && point <= 24)
+
+/datum/chess_match/proc/nards_bear_off_exact_value(color, from_point)
+	if(color == CHESS_WHITE)
+		return from_point
+	if(nards_long_rules)
+		return from_point - 12
+	return 25 - from_point
 
 /datum/chess_match/proc/opposite(color)
 	if(color == CHESS_WHITE)
@@ -1393,6 +1460,9 @@
 /datum/chess_match/proc/get_status_text()
 	var/list/parts = list()
 	parts += "Режим: [get_game_mode_label()]."
+	var/current_rules_text = get_current_rules_text()
+	if(current_rules_text)
+		parts += "[current_rules_text]"
 
 	if(game_mode == BOARD_MODE_NONE)
 		parts += "Выберите игру через кнопку смены режима."
@@ -1952,6 +2022,19 @@
 	var/from_file = chess_square_file(from_idx)
 	var/from_rank = chess_square_rank(from_idx)
 
+	if(piece_type == CHECKERS_KING && checkers_flying_kings)
+		for(var/list/step in list(list(1, 1), list(-1, 1), list(1, -1), list(-1, -1)))
+			var/to_file = from_file + step[1]
+			var/to_rank = from_rank + step[2]
+			while(to_file >= 1 && to_file <= 8 && to_rank >= 1 && to_rank <= 8)
+				var/to_idx = chess_square_index(to_file, to_rank)
+				if(board[to_idx])
+					break
+				targets += to_idx
+				to_file += step[1]
+				to_rank += step[2]
+		return targets
+
 	var/list/dirs = list()
 	if(piece_type == CHECKERS_KING)
 		dirs += list(list(1, 1), list(-1, 1), list(1, -1), list(-1, -1))
@@ -1977,8 +2060,30 @@
 		return targets
 
 	var/color = chess_piece_color(piece)
+	var/piece_type = chess_piece_type(piece)
 	var/from_file = chess_square_file(from_idx)
 	var/from_rank = chess_square_rank(from_idx)
+
+	if(piece_type == CHECKERS_KING && checkers_flying_kings)
+		for(var/list/step in list(list(1, 1), list(-1, 1), list(1, -1), list(-1, -1)))
+			var/to_file = from_file + step[1]
+			var/to_rank = from_rank + step[2]
+			var/enemy_found = FALSE
+			while(to_file >= 1 && to_file <= 8 && to_rank >= 1 && to_rank <= 8)
+				var/to_idx = chess_square_index(to_file, to_rank)
+				var/target_piece = board[to_idx]
+				if(!target_piece)
+					if(enemy_found)
+						targets += to_idx
+				else if(chess_piece_color(target_piece) == color)
+					break
+				else
+					if(enemy_found)
+						break
+					enemy_found = TRUE
+				to_file += step[1]
+				to_rank += step[2]
+		return targets
 
 	for(var/list/step in list(list(1, 1), list(-1, 1), list(1, -1), list(-1, -1)))
 		var/mid_file = from_file + step[1]
@@ -2009,6 +2114,41 @@
 			return TRUE
 	return FALSE
 
+/datum/chess_match/proc/get_checkers_captured_index(from_idx, to_idx)
+	var/piece = board[from_idx]
+	if(!piece)
+		return 0
+	var/piece_type = chess_piece_type(piece)
+	var/from_file = chess_square_file(from_idx)
+	var/from_rank = chess_square_rank(from_idx)
+	var/to_file = chess_square_file(to_idx)
+	var/to_rank = chess_square_rank(to_idx)
+
+	if(piece_type == CHECKERS_KING && checkers_flying_kings)
+		var/step_file = sign(to_file - from_file)
+		var/step_rank = sign(to_rank - from_rank)
+		if(!step_file || !step_rank || abs(to_file - from_file) != abs(to_rank - from_rank))
+			return 0
+		var/file = from_file + step_file
+		var/rank = from_rank + step_rank
+		var/captured_idx = 0
+		while(file != to_file || rank != to_rank)
+			var/test_idx = chess_square_index(file, rank)
+			var/test_piece = board[test_idx]
+			if(test_piece)
+				if(chess_piece_color(test_piece) == chess_piece_color(piece))
+					return 0
+				if(captured_idx)
+					return 0
+				captured_idx = test_idx
+			file += step_file
+			rank += step_rank
+		return captured_idx
+
+	if(abs(to_file - from_file) == 2 && abs(to_rank - from_rank) == 2)
+		return chess_square_index(from_file + ((to_file - from_file) / 2), from_rank + ((to_rank - from_rank) / 2))
+	return 0
+
 /datum/chess_match/proc/is_checkers_legal_move(from_idx, to_idx)
 	if(from_idx == to_idx)
 		return FALSE
@@ -2022,33 +2162,8 @@
 	if(forced_capture_from && from_idx != forced_capture_from)
 		return FALSE
 
-	var/from_file = chess_square_file(from_idx)
-	var/from_rank = chess_square_rank(from_idx)
-	var/to_file = chess_square_file(to_idx)
-	var/to_rank = chess_square_rank(to_idx)
-	var/file_diff = to_file - from_file
-	var/rank_diff = to_rank - from_rank
-	var/piece_type = chess_piece_type(piece)
-	var/must_capture = checkers_any_capture(turn)
-
-	if(abs(file_diff) == 2 && abs(rank_diff) == 2)
-		var/mid_idx = chess_square_index(from_file + (file_diff / 2), from_rank + (rank_diff / 2))
-		var/mid_piece = board[mid_idx]
-		if(mid_piece && chess_piece_color(mid_piece) == opposite(turn))
-			return TRUE
-		return FALSE
-
-	if(must_capture)
-		return FALSE
-
-	if(abs(file_diff) != 1 || abs(rank_diff) != 1)
-		return FALSE
-
-	if(piece_type == CHECKERS_KING)
-		return TRUE
-
-	var/forward = (turn == CHESS_WHITE) ? 1 : -1
-	return rank_diff == forward
+	var/list/legal_targets = get_checkers_legal_targets(from_idx)
+	return (to_idx in legal_targets)
 
 /datum/chess_match/proc/has_any_checkers_legal_move(color)
 	var/original_turn = turn
@@ -2123,15 +2238,12 @@
 	var/piece = board[from_idx]
 	var/color = chess_piece_color(piece)
 	var/piece_type = chess_piece_type(piece)
-	var/from_file = chess_square_file(from_idx)
-	var/from_rank = chess_square_rank(from_idx)
-	var/to_file = chess_square_file(to_idx)
 	var/to_rank = chess_square_rank(to_idx)
 
 	var/was_capture = FALSE
-	if(abs(to_file - from_file) == 2 && abs(to_rank - from_rank) == 2)
-		var/mid_idx = chess_square_index(from_file + ((to_file - from_file) / 2), from_rank + ((to_rank - from_rank) / 2))
-		board[mid_idx] = null
+	var/captured_idx = get_checkers_captured_index(from_idx, to_idx)
+	if(captured_idx)
+		board[captured_idx] = null
 		was_capture = TRUE
 
 	board[to_idx] = piece
@@ -2267,21 +2379,22 @@
 	return out
 
 /datum/chess_match/proc/nards_all_in_home(color)
-	if(nards_bar_count(color) > 0)
+	if(!nards_long_rules && nards_bar_count(color) > 0)
 		return FALSE
-	if(color == CHESS_WHITE)
-		for(var/point = 7, point <= 24, point++)
-			if(nards_point_color(point) == color)
-				return FALSE
-	else
-		for(var/point = 1, point <= 18, point++)
-			if(nards_point_color(point) == color)
-				return FALSE
+	for(var/point = 1, point <= 24, point++)
+		if(nards_point_color(point) != color)
+			continue
+		if(!nards_point_is_in_home(color, point))
+			return FALSE
 	return TRUE
 
 /datum/chess_match/proc/nards_has_farther_checker_for_bear_off(color, from_point)
 	if(color == CHESS_WHITE)
 		for(var/point = from_point + 1, point <= 6, point++)
+			if(nards_point_color(point) == color)
+				return TRUE
+	else if(nards_long_rules)
+		for(var/point = from_point + 1, point <= 18, point++)
 			if(nards_point_color(point) == color)
 				return TRUE
 	else
@@ -2299,12 +2412,18 @@
 		return TRUE
 	if(target_color == color)
 		return TRUE
+	if(nards_long_rules)
+		return FALSE
 	return target_count <= 1
 
 /datum/chess_match/proc/nards_get_destination_for_die(color, from_point, die, from_bar = FALSE)
 	die = text2num("[die]")
 	if(die <= 0)
 		return null
+	if(nards_long_rules)
+		if(from_bar)
+			return null
+		return chess_wrap_point_24(from_point - die)
 	if(from_bar)
 		if(color == CHESS_WHITE)
 			return 25 - die
@@ -2316,18 +2435,11 @@
 /datum/chess_match/proc/nards_can_bear_off_with_die(color, from_point, die)
 	if(!nards_all_in_home(color))
 		return FALSE
-	if(color == CHESS_WHITE)
-		var/exact = from_point - die
-		if(exact == 0)
-			return TRUE
-		if(exact < 0 && !nards_has_farther_checker_for_bear_off(color, from_point))
-			return TRUE
-	else
-		var/exact2 = from_point + die
-		if(exact2 == 25)
-			return TRUE
-		if(exact2 > 25 && !nards_has_farther_checker_for_bear_off(color, from_point))
-			return TRUE
+	var/exact = nards_bear_off_exact_value(color, from_point) - die
+	if(exact == 0)
+		return TRUE
+	if(exact < 0 && !nards_has_farther_checker_for_bear_off(color, from_point))
+		return TRUE
 	return FALSE
 
 /datum/chess_match/proc/get_nards_legal_targets(color, from_point, from_bar = FALSE) as /list
@@ -2335,6 +2447,8 @@
 	if(game_mode != BOARD_MODE_NARDS || !nards_available_rolls || !nards_available_rolls.len)
 		return targets
 	if(from_bar)
+		if(nards_long_rules)
+			return targets
 		if(nards_bar_count(color) <= 0)
 			return targets
 	else
@@ -2342,17 +2456,29 @@
 			return targets
 		if(nards_point_color(from_point) != color || nards_point_count(from_point) <= 0)
 			return targets
-		if(nards_bar_count(color) > 0)
+		if(!nards_long_rules && nards_bar_count(color) > 0)
 			return targets
+		if(nards_long_rules && from_point == nards_head_point(color) && nards_head_moves_this_turn >= 1)
+			return targets
+	var/all_in_home = !from_bar && nards_all_in_home(color)
 	for(var/die in nards_available_rolls)
 		var/d = text2num("[die]")
+		if(!from_bar && nards_can_bear_off_with_die(color, from_point, d))
+			if(!(0 in targets))
+				targets += 0
+			if(nards_long_rules)
+				continue
+		if(nards_long_rules && all_in_home)
+			var/raw_destination = from_point - d
+			if(!nards_point_is_in_home(color, raw_destination))
+				continue
+			if(nards_can_land_on_point(color, raw_destination) && !(raw_destination in targets))
+				targets += raw_destination
+			continue
 		var/destination = nards_get_destination_for_die(color, from_point, d, from_bar)
 		if(destination >= 1 && destination <= 24)
 			if(nards_can_land_on_point(color, destination) && !(destination in targets))
 				targets += destination
-		else if(!from_bar && nards_can_bear_off_with_die(color, from_point, d))
-			if(!(0 in targets))
-				targets += 0
 	return targets
 
 /datum/chess_match/proc/nards_find_die_for_move(color, from_point, to_point, from_bar = FALSE, to_off = FALSE)
@@ -2368,7 +2494,7 @@
 	if(!candidates.len)
 		return 0
 	if(to_off)
-		var/exact = (color == CHESS_WHITE) ? from_point : (25 - from_point)
+		var/exact = nards_bear_off_exact_value(color, from_point)
 		for(var/value in candidates)
 			if(text2num("[value]") == exact)
 				return exact
@@ -2391,6 +2517,7 @@
 /datum/chess_match/proc/nards_end_turn()
 	nards_clear_selection()
 	nards_available_rolls = list()
+	nards_head_moves_this_turn = 0
 	turn = opposite(turn)
 	if(turn == CHESS_WHITE)
 		fullmove_number++
@@ -2417,8 +2544,11 @@
 		return FALSE
 	if(point < 1 || point > 24)
 		return FALSE
-	if(nards_bar_count(color) > 0)
+	if(!nards_long_rules && nards_bar_count(color) > 0)
 		to_chat(user, span_warning("Сначала введите шашку из таверны."))
+		return FALSE
+	if(nards_long_rules && point == nards_head_point(color) && nards_head_moves_this_turn >= 1)
+		to_chat(user, span_warning("В длинных нардах за ход можно снять с головы только одну шашку."))
 		return FALSE
 	if(nards_point_color(point) != color || nards_point_count(point) <= 0)
 		return FALSE
@@ -2429,6 +2559,8 @@
 
 /datum/chess_match/proc/select_nards_bar(mob/user)
 	if(game_mode != BOARD_MODE_NARDS || paused || result_text || overturned)
+		return FALSE
+	if(nards_long_rules)
 		return FALSE
 	var/color = side_for_user(user)
 	if(!color || color != turn)
@@ -2449,6 +2581,8 @@
 	var/from_bar = nards_selected_from_bar
 	var/from_point = nards_selected_point
 	if(from_bar)
+		if(nards_long_rules)
+			return FALSE
 		from_point = 0
 	else if(from_point < 1 || from_point > 24)
 		to_chat(user, span_warning("Сначала выберите шашку."))
@@ -2468,10 +2602,12 @@
 		nards_set_point(from_point, color, max(0, nards_point_count(from_point) - 1))
 		if(nards_point_count(from_point) <= 0)
 			nards_points[from_point] = null
+		if(nards_long_rules && from_point == nards_head_point(color))
+			nards_head_moves_this_turn++
 	if(!to_off)
 		var/target_color = nards_point_color(to_point)
 		var/target_count = nards_point_count(to_point)
-		if(target_color == opposite(color) && target_count == 1)
+		if(!nards_long_rules && target_color == opposite(color) && target_count == 1)
 			nards_points[to_point] = null
 			nards_set_bar_count(opposite(color), nards_bar_count(opposite(color)) + 1)
 		nards_set_point(to_point, color, nards_point_count(to_point) + 1)
@@ -2494,7 +2630,7 @@
 		owner.play_win_loss_sounds(CHESS_BLACK)
 		return TRUE
 	if(nards_available_rolls.len && nards_has_any_legal_move(color))
-		if(nards_bar_count(color) > 0)
+		if(!nards_long_rules && nards_bar_count(color) > 0)
 			nards_selected_from_bar = TRUE
 			nards_selected_point = 0
 		else if(!to_off)

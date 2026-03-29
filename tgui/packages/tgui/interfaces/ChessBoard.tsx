@@ -33,6 +33,8 @@ type ModeOption = {
   label: string;
 };
 
+type ModePickerStep = 'root' | 'checkers_rules' | 'nards_rules';
+
 type NardsPointData = {
   point: number;
   color: 'w' | 'b' | null;
@@ -71,6 +73,7 @@ type NardsData = {
   legal_targets: number[];
   can_select_bar: boolean;
   available_rolls: number[];
+  is_long_rules?: boolean;
   overturned?: boolean;
   scatter?: NardsScatterPiece[];
   scatter_dice?: NardsScatterDie[];
@@ -96,6 +99,9 @@ type ChessBoardData = {
   promotion_choices: string[];
   game_mode: 'none' | 'chess' | 'checkers' | 'nards';
   game_mode_label: string;
+  current_rules_text: string | null;
+  checkers_flying_kings: boolean;
+  nards_long_rules: boolean;
   switch_mode_target_key: 'chess' | 'checkers' | 'nards';
   switch_mode_target_label: string;
   mode_switch_pending: boolean;
@@ -357,7 +363,14 @@ export const ChessBoard = () => {
   } | null>(null);
   const [confirmReset, setConfirmReset] = useState(false);
   const [showModePicker, setShowModePicker] = useState(false);
+  const [modePickerStep, setModePickerStep] = useState<ModePickerStep>('root');
   const [rollingDiceFaces, setRollingDiceFaces] = useState<[number, number] | null>(null);
+  const [modePickerCheckersFlyingKings, setModePickerCheckersFlyingKings] = useState(
+    !!data.checkers_flying_kings,
+  );
+  const [modePickerNardsLongRules, setModePickerNardsLongRules] = useState(
+    !!data.nards_long_rules,
+  );
 
   const board = data.board || [];
   const history = data.history || [];
@@ -438,7 +451,13 @@ export const ChessBoard = () => {
 
   useEffect(() => {
     setShowModePicker(false);
+    setModePickerStep('root');
   }, [data.game_mode]);
+
+  useEffect(() => {
+    setModePickerCheckersFlyingKings(!!data.checkers_flying_kings);
+    setModePickerNardsLongRules(!!data.nards_long_rules);
+  }, [data.checkers_flying_kings, data.nards_long_rules]);
 
   useEffect(() => {
     if (!nards?.roll_nonce) {
@@ -560,9 +579,73 @@ export const ChessBoard = () => {
     act('move_nards_checker', { to_point: 0, to_off: 1 });
   };
 
+  const requestModeSwitch = (
+    mode: 'chess' | 'checkers' | 'nards',
+    overrides?: {
+      checkersFlyingKings?: boolean;
+      nardsLongRules?: boolean;
+    },
+  ) => {
+    const checkersFlyingKings =
+      overrides?.checkersFlyingKings ?? modePickerCheckersFlyingKings;
+    const nardsLongRules =
+      overrides?.nardsLongRules ?? modePickerNardsLongRules;
+
+    act('request_mode_switch', {
+      mode,
+      checkers_flying_kings: checkersFlyingKings ? 1 : 0,
+      nards_long_rules: nardsLongRules ? 1 : 0,
+    });
+    setShowModePicker(false);
+    setModePickerStep('root');
+  };
+
+  const openModePicker = () => {
+    setModePickerCheckersFlyingKings(!!data.checkers_flying_kings);
+    setModePickerNardsLongRules(!!data.nards_long_rules);
+    setModePickerStep('root');
+    setShowModePicker(true);
+  };
+
+  const closeModePicker = () => {
+    setShowModePicker(false);
+    setModePickerStep('root');
+  };
+
+  const isSameModeSelection = (mode: 'chess' | 'checkers' | 'nards') => {
+    if (mode !== data.game_mode) {
+      return false;
+    }
+    if (mode === 'checkers') {
+      return !!data.checkers_flying_kings === modePickerCheckersFlyingKings;
+    }
+    if (mode === 'nards') {
+      return !!data.nards_long_rules === modePickerNardsLongRules;
+    }
+    return true;
+  };
+
   const renderModePicker = () => {
     if (!showModePicker) {
       return null;
+    }
+
+    const chessLabel =
+      modeOptions.find((option) => option.key === 'chess')?.label || 'Шахматы';
+    const checkersLabel =
+      modeOptions.find((option) => option.key === 'checkers')?.label || 'Шашки';
+    const nardsLabel =
+      modeOptions.find((option) => option.key === 'nards')?.label || 'Нарды';
+
+    let title = 'Выбор режима';
+    let description = 'Выберите режим для этой доски.';
+
+    if (modePickerStep === 'checkers_rules') {
+      title = 'Правила шашек';
+      description = 'Выберите, как должна ходить дамка.';
+    } else if (modePickerStep === 'nards_rules') {
+      title = 'Правила нард';
+      description = 'Выберите длинные или короткие нарды.';
     }
 
     return (
@@ -579,33 +662,81 @@ export const ChessBoard = () => {
       >
         <div
           style={{
-            minWidth: '320px',
-            maxWidth: '380px',
+            minWidth: '340px',
+            maxWidth: '420px',
             border: '1px solid rgba(255, 255, 255, 0.16)',
             backgroundColor: '#200607',
             boxShadow: '0 8px 24px rgba(0, 0, 0, 0.5)',
             padding: '14px',
+            display: 'grid',
+            gap: '10px',
           }}
         >
-          <div style={{ fontSize: '18px', marginBottom: '10px' }}>Выбор режима</div>
-          <div style={{ marginBottom: '10px', opacity: 0.85 }}>
-            Выберите режим для этой доски.
-          </div>
-          <div style={{ display: 'grid', gap: '8px' }}>
-            {modeOptions.map((option) => (
+          <div style={{ fontSize: '18px' }}>{title}</div>
+          <div style={{ opacity: 0.85 }}>{description}</div>
+
+          {modePickerStep === 'root' && (
+            <>
+              <Button disabled={isSameModeSelection('chess')} onClick={() => requestModeSwitch('chess')}>
+                {chessLabel}
+              </Button>
+              <Button onClick={() => setModePickerStep('checkers_rules')}>
+                {checkersLabel}
+              </Button>
+              <Button onClick={() => setModePickerStep('nards_rules')}>
+                {nardsLabel}
+              </Button>
+              <Button onClick={closeModePicker}>Закрыть</Button>
+            </>
+          )}
+
+          {modePickerStep === 'checkers_rules' && (
+            <>
               <Button
-                key={option.key}
-                disabled={option.key === data.game_mode}
+                disabled={data.game_mode === 'checkers' && !data.checkers_flying_kings}
                 onClick={() => {
-                  act('request_mode_switch', { mode: option.key });
-                  setShowModePicker(false);
+                  setModePickerCheckersFlyingKings(false);
+                  requestModeSwitch('checkers', { checkersFlyingKings: false });
                 }}
               >
-                {option.label}
+                Обычная дамка
               </Button>
-            ))}
-            <Button onClick={() => setShowModePicker(false)}>Закрыть</Button>
-          </div>
+              <Button
+                disabled={data.game_mode === 'checkers' && !!data.checkers_flying_kings}
+                onClick={() => {
+                  setModePickerCheckersFlyingKings(true);
+                  requestModeSwitch('checkers', { checkersFlyingKings: true });
+                }}
+              >
+                Дальняя дамка
+              </Button>
+              <Button onClick={() => setModePickerStep('root')}>Назад</Button>
+            </>
+          )}
+
+          {modePickerStep === 'nards_rules' && (
+            <>
+              <Button
+                disabled={data.game_mode === 'nards' && !data.nards_long_rules}
+                onClick={() => {
+                  setModePickerNardsLongRules(false);
+                  requestModeSwitch('nards', { nardsLongRules: false });
+                }}
+              >
+                Короткие нарды
+              </Button>
+              <Button
+                disabled={data.game_mode === 'nards' && !!data.nards_long_rules}
+                onClick={() => {
+                  setModePickerNardsLongRules(true);
+                  requestModeSwitch('nards', { nardsLongRules: true });
+                }}
+              >
+                Длинные нарды
+              </Button>
+              <Button onClick={() => setModePickerStep('root')}>Назад</Button>
+            </>
+          )}
         </div>
       </div>
     );
@@ -796,18 +927,31 @@ export const ChessBoard = () => {
       }
 
       const nodes: ReactNode[] = [];
-      const visibleCount = Math.min(point.count, 5);
+      const visibleCount = Math.min(point.count, 15);
+      const checkerSize = visibleCount >= 13 ? 24 : visibleCount >= 10 ? 26 : 32;
+      const stackSpan = 144 - checkerSize;
+      const naturalStep = Math.max(8, checkerSize - 10);
+      const naturalHeight = checkerSize + naturalStep * Math.max(0, visibleCount - 1);
+      const stackStep = visibleCount <= 1
+        ? 22
+        : naturalHeight <= 144
+          ? naturalStep
+          : Math.max(6, Math.floor(stackSpan / (visibleCount - 1)));
+      const pieceLeft = getPointX(idx) + Math.floor((28 - checkerSize) / 2);
+
       for (let i = 0; i < visibleCount; i++) {
-        const top = isTop ? 8 + i * 22 : 392 - 8 - 32 - i * 22;
+        const top = isTop
+          ? 8 + i * stackStep
+          : 392 - 8 - checkerSize - i * stackStep;
         nodes.push(
           <div
             key={`${pointNumber}-${i}`}
             style={{
               position: 'absolute',
-              left: `${getPointX(idx) - 2}px`,
+              left: `${pieceLeft}px`,
               top: `${top}px`,
-              width: '32px',
-              height: '32px',
+              width: `${checkerSize}px`,
+              height: `${checkerSize}px`,
               backgroundImage: `url(${NARDS_CHECKERS_IMAGES[point.color]})`,
               backgroundSize: 'contain',
               backgroundRepeat: 'no-repeat',
@@ -820,24 +964,31 @@ export const ChessBoard = () => {
       }
 
       if (point.count > 5) {
+        const badgeTop = isTop
+          ? Math.min(8 + (visibleCount - 1) * stackStep + Math.max(12, checkerSize - 8), 152)
+          : Math.max(392 - 8 - checkerSize - (visibleCount - 1) * stackStep - 6, 226);
+
         nodes.push(
           <div
             key={`${pointNumber}-count`}
             style={{
               position: 'absolute',
-              left: `${getPointX(idx) + 1}px`,
-              top: isTop ? `${8 + 5 * 22}px` : `${392 - 8 - 32 - 5 * 22}px`,
-              minWidth: '22px',
+              left: `${getPointX(idx) + 10}px`,
+              top: `${badgeTop}px`,
+              minWidth: '18px',
               height: '14px',
-              padding: '0 3px',
+              padding: '0 4px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               fontSize: '10px',
-              backgroundColor: 'rgba(0, 0, 0, 0.6)',
+              fontWeight: 700,
+              backgroundColor: 'rgba(0, 0, 0, 0.72)',
               color: '#fff',
               borderRadius: '7px',
-              zIndex: 20,
+              border: '1px solid rgba(255, 255, 255, 0.18)',
+              zIndex: 40,
+              pointerEvents: 'none',
             }}
           >
             {point.count}
@@ -1076,6 +1227,7 @@ export const ChessBoard = () => {
               <Section title="Доска">
                 <div style={{ marginBottom: '8px', fontSize: '13px', opacity: 0.9 }}>
                   <div><b>Режим:</b> {data.game_mode_label}</div>
+                  {!!data.current_rules_text && <div><b>Правила:</b> {data.current_rules_text}</div>}
                   <div><b>Белые:</b> {data.white_player_name}</div>
                   <div><b>Чёрные:</b> {data.black_player_name}</div>
                   <div><b>Вы:</b> {data.my_side}</div>
@@ -1148,7 +1300,7 @@ export const ChessBoard = () => {
                 </div>
 
                 <div style={{ ...buttonGroupStyle, marginTop: '8px' }}>
-                  <Button onClick={() => setShowModePicker(true)}>Сменить режим</Button>
+                  <Button onClick={openModePicker}>Сменить режим</Button>
                   {!!data.can_confirm_mode_switch && (
                     <Button onClick={() => act('confirm_mode_switch')}>
                       Подтвердить смену режима
