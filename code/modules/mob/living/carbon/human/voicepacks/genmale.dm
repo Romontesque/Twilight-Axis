@@ -181,5 +181,5 @@
 			if("softmoan")
 				used = list('sound/misc/mat/sex_moans/fem_man/SWFMoan213.ogg')
 			if("moan")
-				used = list('modular_twilight_axis/sound/misc/vo/female/gen/softmoan.ogg')
+				used = list('modular_twilight_axis/sound/misc/vo/male/gen/moan.ogg')
 	return used
