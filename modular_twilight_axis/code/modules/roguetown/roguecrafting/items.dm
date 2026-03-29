@@ -147,68 +147,77 @@
 	reqs = list(/obj/item/scrap = 5, /obj/item/clothing/suit/roguetown/armor/chainmail/iron = 1)
 	craftdiff = 3
 	req_table = TRUE
+	bypass_dupe_test = TRUE
 
 //////////////////////////////////////// CONVERT ////////////////////////////////////////
 
 /datum/crafting_recipe/roguetown/survival/i_haubergeon
 	name = "iron hauberk to haubergeon"
 	result = list(/obj/item/craft_kit/haubergeon = 1)
-	reqs = list(/obj/item/clothing/suit/roguetown/armor/chainmail/hauberk/iron, /obj/item/scrap = 2)
+	reqs = list(/obj/item/clothing/suit/roguetown/armor/chainmail/hauberk/iron = 1, /obj/item/scrap = 2)
 	craftdiff = 3
 	req_table = TRUE
+	bypass_dupe_test = TRUE
 
 /datum/crafting_recipe/roguetown/survival/i_hauberk
 	name = "iron haubergeon to hauberk"
 	result = list(/obj/item/craft_kit/hauberk = 1)
-	reqs = list(/obj/item/clothing/suit/roguetown/armor/chainmail/iron, /obj/item/scrap = 2)
+	reqs = list(/obj/item/clothing/suit/roguetown/armor/chainmail/iron = 1, /obj/item/scrap = 2)
 	craftdiff = 3
 	req_table = TRUE
+	bypass_dupe_test = TRUE
 
 /datum/crafting_recipe/roguetown/survival/i_cuirass
 	name = "iron half-plate to cuirass"
 	result = list(/obj/item/craft_kit/cuirass = 1)
-	reqs = list(/obj/item/clothing/suit/roguetown/armor/plate/iron, /obj/item/scrap = 2)
+	reqs = list(/obj/item/clothing/suit/roguetown/armor/plate/iron = 1, /obj/item/scrap = 2)
 	craftdiff = 3
 	req_table = TRUE
+	bypass_dupe_test = TRUE
 
 /datum/crafting_recipe/roguetown/survival/i_cuirass_to_halfplate
 	name = "iron cuirass to half-plate"
 	result = list(/obj/item/craft_kit/halfplate = 1)
-	reqs = list(/obj/item/clothing/suit/roguetown/armor/plate/cuirass/iron, /obj/item/scrap = 2)
+	reqs = list(/obj/item/clothing/suit/roguetown/armor/plate/cuirass/iron = 1, /obj/item/scrap = 2)
 	craftdiff = 4
 	req_table = TRUE
+	bypass_dupe_test = TRUE
 
 /datum/crafting_recipe/roguetown/survival/i_plate_to_halfplate
 	name = "iron full-plate to half-plate"
 	result = list(/obj/item/craft_kit/halfplate = 1)
-	reqs = list(/obj/item/clothing/suit/roguetown/armor/plate/full/iron, /obj/item/scrap = 2)
+	reqs = list(/obj/item/clothing/suit/roguetown/armor/plate/full/iron = 1, /obj/item/scrap = 2)
 	craftdiff = 3
 	req_table = TRUE
+	bypass_dupe_test = TRUE
 
 /datum/crafting_recipe/roguetown/survival/i_plate
 	name = "iron half-plate to full-plate"
 	result = list(/obj/item/craft_kit/plate = 1)
-	reqs = list(/obj/item/clothing/suit/roguetown/armor/plate/iron, /obj/item/scrap = 2)
+	reqs = list(/obj/item/clothing/suit/roguetown/armor/plate/iron = 1, /obj/item/scrap = 2)
 	craftdiff = 4
 	req_table = TRUE
+	bypass_dupe_test = TRUE
 
 //WRISTS
 
 /datum/crafting_recipe/roguetown/survival/splintarms
 	name = "splintarms"
 	result = list(/obj/item/craft_kit/splintarms = 1)
-	reqs = list(/obj/item/clothing/wrists/roguetown/bracers/leather, /obj/item/scrap = 4)
+	reqs = list(/obj/item/clothing/wrists/roguetown/bracers/leather = 1, /obj/item/scrap = 4)
 	craftdiff = 3
 	req_table = TRUE
+	bypass_dupe_test = TRUE
 
 //PANTS
 
 /datum/crafting_recipe/roguetown/survival/splintlegs
 	name = "splintlegs"
 	result = list(/obj/item/craft_kit/splintlegs = 1)
-	reqs = list(/obj/item/clothing/under/roguetown/trou/leather, /obj/item/scrap = 4)
+	reqs = list(/obj/item/clothing/under/roguetown/trou/leather = 1, /obj/item/scrap = 4)
 	craftdiff = 3
 	req_table = TRUE
+	bypass_dupe_test = TRUE
 
 /datum/crafting_recipe/roguetown/survival/chainlegs
 	name = "iron chainlegs"
@@ -225,22 +234,25 @@
 	reqs = list(/obj/item/clothing/shoes/roguetown/boots/leather = 1, /obj/item/scrap = 2)
 	craftdiff = 3
 	req_table = TRUE
+	bypass_dupe_test = TRUE
 
 //////////////////////////////////////// CONVERT ////////////////////////////////////////
 
 /datum/crafting_recipe/roguetown/survival/i_chainlegs
 	name = "iron chainkilt to chainlegs"
 	result = list(/obj/item/craft_kit/chainlegs = 1)
-	reqs = list(/obj/item/clothing/under/roguetown/chainlegs/iron/kilt, /obj/item/scrap = 2)
+	reqs = list(/obj/item/clothing/under/roguetown/chainlegs/iron/kilt = 1, /obj/item/scrap = 2)
 	craftdiff = 3
 	req_table = TRUE
+	bypass_dupe_test = TRUE
 
 /datum/crafting_recipe/roguetown/survival/i_kilt
 	name = "iron chainlegs to chainkilt"
 	result = list(/obj/item/craft_kit/kilt = 1)
-	reqs = list(/obj/item/clothing/under/roguetown/chainlegs/iron, /obj/item/scrap = 2)
+	reqs = list(/obj/item/clothing/under/roguetown/chainlegs/iron = 1, /obj/item/scrap = 2)
 	craftdiff = 3
 	req_table = TRUE
+	bypass_dupe_test = TRUE
 
 //////////////////////////////////////// STEEL ////////////////////////////////////////
 
@@ -259,50 +271,56 @@
 	reqs = list(/obj/item/steel_scrap = 5, /obj/item/clothing/suit/roguetown/armor/chainmail = 1)
 	craftdiff = 4
 	req_table = TRUE
+	bypass_dupe_test = TRUE
 
 //////////////////////////////////////// CONVERT ////////////////////////////////////////
 
 /datum/crafting_recipe/roguetown/survival/s_haubergeon
 	name = "steel hauberk to haubergeon"
 	result = list(/obj/item/craft_kit/steel/haubergeon = 1)
-	reqs = list(/obj/item/clothing/suit/roguetown/armor/chainmail/hauberk, /obj/item/steel_scrap = 2)
+	reqs = list(/obj/item/clothing/suit/roguetown/armor/chainmail/hauberk = 1, /obj/item/steel_scrap = 2)
 	craftdiff = 3
 	req_table = TRUE
 
 /datum/crafting_recipe/roguetown/survival/s_hauberk
 	name = "steel haubergeon to hauberk"
 	result = list(/obj/item/craft_kit/steel/hauberk = 1)
-	reqs = list(/obj/item/clothing/suit/roguetown/armor/chainmail, /obj/item/steel_scrap = 2)
+	reqs = list(/obj/item/clothing/suit/roguetown/armor/chainmail = 1, /obj/item/steel_scrap = 2)
 	craftdiff = 3
 	req_table = TRUE
+	bypass_dupe_test = TRUE
 
 /datum/crafting_recipe/roguetown/survival/s_cuirass
 	name = "steel half-plate to cuirass"
 	result = list(/obj/item/craft_kit/steel/cuirass = 1)
-	reqs = list(/obj/item/clothing/suit/roguetown/armor/plate, /obj/item/steel_scrap = 2)
+	reqs = list(/obj/item/clothing/suit/roguetown/armor/plate = 1, /obj/item/steel_scrap = 2)
 	craftdiff = 3
 	req_table = TRUE
+	bypass_dupe_test = TRUE
 
 /datum/crafting_recipe/roguetown/survival/s_cuirass_to_halfplate
 	name = "steel cuirass to half-plate"
 	result = list(/obj/item/craft_kit/steel/halfplate = 1)
-	reqs = list(/obj/item/clothing/suit/roguetown/armor/plate/cuirass, /obj/item/steel_scrap = 2)
+	reqs = list(/obj/item/clothing/suit/roguetown/armor/plate/cuirass = 1, /obj/item/steel_scrap = 2)
 	craftdiff = 5
 	req_table = TRUE
+	bypass_dupe_test = TRUE
 
 /datum/crafting_recipe/roguetown/survival/s_plate_to_halfplate
 	name = "steel full-plate to half-plate"
 	result = list(/obj/item/craft_kit/steel/halfplate = 1)
-	reqs = list(/obj/item/clothing/suit/roguetown/armor/plate/full, /obj/item/steel_scrap = 2)
+	reqs = list(/obj/item/clothing/suit/roguetown/armor/plate/full = 1, /obj/item/steel_scrap = 2)
 	craftdiff = 4
 	req_table = TRUE
+	bypass_dupe_test = TRUE
 
 /datum/crafting_recipe/roguetown/survival/s_plate
 	name = "steel half-plate to full-plate"
 	result = list(/obj/item/craft_kit/steel/plate = 1)
-	reqs = list(/obj/item/clothing/suit/roguetown/armor/plate, /obj/item/steel_scrap = 2)
+	reqs = list(/obj/item/clothing/suit/roguetown/armor/plate = 1, /obj/item/steel_scrap = 2)
 	craftdiff = 5
 	req_table = TRUE
+	bypass_dupe_test = TRUE
 
 //PANTS
 
@@ -318,13 +336,15 @@
 /datum/crafting_recipe/roguetown/survival/s_chainlegs
 	name = "steel chainkilt to chainlegs"
 	result = list(/obj/item/craft_kit/steel/chainlegs = 1)
-	reqs = list(/obj/item/clothing/under/roguetown/chainlegs/kilt, /obj/item/steel_scrap = 2)
+	reqs = list(/obj/item/clothing/under/roguetown/chainlegs/kilt = 1, /obj/item/steel_scrap = 2)
 	craftdiff = 3
 	req_table = TRUE
+	bypass_dupe_test = TRUE
 
 /datum/crafting_recipe/roguetown/survival/s_kilt
 	name = "steel chainlegs to chainkilt"
 	result = list(/obj/item/craft_kit/steel/kilt = 1)
-	reqs = list(/obj/item/clothing/under/roguetown/chainlegs, /obj/item/steel_scrap = 2)
+	reqs = list(/obj/item/clothing/under/roguetown/chainlegs = 1, /obj/item/steel_scrap = 2)
 	craftdiff = 3
 	req_table = TRUE
+	bypass_dupe_test = TRUE
