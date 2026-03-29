@@ -1312,7 +1312,6 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 	path = /obj/item/enchantingkit/srusu
 	donatitem = TRUE
 
-
 /datum/loadout_item/donator_strudel
 	name = "Donator Kit - Grenzelhoftian Mage Vest - Required: Robe(No Small Races)"
 	category = list("Одежда", "Донат")
@@ -1973,26 +1972,26 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 	donatitem = TRUE
 
 /datum/loadout_item/donat/tabard/crusader/ravox
-	name = "Табард-плащ Равокса(старый)"
+	name = "Табард-плащ Равокса (старый)"
 	category = list("Плащи", "Донат")
 	path = /obj/item/clothing/cloak/cleric/ravox
 	donatitem = TRUE
 
 /datum/loadout_item/donat/tabard/templar/ravox
-	name = "Табард-плащ Равокса(новый)"
+	name = "Табард-плащ Равокса (новый)"
 	category = list("Плащи", "Донат")
 	path = /obj/item/clothing/cloak/templar/ravox
 	donat_tier = 2
 	donatitem = TRUE
 
 /datum/loadout_item/donat/tabard/crusader/eora
-	name = "Табард-плащ Эоры(старый)"
+	name = "Табард-плащ Эоры (старый)"
 	category = list("Плащи", "Донат")
 	path = /obj/item/clothing/cloak/tabard/crusader/eora
 	donatitem = TRUE
 
 /datum/loadout_item/donat/tabard/crusader/eora/resprite
-	name = "Табард-плащ Эоры(респрайт)"
+	name = "Табард-плащ Эоры (респрайт)"
 	category = list("Плащи", "Донат")
 	path = /obj/item/clothing/cloak/templar/eoran/alt
 	donat_tier = 2
@@ -2112,13 +2111,13 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 	donatitem = TRUE
 
 /datum/loadout_item/donat/eyepatchfake
-	name = "Повязка на правый глаз(ненастоящая)"
+	name = "Повязка на правый глаз (ненастоящая)"
 	category = list("Головные уборы", "Донат")
 	path = /obj/item/clothing/mask/rogue/eyepatch/fake
 	donatitem = TRUE
 
 /datum/loadout_item/donat/eyepatchfakeleft
-	name = "Повязка на левый глаз(ненастоящая)"
+	name = "Повязка на левый глаз (ненастоящая)"
 	category = list("Головные уборы", "Донат")
 	path = /obj/item/clothing/mask/rogue/eyepatch/left/fake
 	donatitem = TRUE
@@ -2156,37 +2155,37 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 	donatitem = TRUE
 
 /datum/loadout_item/donat/grenzelhofthat_decorated
-	name = "Грензельхофтская шляпа(без брони, декоративная)"
+	name = "Грензельхофтская шляпа (без брони, декоративная)"
 	category = list("Головные уборы", "Донат")
 	path = /obj/item/clothing/head/roguetown/grenzelhofthat/decorated
 	donatitem = TRUE
 
 /datum/loadout_item/donat/wizhat
-	name = "Шляпа мага(синяя)"
+	name = "Шляпа мага (синяя)"
 	category = list("Головные уборы", "Донат")
 	path = /obj/item/clothing/head/roguetown/wizhat
 	donatitem = TRUE
 
 /datum/loadout_item/donat/wizhatred
-	name = "Шляпа мага(красная)"
+	name = "Шляпа мага (красная)"
 	category = list("Головные уборы", "Донат")
 	path = /obj/item/clothing/head/roguetown/wizhat/red
 	donatitem = TRUE
 
 /datum/loadout_item/donat/wizhatyellow
-	name = "Шляпа мага(желтая)"
+	name = "Шляпа мага (желтая)"
 	category = list("Головные уборы", "Донат")
 	path = /obj/item/clothing/head/roguetown/wizhat/yellow
 	donatitem = TRUE
 
 /datum/loadout_item/donat/wizhatgreen
-	name = "Шляпа мага(зеленая)"
+	name = "Шляпа мага (зеленая)"
 	category = list("Головные уборы", "Донат")
 	path = /obj/item/clothing/head/roguetown/wizhat/green
 	donatitem = TRUE
 
 /datum/loadout_item/donat/wizhatblack
-	name = "Шляпа мага(черная)"
+	name = "Шляпа мага (черная)"
 	category = list("Головные уборы", "Донат")
 	path = /obj/item/clothing/head/roguetown/wizhat/black
 	donatitem = TRUE
@@ -2240,63 +2239,63 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 	donatitem = TRUE
 
 /datum/loadout_item/tw_d_horns_donat
-	name = "Horns Helmkleinod(Донат - Т2)"
+	name = "Horns Helmkleinod (Донат - Т2)"
 	category = list("Головные уборы", "Донат")
 	path = /obj/item/clothing/head/roguetown/tw_d_horns
 	donatitem = TRUE
 	donat_tier = 2
 
 /datum/loadout_item/tw_d_castle_red_donat
-	name = "Castle Helmkleinod(Донат - Т2)"
+	name = "Castle Helmkleinod (Донат - Т2)"
 	category = list("Головные уборы", "Донат")
 	path = /obj/item/clothing/head/roguetown/tw_d_castle_red
 	donatitem = TRUE
 	donat_tier = 2
 
 /datum/loadout_item/tw_d_graggar_donat
-	name = "Bloodied Star Helmkleinod(Донат - Т2)"
+	name = "Bloodied Star Helmkleinod (Донат - Т2)"
 	category = list("Головные уборы", "Донат")
 	path = /obj/item/clothing/head/roguetown/tw_d_graggar
 	donatitem = TRUE
 	donat_tier = 2
 
 /datum/loadout_item/tw_d_efreet_donat
-	name = "Afreet Helmkleinod(Донат - Т2)"
+	name = "Afreet Helmkleinod (Донат - Т2)"
 	category = list("Головные уборы", "Донат")
 	path = /obj/item/clothing/head/roguetown/tw_d_efreet
 	donatitem = TRUE
 	donat_tier = 2
 
 /datum/loadout_item/tw_d_feathers_donat
-	name = "Feathers Accessory(Донат - Т2)"
+	name = "Feathers Accessory (Донат - Т2)"
 	category = list("Головные уборы", "Донат")
 	path = /obj/item/clothing/head/roguetown/tw_d_feathers
 	donatitem = TRUE
 	donat_tier = 2
 
 /datum/loadout_item/tw_d_oathtaker_donat
-	name = "Oathtaker Symbol(Донат - Т2)"
+	name = "Oathtaker Symbol (Донат - Т2)"
 	category = list("Головные уборы", "Донат")
 	path = /obj/item/clothing/head/roguetown/tw_d_oathtaker
 	donatitem = TRUE
 	donat_tier = 2
 
 /datum/loadout_item/tw_d_windmill_donat
-	name = "Windmill Helmkleinod(Донат - Т2)"
+	name = "Windmill Helmkleinod (Донат - Т2)"
 	category = list("Головные уборы", "Донат")
 	path = /obj/item/clothing/head/roguetown/tw_d_windmill
 	donatitem = TRUE
 	donat_tier = 2
 
 /datum/loadout_item/tw_d_swan_donat
-	name = "Swan on Lake(Донат - Т2)"
+	name = "Swan on Lake (Донат - Т2)"
 	category = list("Головные уборы", "Донат")
 	path = /obj/item/clothing/head/roguetown/tw_d_swan
 	donatitem = TRUE
 	donat_tier = 2
 
 /datum/loadout_item/tw_d_dragon_red_donat
-	name = "Dragon's Dread(Донат - Т2)"
+	name = "Dragon's Dread (Донат - Т2)"
 	category = list("Головные уборы", "Донат")
 	path = /obj/item/clothing/head/roguetown/tw_d_dragon_red
 	donatitem = TRUE
