@@ -247,16 +247,7 @@
 				drained = drained + ( intenty.masteritem.wbalance * ((user.STASTR - src.STASTR) * STAM_DRAIN_PER_STR_DIFF_HEAVY_BAL) )
 	else
 		to_chat(src, span_warning("The enemy defeated my parry!"))
-		if(HAS_TRAIT(src, TRAIT_MAGEARMOR))
-			if(H.magearmor == 0)
-				H.magearmor = 1
-				H.apply_status_effect(/datum/status_effect/buff/magearmor)
-				to_chat(src, span_boldwarning("My mage armor absorbs the hit and dissipates!"))
-				return TRUE
-			else
-				return FALSE
-		else
-			return FALSE
+		return FALSE
 
 	drained = max(drained, 5)
 
@@ -284,7 +275,7 @@
 					if(!HAS_TRAIT(U, TRAIT_GOODTRAINER))
 						skill_target -= SKILL_LEVEL_NOVICE
 					if(HAS_TRAIT(U, TRAIT_BADTRAINER))
-						skill_target -= SKILL_LEVEL_NOVICE
+						skill_target -= SKILL_LEVEL_APPRENTICE
 					if (can_train_combat_skill(src, used_weapon.associated_skill, skill_target))
 						mind.add_sleep_experience(used_weapon.associated_skill, max(round(STAINT*exp_multi), 0), FALSE)
 
@@ -295,7 +286,7 @@
 						if(!HAS_TRAIT(src, TRAIT_GOODTRAINER))
 							skill_target -= SKILL_LEVEL_NOVICE
 						if(HAS_TRAIT(U, TRAIT_BADTRAINER))
-							skill_target -= SKILL_LEVEL_NOVICE
+							skill_target -= SKILL_LEVEL_APPRENTICE
 						if (can_train_combat_skill(U, attacker_skill_type, skill_target))
 							U.mind.add_sleep_experience(attacker_skill_type, max(round(STAINT*exp_multi), 0), FALSE)
 
