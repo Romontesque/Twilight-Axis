@@ -141,3 +141,10 @@
 		"force" = clamp(round(sum_force / n), SEX_FORCE_LOW, SEX_FORCE_EXTREME),
 		"speed" = clamp(round(sum_speed / n), SEX_SPEED_LOW, SEX_SPEED_EXTREME),
 	)
+
+#undef ERP_SCENE_AROUSAL_MULT
+#undef ERP_SCENE_PAIN_MULT_PASSIVE
+#undef ERP_SCENE_PAIN_MULT_ACTIVE
+
+#undef INIT_OXYLOSS_MULT
+#undef TARGET_OXYLOSS_MULT
