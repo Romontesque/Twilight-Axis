@@ -257,3 +257,6 @@
 
 /datum/erp_sex_organ/proc/on_inject(datum/erp_sex_link/link, inject_mode, target, datum/reagents/R, mob/living/carbon/human/who)
 	return
+
+/datum/erp_sex_organ/proc/apply_contact_effect(datum/erp_sex_link/L, mult = 1)
+	return
