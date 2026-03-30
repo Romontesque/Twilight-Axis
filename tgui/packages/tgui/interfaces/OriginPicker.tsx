@@ -159,7 +159,12 @@ const renderOriginDescription = (value?: string | null): ReactNode => {
     return null;
   }
 
-  const normalized = value.replace(/\r\n/g, '\n').replace(/\n/g, '<br />');
+  const cleaned = value
+    .replace(/\r\n/g, '\n')
+    .replace(/^(?:\s|<br\s*\/?>)+/gi, '')
+    .trimStart();
+
+  const normalized = cleaned.replace(/\n/g, '<br />');
   const parser = new DOMParser();
   const document = parser.parseFromString(`<div>${normalized}</div>`, 'text/html');
   const root = document.body.firstElementChild;
@@ -327,11 +332,56 @@ export const OriginPicker = () => {
                       style={{
                         display: 'flex',
                         flexDirection: 'column',
-                        gap: '0.6rem',
+                        gap: '0.04rem',
                         minHeight: 0,
                       }}>
-                      <div style={{ fontWeight: 700, fontSize: '1.1rem' }}>
-                        {previewOrigin.display_name}
+                      <div
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          alignItems: 'flex-start',
+                          gap: '0.75rem',
+                          margin: 0,
+                          padding: 0,
+                        }}>
+                        <div
+                          style={{
+                            fontWeight: 700,
+                            fontSize: '1.1rem',
+                            lineHeight: 1.02,
+                            margin: 0,
+                            flex: 1,
+                          }}>
+                          {previewOrigin.display_name}
+                        </div>
+
+                        {(previewOrigin.language_text || previewOrigin.trait_text) && (
+                          <div
+                            style={{
+                              display: 'flex',
+                              flexDirection: 'column',
+                              alignItems: 'flex-end',
+                              gap: '0rem',
+                              color: '#d9d0ff',
+                              fontSize: '0.92rem',
+                              lineHeight: 1.05,
+                              textAlign: 'right',
+                              flexShrink: 0,
+                              margin: 0,
+                              padding: 0,
+                            }}>
+                            {previewOrigin.language_text && (
+                              <div>
+                                <b>Язык:</b> {previewOrigin.language_text}
+                              </div>
+                            )}
+                            {previewOrigin.trait_text && (
+                              <div>
+                                <b>Трейт:</b> {previewOrigin.trait_text}
+                              </div>
+                            )}
+                          </div>
+                        )}
                       </div>
 
                       {!previewOrigin.available && (
@@ -339,7 +389,9 @@ export const OriginPicker = () => {
                           style={{
                             color: '#f0c674',
                             fontSize: '0.95rem',
-                            lineHeight: 1.4,
+                            lineHeight: 1.12,
+                            margin: 0,
+                            padding: 0,
                           }}>
                           Это происхождение недоступно для текущей расы.
                           {previewOrigin.required_races_text
@@ -348,34 +400,14 @@ export const OriginPicker = () => {
                         </div>
                       )}
 
-                      {(previewOrigin.language_text || previewOrigin.trait_text) && (
-                        <div
-                          style={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            gap: '0.2rem',
-                            color: '#d9d0ff',
-                            fontSize: '0.95rem',
-                            lineHeight: 1.35,
-                          }}>
-                          {previewOrigin.language_text && (
-                            <div>
-                              <b>Даёт язык:</b> {previewOrigin.language_text}
-                            </div>
-                          )}
-                          {previewOrigin.trait_text && (
-                            <div>
-                              <b>Даёт трейт:</b> {previewOrigin.trait_text}
-                            </div>
-                          )}
-                        </div>
-                      )}
-
                       <div
                         style={{
-                          lineHeight: 1.45,
+                          lineHeight: 1.15,
                           whiteSpace: 'normal',
                           overflowWrap: 'anywhere',
+                          margin: 0,
+                          marginTop: '0.14rem',
+                          padding: 0,
                         }}>
                         {renderOriginDescription(previewOrigin.origin_desc || previewOrigin.desc)}
                       </div>
