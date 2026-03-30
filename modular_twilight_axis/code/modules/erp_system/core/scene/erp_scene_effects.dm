@@ -1,6 +1,6 @@
 #define ERP_SCENE_AROUSAL_MULT 1.90
-#define ERP_SCENE_PAIN_MULT 1.50
-
+#define ERP_SCENE_PAIN_MULT_PASSIVE 1.50
+#define ERP_SCENE_PAIN_MULT_ACTIVE 0.75
 /datum/erp_scene_effects
 	var/datum/erp_controller/controller
 
@@ -105,8 +105,8 @@
 	var/a_arousal = (a_arousal_sum / n) * ERP_SCENE_AROUSAL_MULT
 	var/p_arousal = (p_arousal_sum / n) * ERP_SCENE_AROUSAL_MULT
 
-	var/a_pain = (a_pain_sum / n) * ERP_SCENE_PAIN_MULT
-	var/p_pain = (p_pain_sum / n) * ERP_SCENE_PAIN_MULT
+	var/a_pain = (a_pain_sum / n) * ERP_SCENE_PAIN_MULT_ACTIVE
+	var/p_pain = (p_pain_sum / n) * ERP_SCENE_PAIN_MULT_PASSIVE
 
 	var/mob/living/ma = best?.actor_active?.get_effect_mob()
 	var/mob/living/mp = best?.actor_passive?.get_effect_mob()
