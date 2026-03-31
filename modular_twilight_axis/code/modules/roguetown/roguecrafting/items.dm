@@ -168,7 +168,7 @@
 
 /datum/crafting_recipe/roguetown/survival/haubergeon_light
 	name = "iron besilked haubergeon"
-	result = list(/obj/item/craft_kit/steel/haubergeon_light = 1)
+	result = list(/obj/item/craft_kit/haubergeon_light = 1)
 	reqs = list(/obj/item/scrap = 5, /obj/item/clothing/suit/roguetown/armor/chainmail/iron = 1)
 	craftdiff = 3
 	req_table = TRUE
@@ -424,8 +424,8 @@
 
 /datum/crafting_recipe/roguetown/survival/steel_haubergeon_light
 	name = "besilked haubergeon"
-	result = list(/obj/item/craft_kit/haubergeon_light = 1)
-	reqs = list(/obj/item/scrap = 4, /obj/item/clothing/suit/roguetown/armor/chainmail = 1)
+	result = list(/obj/item/craft_kit/steel/haubergeon_light = 1)
+	reqs = list(/obj/item/steel_scrap = 4, /obj/item/clothing/suit/roguetown/armor/chainmail = 1)
 	craftdiff = 4
 	req_table = TRUE
 	bypass_dupe_test = TRUE
