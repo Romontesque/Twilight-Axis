@@ -164,6 +164,8 @@
 	result =
 */
 
+//helmet
+
 //armor
 
 /obj/item/craft_kit/haubergeon
@@ -180,6 +182,12 @@
 
 /obj/item/craft_kit/plate
 	result = /obj/item/clothing/suit/roguetown/armor/plate/full/iron
+
+/obj/item/craft_kit/haubergeon_light
+	result = /obj/item/clothing/suit/roguetown/armor/chainmail/light/iron
+
+/obj/item/craft_kit/brigandine_light
+	result = /obj/item/clothing/suit/roguetown/armor/brigandine/light/handmade
 
 //arms
 
@@ -208,6 +216,8 @@
 	result =
 */
 
+//helmet
+
 //armor
 
 /obj/item/craft_kit/steel/haubergeon
@@ -224,6 +234,9 @@
 
 /obj/item/craft_kit/steel/plate
 	result = /obj/item/clothing/suit/roguetown/armor/plate/full
+
+/obj/item/craft_kit/steel/haubergeon_light
+	result = /obj/item/clothing/suit/roguetown/armor/chainmail/light
 
 //legs
 

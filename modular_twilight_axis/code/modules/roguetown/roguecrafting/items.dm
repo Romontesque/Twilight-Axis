@@ -132,6 +132,23 @@
 
 //////////////////////////////////////// IRON ////////////////////////////////////////
 
+//HELMET
+
+/datum/crafting_recipe/roguetown/survival/chaincoif
+	name = "iron chaincoif"
+	result = list(/obj/item/clothing/neck/roguetown/chaincoif/iron = 1)
+	reqs = list(/obj/item/scrap = 5)
+	craftdiff = 3
+	req_table = TRUE
+
+/datum/crafting_recipe/roguetown/survival/chaincoif_full
+	name = "iron full chaincoif"
+	result = list(/obj/item/clothing/neck/roguetown/chaincoif/full/iron = 1)
+	reqs = list(/obj/item/scrap = 3, /obj/item/clothing/neck/roguetown/chaincoif/iron = 1)
+	craftdiff = 4
+	req_table = TRUE
+	bypass_dupe_test = TRUE
+
 //ARMOR
 
 /datum/crafting_recipe/roguetown/survival/haubergeon
@@ -141,10 +158,26 @@
 	craftdiff = 3
 	req_table = TRUE
 
-/datum/crafting_recipe/roguetown/survival/brustrplate
-	name = "iron brustrplate"
+/datum/crafting_recipe/roguetown/survival/brustplate
+	name = "iron brustplate"
 	result = list(/obj/item/craft_kit/cuirass = 1)
 	reqs = list(/obj/item/scrap = 5, /obj/item/clothing/suit/roguetown/armor/chainmail/iron = 1)
+	craftdiff = 3
+	req_table = TRUE
+	bypass_dupe_test = TRUE
+
+/datum/crafting_recipe/roguetown/survival/haubergeon_light
+	name = "iron besilked haubergeon"
+	result = list(/obj/item/craft_kit/steel/haubergeon_light = 1)
+	reqs = list(/obj/item/scrap = 5, /obj/item/clothing/suit/roguetown/armor/chainmail/iron = 1)
+	craftdiff = 3
+	req_table = TRUE
+	bypass_dupe_test = TRUE
+
+/datum/crafting_recipe/roguetown/survival/brigandine_light
+	name = "iron besilked haubergeon"
+	result = list(/obj/item/craft_kit/brigandine_light = 1)
+	reqs = list(/obj/item/scrap = 3, /obj/item/clothing/suit/roguetown/armor/chainmail/iron = 1, /obj/item/clothing/suit/roguetown/armor/gambeson = 1)
 	craftdiff = 3
 	req_table = TRUE
 	bypass_dupe_test = TRUE
@@ -254,21 +287,145 @@
 	req_table = TRUE
 	bypass_dupe_test = TRUE
 
+//////////////////////////////////////// ITEMS ////////////////////////////////////////
+
+/datum/crafting_recipe/roguetown/survival/scrap_lamp
+	name = "scrap lamp"
+	result = list(/obj/item/flashlight/flare/torch/lantern/scrap = 1)
+	reqs = list(/obj/item/scrap = 4, /obj/item/natural/clay = 2, /obj/item/flashlight/flare/torch = 1)
+	craftdiff = 3
+	req_table = TRUE
+
+/datum/crafting_recipe/roguetown/survival/scrap_tongs
+	name = "tongs"
+	result = list(/obj/item/rogueweapon/tongs = 1)
+	reqs = list(/obj/item/scrap = 2, /obj/item/grown/log/tree/stick = 2)
+	craftdiff = 3
+	req_table = TRUE
+
+/datum/crafting_recipe/roguetown/survival/scrap_saw
+	name = "hand saw"
+	result = list(/obj/item/rogueweapon/handsaw = 1)
+	reqs = list(/obj/item/scrap = 4, /obj/item/grown/log/tree/small = 1)
+	craftdiff = 3
+	req_table = TRUE
+
+/datum/crafting_recipe/roguetown/survival/scrap_chisel
+	name = "chisel"
+	result = list(/obj/item/rogueweapon/chisel = 1)
+	reqs = list(/obj/item/scrap = 3, /obj/item/grown/log/tree/small = 1)
+	craftdiff = 3
+	req_table = TRUE
+
+//////////////////////////////////////// WEAPONS ////////////////////////////////////////
+
+/datum/crafting_recipe/roguetown/survival/peasantry/peasantwarflail_scrap
+	name = "peasant war flail (scrap)"
+	result = /obj/item/rogueweapon/flail/peasantwarflail
+	reqs = list(
+		/obj/item/grown/log/tree/small = 1,
+		/obj/item/rope = 1,
+		/obj/item/scrap = 3,
+		)
+	craftdiff = 3
+
+/datum/crafting_recipe/roguetown/survival/peasantry/waraxe_scrap
+	name = "militia shovel-waraxe (scrap)"
+	result = /obj/item/rogueweapon/greataxe/militia
+	reqs = list(
+		/obj/item/scrap = 3,
+		/obj/item/grown/log/tree/small = 2,
+		/obj/item/rope = 1,
+		)
+	craftdiff = 3
+
+/datum/crafting_recipe/roguetown/survival/peasantry/warspear_hoe_scrap
+	name = "militia warspear (scrap)"
+	result = /obj/item/rogueweapon/spear/militia
+	reqs = list(
+		/obj/item/scrap = 3,
+		/obj/item/grown/log/tree/small = 1,
+		/obj/item/rope = 1,
+		)
+	craftdiff = 3
+
+/datum/crafting_recipe/roguetown/survival/peasantry/warflail_scrap
+	name = "militia flail (scrap)"
+	result = /obj/item/rogueweapon/flail/militia
+	reqs = list(
+		/obj/item/scrap = 3,
+		/obj/item/rope = 1,
+		/obj/item/natural/whetstone = 1,
+		)
+	craftdiff = 3
+
+/datum/crafting_recipe/roguetown/survival/peasantry/warpick_scrap
+	name = "militia warpick (scrap)"
+	result = /obj/item/rogueweapon/pick/militia
+	reqs = list(
+		/obj/item/scrap = 3,
+		/obj/item/natural/whetstone = 1,
+		)
+	craftdiff = 3
+
+/datum/crafting_recipe/roguetown/survival/peasantry/warpick_steel_scrap
+	name = "militia steel warpick (scrap)"
+	result = /obj/item/rogueweapon/pick/militia/steel
+	reqs = list(
+		/obj/item/steel_scrap = 3,
+		/obj/item/natural/whetstone = 1,
+		)
+	craftdiff = 3
+
+/datum/crafting_recipe/roguetown/survival/peasantry/maciejowski_knife_scrap
+	name = "maciejowski (scrap)"
+	result = /obj/item/rogueweapon/sword/falchion/militia
+	reqs = list(
+		/obj/item/scrap = 2,
+		/obj/item/natural/whetstone = 1,
+		)
+	craftdiff = 3
+
 //////////////////////////////////////// STEEL ////////////////////////////////////////
+
+//HELMET
+
+/datum/crafting_recipe/roguetown/survival/chaincoif_steel
+	name = "iron chaincoif"
+	result = list(/obj/item/clothing/neck/roguetown/chaincoif = 1)
+	reqs = list(/obj/item/steel_scrap = 3)
+	craftdiff = 3
+	req_table = TRUE
+
+/datum/crafting_recipe/roguetown/survival/chaincoif_full_steel
+	name = "iron full chaincoif"
+	result = list(/obj/item/clothing/neck/roguetown/chaincoif/full = 1)
+	reqs = list(/obj/item/steel_scrap = 3, /obj/item/clothing/neck/roguetown/chaincoif = 1)
+	craftdiff = 4
+	req_table = TRUE
+	bypass_dupe_test = TRUE
 
 //ARMOR
 
 /datum/crafting_recipe/roguetown/survival/steel_haubergeon
 	name = "steel haubergeon"
 	result = list(/obj/item/craft_kit/steel/haubergeon = 1)
-	reqs = list(/obj/item/steel_scrap = 5)
+	reqs = list(/obj/item/steel_scrap = 4)
 	craftdiff = 4
 	req_table = TRUE
 
 /datum/crafting_recipe/roguetown/survival/steel_cuirass
 	name = "steel cuirass"
 	result = list(/obj/item/craft_kit/steel/cuirass = 1)
-	reqs = list(/obj/item/steel_scrap = 5, /obj/item/clothing/suit/roguetown/armor/chainmail = 1)
+	reqs = list(/obj/item/steel_scrap = 4, /obj/item/clothing/suit/roguetown/armor/chainmail = 1)
+	craftdiff = 4
+	req_table = TRUE
+	bypass_dupe_test = TRUE
+
+/datum/crafting_recipe/roguetown/survival/steel_haubergeon_light
+	name = "besilked haubergeon"
+	result = list(/obj/item/craft_kit/haubergeon_light = 1)
+	reqs = list(/obj/item/scrap = 4, /obj/item/clothing/suit/roguetown/armor/chainmail = 1)
 	craftdiff = 4
 	req_table = TRUE
 	bypass_dupe_test = TRUE
