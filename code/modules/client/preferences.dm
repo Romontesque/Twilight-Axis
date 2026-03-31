@@ -2624,28 +2624,8 @@ GLOBAL_LIST_EMPTY(chosen_names)
 							to_chat(user, span_purple("Your statpack has been set to virtuous (no stats) due to selecting a virtue.")) */
 
 				if("origin")
-					var/list/virtue_choices = list()
-					for (var/path as anything in GLOB.virtues)
-						var/datum/virtue/V = GLOB.virtues[path]
-						if (!V.name)
-							continue
-						if (V.name == virtue_origin.name)
-							continue
-						if (!istype(V, /datum/virtue/origin))
-							continue
-						if (V.restricted == TRUE)
-							if((pref_species.type in V.races))
-								continue
-						if (istype(V, /datum/virtue/origin/racial))
-							if(!(pref_species.type in V.races))
-								continue
-						virtue_choices[V.name] = V
-					var/result = tgui_input_list(user, "From where do you come?", "ORIGINS",virtue_choices)
-
-					if (result)
-						var/datum/virtue/virtue_chosen = virtue_choices[result]
-						virtue_origin = virtue_chosen
-						to_chat(user, process_virtue_text(virtue_chosen))
+					var/datum/origin_picker_panel/origin_picker = new(src) // TA EDIT
+					origin_picker.ui_interact(user) // TA EDIT
 
 				if("charflaw_averse_choice")
 					var/choice = tgui_input_list(user, "Who do you loathe?", "AVERSION", GLOB.averse_factions)
