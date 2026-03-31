@@ -13,6 +13,14 @@
 	if(!L.actor_active.physical || !L.actor_passive.physical)
 		return FALSE
 
+	var/mob/living/active_mob = L.actor_active.get_effect_mob()
+	var/mob/living/passive_mob = L.actor_passive.get_effect_mob()
+
+	if(istype(active_mob) && active_mob.stat != CONSCIOUS)
+		return FALSE
+	if(istype(passive_mob) && passive_mob.stat != CONSCIOUS)
+		return FALSE
+
 	if(!L.init_organ || QDELETED(L.init_organ))
 		return FALSE
 	if(!L.target_organ || QDELETED(L.target_organ))

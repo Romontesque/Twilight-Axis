@@ -51,8 +51,7 @@
 	if(QDELETED(L))
 		return
 
-	if(L.is_valid())
-		controller._send_link_finish_message(L)
+	controller._send_link_finish_message(L)
 
 	if(L in controller.links)
 		controller.links -= L
