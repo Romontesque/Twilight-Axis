@@ -140,6 +140,7 @@
 	reqs = list(/obj/item/scrap = 5)
 	craftdiff = 3
 	req_table = TRUE
+	bypass_dupe_test = TRUE
 
 /datum/crafting_recipe/roguetown/survival/chaincoif_full
 	name = "iron full chaincoif"
@@ -396,6 +397,7 @@
 	reqs = list(/obj/item/steel_scrap = 3)
 	craftdiff = 3
 	req_table = TRUE
+	bypass_dupe_test = TRUE
 
 /datum/crafting_recipe/roguetown/survival/chaincoif_full_steel
 	name = "steel full chaincoif"
