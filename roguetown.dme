@@ -3268,7 +3268,6 @@
 #include "modular_twilight_axis\code\_DEFINES\roguetown.dm"
 #include "modular_twilight_axis\code\game\objects\items\rogueitems\items.dm"
 #include "modular_twilight_axis\code\game\objects\items\rogueitems\metal_stuff.dm"
-#include "modular_twilight_axis\icons\roguetown\items\lighting.dmi"
 #include "modular_twilight_axis\code\modules\clothing\rogueclothes\pants\cloth.dm"
 #include "modular_twilight_axis\code\modules\virtues\crafter.dm"
 #include "modular_twilight_axis\code\modules\erp_system\actions\erp_action_editor_schema.dm"

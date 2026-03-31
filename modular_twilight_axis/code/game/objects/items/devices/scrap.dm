@@ -2,8 +2,8 @@
 
 /obj/item/flashlight/flare/torch/lantern/scrap
 	name = "iron scrap lamptern"
-	icon_state = "scraplamp"
-	icon = 'modular_twilight_axis\icons\roguetown\items\lighting.dmi'
+	icon_state = "lamp"
+	icon = 'modular_twilight_axis/icons/roguetown/items/lighting.dmi'
 	desc = "A light to guide the way."
 	light_outer_range = 5
 	on = FALSE
@@ -18,4 +18,4 @@
 	grid_height = 64
 	extinguishable = FALSE
 	weather_resistant = TRUE
-	experimental_onhip = FALSE 
+	experimental_onhip = FALSE
