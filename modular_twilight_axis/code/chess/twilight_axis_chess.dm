@@ -581,7 +581,7 @@
 				"file" = file,
 				"rank" = rank,
 				"piece" = match.board[index],
-				"light" = !((file + rank) % 2),
+				"light" = ((file + rank) % 2),
 				"selected" = (index == selected),
 				"lastmove" = (index == match.last_from || index == match.last_to),
 				"target" = (index in legal_targets),
