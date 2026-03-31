@@ -175,7 +175,7 @@
 	bypass_dupe_test = TRUE
 
 /datum/crafting_recipe/roguetown/survival/brigandine_light
-	name = "iron besilked haubergeon"
+	name = "'jack of plate' brigandine"
 	result = list(/obj/item/craft_kit/brigandine_light = 1)
 	reqs = list(/obj/item/scrap = 3, /obj/item/clothing/suit/roguetown/armor/chainmail/iron = 1, /obj/item/clothing/suit/roguetown/armor/gambeson = 1)
 	craftdiff = 3
