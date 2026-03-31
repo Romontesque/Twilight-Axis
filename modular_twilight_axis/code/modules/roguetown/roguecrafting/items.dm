@@ -175,7 +175,7 @@
 	bypass_dupe_test = TRUE
 
 /datum/crafting_recipe/roguetown/survival/brigandine_light
-	name = "'jack of plate' brigandine"
+	name = "jack of plate brigandine"
 	result = list(/obj/item/craft_kit/brigandine_light = 1)
 	reqs = list(/obj/item/scrap = 3, /obj/item/clothing/suit/roguetown/armor/chainmail/iron = 1, /obj/item/clothing/suit/roguetown/armor/gambeson = 1)
 	craftdiff = 3
@@ -391,14 +391,14 @@
 //HELMET
 
 /datum/crafting_recipe/roguetown/survival/chaincoif_steel
-	name = "iron chaincoif"
+	name = "steel chaincoif"
 	result = list(/obj/item/clothing/neck/roguetown/chaincoif = 1)
 	reqs = list(/obj/item/steel_scrap = 3)
 	craftdiff = 3
 	req_table = TRUE
 
 /datum/crafting_recipe/roguetown/survival/chaincoif_full_steel
-	name = "iron full chaincoif"
+	name = "steel full chaincoif"
 	result = list(/obj/item/clothing/neck/roguetown/chaincoif/full = 1)
 	reqs = list(/obj/item/steel_scrap = 3, /obj/item/clothing/neck/roguetown/chaincoif = 1)
 	craftdiff = 4
