@@ -1,10 +1,10 @@
 /obj/effect/proc_holder/spell/invoked/shadowstep
 	name = "Shadowstep"
 	desc = "Project your shadow to swap places with it, teleporting several feet away."
-	overlay_icon = 'icons/mob/actions/gnollmiracles.dmi'
-	action_icon = 'icons/mob/actions/gnollmiracles.dmi'
-	overlay_state = "stalk"
-	action_icon_state = "stalk"
+	overlay_icon = 'modular_twilight_axis/icons/mob/actions/inq.dmi'
+	action_icon = 'modular_twilight_axis/icons/mob/actions/inq.dmi'
+	overlay_state = "shadowstep"
+	action_icon_state = "shadowstep"
 	cost = 3
 	xp_gain = TRUE
 	releasedrain = 30
