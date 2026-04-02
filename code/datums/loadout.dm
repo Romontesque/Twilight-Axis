@@ -1455,6 +1455,20 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 	category = list("Одежда", "Донат")
 	donatitem = TRUE
 
+/datum/loadout_item/donator_eiren5
+	name = "Donator Kit - Glintstone Longsword - Required: Longsword"
+	path = /obj/item/enchantingkit/weapon/eiren_m
+	category = list("Одежда", "Донат")
+	donatitem = TRUE
+	donat_tier = 2
+
+/datum/loadout_item/donator_eiren6
+	name = "Donator Kit - Stygian Longsword - Required: Longsword"
+	path = /obj/item/enchantingkit/weapon/eirensword
+	category = list("Одежда", "Донат")
+	donatitem = TRUE
+	donat_tier = 2
+
 /datum/loadout_item/gdhatsirdon
 	name = "Donator Kit - Gravedigger's Hat"
 	category = list("Головные уборы", "Донат")
