@@ -2071,7 +2071,7 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 	donat_tier = 2
 	donatitem = TRUE
 
-datum/loadout_item/donat/tabard/crusader/abyssor
+/datum/loadout_item/donat/tabard/crusader/abyssor
 	name = "Табард Абиссора"
 	category = list("Плащи", "Донат")
 	path = /obj/item/clothing/cloak/tabard/devotee/abyssor
