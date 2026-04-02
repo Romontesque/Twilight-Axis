@@ -1994,12 +1994,6 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 	path = /obj/item/clothing/cloak/cape/blkknight
 	donatitem = TRUE
 
-/datum/loadout_item/donat/xylixiancloak
-	name = "Ксайликситский плащ"
-	category = list("Плащи", "Донат")
-	path = /obj/item/clothing/cloak/templar/xylixian
-	donatitem = TRUE
-
 /datum/loadout_item/donat/furcloak
 	name = "Меховой плащ"
 	category = list("Плащи", "Донат")
@@ -2012,21 +2006,27 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 	path = /obj/item/clothing/cloak/forrestercloak/snow
 	donatitem = TRUE
 
-/datum/loadout_item/donat/tabard/ten
+/datum/loadout_item/donat/tabard/templar/undivided
 	name = "Табард Десяти"
 	category = list("Плащи", "Донат")
 	path = /obj/item/clothing/cloak/templar/undivided
 	donat_tier = 2
 	donatitem = TRUE
 
-/datum/loadout_item/donat/tabard/ten_cloack
+/datum/loadout_item/donat/tabard/templar/undivided/alt
 	name = "Плащ Десяти"
 	category = list("Плащи", "Донат")
 	path = /obj/item/clothing/cloak/undivided
 	donat_tier = 2
 	donatitem = TRUE
+
+/datum/loadout_item/donat/tabard/crusader/astrata
+	name = "Табард Астраты"
+	category = list("Плащи", "Донат")
+	path = /obj/item/clothing/cloak/tabard/devotee/astrata
+	donatitem = TRUE
 	
-/datum/loadout_item/donat/tabard/astata
+/datum/loadout_item/donat/tabard/templar/astrata
 	name = "Табард-плащ Астраты"
 	category = list("Плащи", "Донат")
 	path = /obj/item/clothing/cloak/templar/astratan
@@ -2036,30 +2036,48 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 /datum/loadout_item/donat/tabard/crusader/noc
 	name = "Табард-плащ Нок"
 	category = list("Плащи", "Донат")
-	path = /obj/item/clothing/cloak/tabard/crusader/noc
+	path = /obj/item/clothing/cloak/tabard/devotee/noc
 	donatitem = TRUE
 
 /datum/loadout_item/donat/tabard/crusader/dendor
-	name = "Табард-плащ Дендора"
+	name = "Табард Дендора"
 	category = list("Плащи", "Донат")
-	path = /obj/item/clothing/cloak/tabard/crusader/dendor
+	path = /obj/item/clothing/cloak/tabard/devotee/dendor
 	donatitem = TRUE
 
-/datum/loadout_item/donat/tabard/pestra
+/datum/loadout_item/donat/tabard/crusader/pestra
+	name = "Табард-плащ Пестры"
+	category = list("Плащи", "Донат")
+	path = /obj/item/clothing/cloak/tabard/devotee/pestra
+	donatitem = TRUE
+
+/datum/loadout_item/donat/tabard/templar/pestra
 	name = "Табард-плащ Пестры"
 	category = list("Плащи", "Донат")
 	path = /obj/item/clothing/cloak/templar/pestran
 	donat_tier = 2
 	donatitem = TRUE
 
-/datum/loadout_item/donat/tabard/malum
+/datum/loadout_item/donat/tabard/crusader/malum
+	name = "Табард Малума"
+	category = list("Плащи", "Донат")
+	path = /obj/item/clothing/cloak/tabard/devotee/malum
+	donatitem = TRUE
+
+/datum/loadout_item/donat/tabard/templar/malum
 	name = "Табард-плащ Малума"
 	category = list("Плащи", "Донат")
 	path = /obj/item/clothing/cloak/templar/malumite
 	donat_tier = 2
 	donatitem = TRUE
 
-/datum/loadout_item/donat/tabard/abyssor
+datum/loadout_item/donat/tabard/crusader/abyssor
+	name = "Табард Абиссора"
+	category = list("Плащи", "Донат")
+	path = /obj/item/clothing/cloak/tabard/devotee/abyssor
+	donatitem = TRUE
+
+/datum/loadout_item/donat/tabard/templar/abyssor
 	name = "Табард-плащ Абиссора"
 	category = list("Плащи", "Донат")
 	path = /obj/item/clothing/cloak/tabard/abyssorite
@@ -2067,22 +2085,35 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 	donatitem = TRUE
 
 /datum/loadout_item/donat/tabard/crusader/ravox
-	name = "Табард-плащ Равокса (старый)"
+	name = "Табард Равокса"
 	category = list("Плащи", "Донат")
-	path = /obj/item/clothing/cloak/templar/ravox
+	path = /obj/item/clothing/cloak/tabard/devotee/ravox
 	donatitem = TRUE
 
 /datum/loadout_item/donat/tabard/templar/ravox
-	name = "Табард-плащ Равокса (новый)"
+	name = "Табард-плащ Равокса"
 	category = list("Плащи", "Донат")
 	path = /obj/item/clothing/cloak/templar/ravox
 	donat_tier = 2
 	donatitem = TRUE
 
-/datum/loadout_item/donat/tabard/crusader/eora
-	name = "Табард-плащ Эоры (старый)"
+/datum/loadout_item/donat/tabard/crusader/xilyx
+	name = "Табард Ксайликса"
 	category = list("Плащи", "Донат")
-	path = /obj/item/clothing/cloak/tabard/crusader/eora
+	path = /obj/item/clothing/cloak/tabard/devotee/xylix
+	donatitem = TRUE
+
+/datum/loadout_item/donat/tabard/templar/xilyx
+	name = "Табард-плащ Ксайликса"
+	category = list("Плащи", "Донат")
+	path = /obj/item/clothing/cloak/templar/xylixian
+	donat_tier = 2
+	donatitem = TRUE
+
+/datum/loadout_item/donat/tabard/crusader/eora
+	name = "Табард Эоры"
+	category = list("Плащи", "Донат")
+	path = /obj/item/clothing/cloak/tabard/devotee/eora
 	donatitem = TRUE
 
 /datum/loadout_item/donat/tabard/crusader/eora/resprite
@@ -2092,7 +2123,7 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 	donat_tier = 2
 	donatitem = TRUE
 
-/datum/loadout_item/donat/tabard/eora
+/datum/loadout_item/donat/tabard/templar/eora
 	name = "Табард-плащ Эоры"
 	category = list("Плащи", "Донат")
 	path = /obj/item/clothing/cloak/templar/eoran
@@ -2102,12 +2133,24 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 /datum/loadout_item/donat/tabard/crusader/necra
 	name = "Табард Некры"
 	category = list("Плащи", "Донат")
+	path = /obj/item/clothing/cloak/tabard/devotee/necra
+	donatitem = TRUE
+
+/datum/loadout_item/donat/tabard/templar/necra
+	name = "Табард-плащ Некры"
+	category = list("Плащи", "Донат")
 	path = /obj/item/clothing/cloak/templar/necran
 	donat_tier = 2
 	donatitem = TRUE
 
 /datum/loadout_item/donat/tabard/crusader/psydon
 	name = "Табард Псайдона"
+	category = list("Плащи", "Донат")
+	path = /obj/item/clothing/cloak/tabard/devotee/psydon
+	donatitem = TRUE
+
+/datum/loadout_item/donat/tabard/templar/psydon
+	name = "Табард-плащ Псайдона"
 	category = list("Плащи", "Донат")
 	path = /obj/item/clothing/cloak/tabard/psydontabard
 	donat_tier = 2

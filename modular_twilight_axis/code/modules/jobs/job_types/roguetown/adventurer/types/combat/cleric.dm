@@ -55,7 +55,7 @@
 			cloak = /obj/item/clothing/cloak/tabard/devotee/abyssor
 		if(/datum/patron/divine/xylix)
 			wrists = /obj/item/clothing/neck/roguetown/psicross/xylix
-			cloak = /obj/item/clothing/cloak/templar/xylixian
+			cloak = /obj/item/clothing/cloak/tabard/devotee/xylix
 			H.cmode_music = 'sound/music/cmode/church/combat_reckoning.ogg'
 		if(/datum/patron/divine/dendor)
 			wrists = /obj/item/clothing/neck/roguetown/psicross/dendor
@@ -69,7 +69,7 @@
 		if(/datum/patron/divine/pestra)
 			head = /obj/item/clothing/head/roguetown/roguehood/phys
 			wrists = /obj/item/clothing/neck/roguetown/psicross/pestra
-			cloak = /obj/item/clothing/cloak/tabard/crusader/pestra
+			cloak = /obj/item/clothing/cloak/tabard/devotee/pestra
 		if(/datum/patron/divine/eora) //Eora content from stonekeep
 			head = /obj/item/clothing/head/roguetown/eoramask
 			wrists = /obj/item/clothing/neck/roguetown/psicross/eora
@@ -81,7 +81,7 @@
 		if(/datum/patron/divine/ravox)
 			head = /obj/item/clothing/head/roguetown/roguehood
 			wrists = /obj/item/clothing/neck/roguetown/psicross/ravox
-			cloak = /obj/item/clothing/cloak/templar/ravox
+			cloak = /obj/item/clothing/cloak/tabard/devotee/ravox
 		if(/datum/patron/divine/malum)
 			head = /obj/item/clothing/head/roguetown/roguehood
 			wrists = /obj/item/clothing/neck/roguetown/psicross/malum
@@ -112,7 +112,7 @@
 						if("Ravox")
 							head = /obj/item/clothing/head/roguetown/roguehood
 							wrists = /obj/item/clothing/neck/roguetown/psicross/ravox
-							cloak = /obj/item/clothing/cloak/templar/ravox
+							cloak = /obj/item/clothing/cloak/tabard/devotee/ravox
 						if("Dendor")
 							wrists = /obj/item/clothing/neck/roguetown/psicross/dendor
 							cloak = /obj/item/clothing/cloak/tabard/devotee/dendor
@@ -127,7 +127,7 @@
 							cloak = /obj/item/clothing/cloak/tabard/devotee/abyssor
 						if("Xylix")
 							wrists = /obj/item/clothing/neck/roguetown/psicross/xylix
-							cloak = /obj/item/clothing/cloak/templar/xylixian
+							cloak = /obj/item/clothing/cloak/tabard/devotee/xylix
 						if("Eora")
 							head = /obj/item/clothing/head/roguetown/eoramask
 							wrists = /obj/item/clothing/neck/roguetown/psicross/eora
@@ -247,4 +247,3 @@
 		H.adjust_skillrank_up_to(/datum/skill/misc/climbing, SKILL_LEVEL_EXPERT, TRUE)
 		H.adjust_skillrank_up_to(/datum/skill/misc/lockpicking, SKILL_LEVEL_JOURNEYMAN, TRUE)
 		H.adjust_skillrank_up_to(/datum/skill/misc/music, SKILL_LEVEL_NOVICE, TRUE)
-
