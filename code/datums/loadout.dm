@@ -2446,6 +2446,12 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 	path = /obj/item/clothing/shoes/roguetown/boots/hammerhold_boots
 	donatitem = TRUE
 
+/datum/loadout_item/etruscan_boots
+	name = "Donator Kit - Этрусские ботфорты (только для женщин)"
+	category = list ("Обувь", "Донат")
+	path = /obj/item/enchantingkit/etruscan_boots
+	donatitem = TRUE
+
 // Аксессуары
 
 /datum/loadout_item/donat/hammerhold_sash
@@ -2459,7 +2465,7 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 	category = list("Аксессуары", "Донат")
 	path = /obj/item/storage/belt/rogue/leather/suspenders
 	donatitem = TRUE
-
+ 
 /datum/loadout_item/woolencollar
 	name = "Woolen Collar"
 	category = list("Аксессуары", "Донат")
