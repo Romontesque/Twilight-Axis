@@ -2447,7 +2447,7 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 	donatitem = TRUE
 
 /datum/loadout_item/etruscan_boots
-	name = "Donator Kit - Этрусские ботфорты (только для женщин)"
+	name = "Donator Kit - Этруские ботфорты (только для женщин)"
 	category = list ("Обувь", "Донат")
 	path = /obj/item/enchantingkit/etruscan_boots
 	donatitem = TRUE
