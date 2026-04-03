@@ -85,7 +85,7 @@
 	color = CLOTHING_WHITE
 	detail_color = CLOTHING_WHITE
 	altdetail_color = CLOTHING_WHITE
-	icon = 'icons/clothing/donor_clothes.dmi'
+	icon = 'modular_twilight_axis/icons/clothing/donor_clothes.dmi'
 	mob_overlay_icon = 'icons/clothing/onmob/donor_clothes.dmi'
 	sleeved = 'icons/clothing/onmob/donor_sleeves_armor.dmi'
 	icon_state = "dittocloak"
@@ -99,7 +99,7 @@
 	icon_state = "formfit"
 	item_state = "formfit"
 	color = "#ffffff"
-	icon = 'icons/clothing/donor_clothes.dmi'
+	icon = 'modular_twilight_axis/icons/clothing/donor_clothes.dmi'
 	mob_overlay_icon = 'icons/clothing/onmob/donor_clothes.dmi'
 
 //Bat's donator item - custom harp sprite
