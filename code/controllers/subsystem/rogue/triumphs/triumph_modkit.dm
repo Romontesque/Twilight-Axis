@@ -46,16 +46,6 @@
 		)
 	result_item = null
 
-/obj/item/enchantingkit/weapon/triumph_weaponkit_sword
-	name = "'Valorian' sword morphing elixir"
-	desc = "A small container of special morphing dust, perfect to make a specific item. It can be used to alter the appearance of an Iron Arming Sword, an Iron Dueling Sword, or a Maciejowski."
-	target_items = list(
-		/obj/item/rogueweapon/sword/iron,
-		/obj/item/rogueweapon/sword/short/messer/iron/virtue,
-		/obj/item/rogueweapon/sword/falchion/militia
-		)
-	result_item = /obj/item/rogueweapon/example/valorian_sword
-
 /obj/item/enchantingkit/triumph_weaponkit_tri
 	name = "'Valorian' longsword morphing elixir"
 	desc = "A small container of special morphing dust, perfect to make a specific item. It can be used to alter the appearance of a Steel Longsword."
@@ -109,6 +99,7 @@
 		/obj/item/rogueweapon/estoc							= /obj/item/rogueweapon/estoc/triumph
 		)
 	result_item = null
+	icon_loadout = /obj/item/rogueweapon/estoc/triumph
 
 /obj/item/enchantingkit/triumph_weaponkit_psy
 	name = "'Psycrucifix' longsword morphing elixir"
@@ -160,6 +151,7 @@
 	name = "valorian sword"
 	desc = "A modest take on a mythical design, hailing from the blood-splattered crossroads \
 	between Valoria and Rockhill. It feels right at home, in the palm of your hand."
+	icon = 'icons/roguetown/weapons/swords32.dmi'
 	icon_state = "iswordalt"
 	sheathe_icon = "iswordalt"
 
