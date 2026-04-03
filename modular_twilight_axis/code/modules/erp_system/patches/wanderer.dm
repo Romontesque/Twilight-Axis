@@ -475,6 +475,9 @@ GLOBAL_LIST_INIT(wanderer_combat_skills, list(
 	if(!owner || !target)
 		return
 
+	if(!owner.cmode)
+		return
+		
 	last_action_success = TRUE
 	last_action_skill = skill_id
 	last_action_zone = zone || BODY_ZONE_CHEST
