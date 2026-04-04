@@ -1,52 +1,52 @@
 GLOBAL_LIST_INIT(wanderer_erp_training_map, list(
-    // Labor
-    /datum/erp_action/other/hands/milking_breasts = list("skill" = /datum/skill/labor/farming, "passive" = "wanderer"),
-    /datum/erp_action/other/mouth/rimming = list("skill" = /datum/skill/labor/mining, "passive" = "wanderer"),
-    /datum/erp_action/other/hands/finger_oral = list("skill" = /datum/skill/labor/fishing, "passive" = "wanderer"),
-    /datum/erp_action/other/body/grinding = list("skill" = /datum/skill/labor/butchering, "passive" = "wanderer"),
-    /datum/erp_action/other/hands/spanking = list("skill" = /datum/skill/labor/lumberjacking, "passive" = "wanderer"),
+	// Labor
+	/datum/erp_action/other/hands/milking_breasts = list("skill" = /datum/skill/labor/farming, "passive" = "wanderer"),
+	/datum/erp_action/other/mouth/rimming = list("skill" = /datum/skill/labor/mining, "passive" = "wanderer"),
+	/datum/erp_action/other/hands/finger_oral = list("skill" = /datum/skill/labor/fishing, "passive" = "wanderer"),
+	/datum/erp_action/other/body/grinding = list("skill" = /datum/skill/labor/butchering, "passive" = "wanderer"),
+	/datum/erp_action/other/hands/spanking = list("skill" = /datum/skill/labor/lumberjacking, "passive" = "wanderer"),
 
-    // Magic
-    /datum/erp_action/other/mouth/cunnilingus = list("skill" = /datum/skill/magic/holy, "passive" = "wanderer"),
-    /datum/erp_action/other/mouth/breast_feed = list("skill" = /datum/skill/magic/arcane, "passive" = "wanderer"),
+	// Magic
+	/datum/erp_action/other/mouth/cunnilingus = list("skill" = /datum/skill/magic/holy, "passive" = "wanderer"),
+	/datum/erp_action/other/mouth/breast_feed = list("skill" = /datum/skill/magic/arcane, "passive" = "wanderer"),
 
-    // Misc
-    /datum/erp_action/other/body/rubbing = list("skill" = /datum/skill/misc/climbing, "passive" = "actor"),
-    /datum/erp_action/other/vagina/force_face = list("skill" = /datum/skill/misc/reading, "passive" = "actor"),
-    /datum/erp_action/other/vagina/face = list("skill" = /datum/skill/misc/stealing, "passive" = "actor"),
-    /datum/erp_action/other/hands/force_crotch = list("skill" = /datum/skill/misc/sneaking, "passive" = "actor"),
-    /datum/erp_action/other/hands/tease_vagina = list("skill" = /datum/skill/misc/lockpicking, "passive" = "wanderer"),
-    /datum/erp_action/other/anus/force_face = list("skill" = /datum/skill/misc/riding, "passive" = "wanderer"),
-    /datum/erp_action/other/mouth/finger_lick = list("skill" = /datum/skill/misc/medicine, "passive" = "actor"),
+	// Misc
+	/datum/erp_action/other/body/rubbing = list("skill" = /datum/skill/misc/climbing, "passive" = "actor"),
+	/datum/erp_action/other/vagina/force_face = list("skill" = /datum/skill/misc/reading, "passive" = "actor"),
+	/datum/erp_action/other/vagina/face = list("skill" = /datum/skill/misc/stealing, "passive" = "actor"),
+	/datum/erp_action/other/hands/force_crotch = list("skill" = /datum/skill/misc/sneaking, "passive" = "actor"),
+	/datum/erp_action/other/hands/tease_vagina = list("skill" = /datum/skill/misc/lockpicking, "passive" = "wanderer"),
+	/datum/erp_action/other/anus/force_face = list("skill" = /datum/skill/misc/riding, "passive" = "wanderer"),
+	/datum/erp_action/other/mouth/finger_lick = list("skill" = /datum/skill/misc/medicine, "passive" = "actor"),
 	/datum/erp_action/other/mouth/foot_lick = list("skill" = /datum/skill/misc/tracking, "passive" = "wanderer"),
 
-    // Craft
-    /datum/erp_action/other/breasts/breast_feed = list("skill" = /datum/skill/craft/crafting, "passive" = "actor"),
-    /datum/erp_action/other/hands/toy_anal = list("skill" = /datum/skill/craft/weaponsmithing, "passive" = "actor"),
-    /datum/erp_action/other/hands/toy_oral = list("skill" = /datum/skill/craft/armorsmithing, "passive" = "actor"),
-    /datum/erp_action/other/anus/butt = list("skill" = /datum/skill/craft/blacksmithing, "passive" = "wanderer"),
-    /datum/erp_action/other/penis/rubbing = list("skill" = /datum/skill/craft/smelting, "passive" = "actor"),
-    /datum/erp_action/other/vagina/rubbing = list("skill" = /datum/skill/craft/carpentry, "passive" = "actor"),
-    /datum/erp_action/other/anus/rubbing = list("skill" = /datum/skill/craft/masonry, "passive" = "actor"),
-    /datum/erp_action/other/anus/face = list("skill" = /datum/skill/craft/traps, "passive" = "actor"),
-    /datum/erp_action/other/hands/toy_oral = list("skill" = /datum/skill/craft/engineering, "passive" = "wanderer"),
-    /datum/erp_action/other/mouth/kiss = list("skill" = /datum/skill/craft/cooking, "passive" = "wanderer"),
-    /datum/erp_action/other/hands/rubbing = list("skill" = /datum/skill/craft/sewing, "passive" = "wanderer"),
-    /datum/erp_action/other/hands/spanking = list("skill" = /datum/skill/craft/tanning, "passive" = "actor"),
-    /datum/erp_action/other/hands/breasts_play = list("skill" = /datum/skill/craft/ceramics, "passive" = "wanderer"),
-    /datum/erp_action/other/hands/milking_penis = list("skill" = /datum/skill/craft/alchemy, "passive" = "wanderer"),
+	// Craft
+	/datum/erp_action/other/breasts/breast_feed = list("skill" = /datum/skill/craft/crafting, "passive" = "actor"),
+	/datum/erp_action/other/hands/toy_anal = list("skill" = /datum/skill/craft/weaponsmithing, "passive" = "actor"),
+	/datum/erp_action/other/hands/toy_oral = list("skill" = /datum/skill/craft/armorsmithing, "passive" = "actor"),
+	/datum/erp_action/other/anus/butt = list("skill" = /datum/skill/craft/blacksmithing, "passive" = "wanderer"),
+	/datum/erp_action/other/penis/rubbing = list("skill" = /datum/skill/craft/smelting, "passive" = "actor"),
+	/datum/erp_action/other/vagina/rubbing = list("skill" = /datum/skill/craft/carpentry, "passive" = "actor"),
+	/datum/erp_action/other/anus/rubbing = list("skill" = /datum/skill/craft/masonry, "passive" = "actor"),
+	/datum/erp_action/other/anus/face = list("skill" = /datum/skill/craft/traps, "passive" = "actor"),
+	/datum/erp_action/other/hands/toy_oral = list("skill" = /datum/skill/craft/engineering, "passive" = "wanderer"),
+	/datum/erp_action/other/mouth/kiss = list("skill" = /datum/skill/craft/cooking, "passive" = "wanderer"),
+	/datum/erp_action/other/hands/rubbing = list("skill" = /datum/skill/craft/sewing, "passive" = "wanderer"),
+	/datum/erp_action/other/hands/spanking = list("skill" = /datum/skill/craft/tanning, "passive" = "actor"),
+	/datum/erp_action/other/hands/breasts_play = list("skill" = /datum/skill/craft/ceramics, "passive" = "wanderer"),
+	/datum/erp_action/other/hands/milking_penis = list("skill" = /datum/skill/craft/alchemy, "passive" = "wanderer"),
 
-    // Combat
-    /datum/erp_action/other/penis/masturbation = list("skill" = /datum/skill/combat/knives, "passive" = "actor"),
-    /datum/erp_action/other/hands/toy_anal = list("skill" = /datum/skill/combat/swords, "passive" = "wanderer"),
-    /datum/erp_action/other/hands/toy_vaginal = list("skill" = /datum/skill/combat/polearms, "passive" = "wanderer"),
-    /datum/erp_action/other/legs/footjob = list("skill" = /datum/skill/combat/maces, "passive" = "wanderer"),
-    /datum/erp_action/other/mouth/foot_lick = list("skill" = /datum/skill/combat/axes, "passive" = "wanderer"),
-    /datum/erp_action/other/hands/tease_testicles = list("skill" = /datum/skill/combat/whipsflails, "passive" = "wanderer"),
-    /datum/erp_action/other/hands/finger_anal = list("skill" = /datum/skill/combat/wrestling, "passive" = "wanderer"),
-    /datum/erp_action/other/hands/finger_vaginal = list("skill" = /datum/skill/combat/unarmed, "passive" = "wanderer"),
-    /datum/erp_action/other/breasts/teasing = list("skill" = /datum/skill/combat/shields, "passive" = "actor"),
-    /datum/erp_action/other/legs/teasing = list("skill" = /datum/skill/combat/staves, "passive" = "actor"),
+	// Combat
+	/datum/erp_action/other/penis/masturbation = list("skill" = /datum/skill/combat/knives, "passive" = "actor"),
+	/datum/erp_action/other/hands/toy_anal = list("skill" = /datum/skill/combat/swords, "passive" = "wanderer"),
+	/datum/erp_action/other/hands/toy_vaginal = list("skill" = /datum/skill/combat/polearms, "passive" = "wanderer"),
+	/datum/erp_action/other/legs/footjob = list("skill" = /datum/skill/combat/maces, "passive" = "wanderer"),
+	/datum/erp_action/other/mouth/foot_lick = list("skill" = /datum/skill/combat/axes, "passive" = "wanderer"),
+	/datum/erp_action/other/hands/tease_testicles = list("skill" = /datum/skill/combat/whipsflails, "passive" = "wanderer"),
+	/datum/erp_action/other/hands/finger_anal = list("skill" = /datum/skill/combat/wrestling, "passive" = "wanderer"),
+	/datum/erp_action/other/hands/finger_vaginal = list("skill" = /datum/skill/combat/unarmed, "passive" = "wanderer"),
+	/datum/erp_action/other/breasts/teasing = list("skill" = /datum/skill/combat/shields, "passive" = "actor"),
+	/datum/erp_action/other/legs/teasing = list("skill" = /datum/skill/combat/staves, "passive" = "actor"),
 ))
 
 GLOBAL_LIST_INIT(wanderer_combat_skills, list(
@@ -257,32 +257,24 @@ GLOBAL_LIST_INIT(wanderer_combat_skills, list(
 /datum/component/combo_core/wanderer/DefineRules()
 
 	// ======================
-	// 2-hit combos
-	// ======================
-
-	RegisterRule("heel_tap",      list(WANDERER_INPUT_KICK,  WANDERER_INPUT_PUNCH), 30, PROC_REF(_cb_combo))
-	RegisterRule("needle_thread", list(WANDERER_INPUT_PUNCH, WANDERER_INPUT_GRAB),  35, PROC_REF(_cb_combo))
-	RegisterRule("double_strike", list(WANDERER_INPUT_PUNCH, WANDERER_INPUT_PUNCH), 25, PROC_REF(_cb_combo))
-	RegisterRule("low_pressure",  list(WANDERER_INPUT_KICK,  WANDERER_INPUT_KICK),  25, PROC_REF(_cb_combo))
-
-	// ======================
 	// 3-hit combos
 	// ======================
 
-	RegisterRule("iron_bloom",    list(WANDERER_INPUT_PUNCH, WANDERER_INPUT_PUNCH, WANDERER_INPUT_KICK), 50, PROC_REF(_cb_combo))
-	RegisterRule("leg_hook",      list(WANDERER_INPUT_KICK,  WANDERER_INPUT_PUNCH, WANDERER_INPUT_GRAB), 55, PROC_REF(_cb_combo))
-	RegisterRule("triple_strike", list(WANDERER_INPUT_PUNCH, WANDERER_INPUT_PUNCH, WANDERER_INPUT_PUNCH), 45, PROC_REF(_cb_combo))
-	RegisterRule("breaker_kicks", list(WANDERER_INPUT_KICK,  WANDERER_INPUT_KICK,  WANDERER_INPUT_KICK),  45, PROC_REF(_cb_combo))
-	RegisterRule("grip_break",    list(WANDERER_INPUT_GRAB,  WANDERER_INPUT_GRAB,  WANDERER_INPUT_PUNCH), 40, PROC_REF(_cb_combo))
-	RegisterRule("body_lock",     list(WANDERER_INPUT_GRAB,  WANDERER_INPUT_GRAB,  WANDERER_INPUT_KICK),  40, PROC_REF(_cb_combo))
+	RegisterRule("heel_tap",      list(WANDERER_INPUT_PUNCH, WANDERER_INPUT_PUNCH, WANDERER_INPUT_PUNCH), 45, PROC_REF(_cb_combo))
+	RegisterRule("needle_thread", list(WANDERER_INPUT_PUNCH, WANDERER_INPUT_PUNCH, WANDERER_INPUT_KICK),  50, PROC_REF(_cb_combo))
+	RegisterRule("double_strike", list(WANDERER_INPUT_PUNCH, WANDERER_INPUT_PUNCH, WANDERER_INPUT_GRAB),  55, PROC_REF(_cb_combo))
+	RegisterRule("low_pressure",  list(WANDERER_INPUT_PUNCH, WANDERER_INPUT_KICK,  WANDERER_INPUT_PUNCH), 50, PROC_REF(_cb_combo))
 
-	// ======================
-	// 4-hit combos
-	// ======================
+	RegisterRule("iron_bloom",    list(WANDERER_INPUT_PUNCH, WANDERER_INPUT_KICK,  WANDERER_INPUT_KICK),  55, PROC_REF(_cb_combo))
+	RegisterRule("leg_hook",      list(WANDERER_INPUT_PUNCH, WANDERER_INPUT_KICK,  WANDERER_INPUT_GRAB),  60, PROC_REF(_cb_combo))
+	RegisterRule("triple_strike", list(WANDERER_INPUT_KICK,  WANDERER_INPUT_PUNCH, WANDERER_INPUT_PUNCH), 50, PROC_REF(_cb_combo))
+	RegisterRule("breaker_kicks", list(WANDERER_INPUT_KICK,  WANDERER_INPUT_PUNCH, WANDERER_INPUT_KICK),  55, PROC_REF(_cb_combo))
 
-	RegisterRule("gatebreaker", list(WANDERER_INPUT_PUNCH, WANDERER_INPUT_KICK, WANDERER_INPUT_GRAB, WANDERER_INPUT_KICK), 70, PROC_REF(_cb_combo))
-	RegisterRule("crane_fold",  list(WANDERER_INPUT_KICK,  WANDERER_INPUT_PUNCH, WANDERER_INPUT_GRAB, WANDERER_INPUT_KICK), 75, PROC_REF(_cb_combo))
-
+	RegisterRule("grip_break",    list(WANDERER_INPUT_KICK,  WANDERER_INPUT_PUNCH, WANDERER_INPUT_GRAB),  60, PROC_REF(_cb_combo))
+	RegisterRule("body_lock",     list(WANDERER_INPUT_KICK,  WANDERER_INPUT_KICK,  WANDERER_INPUT_PUNCH), 50, PROC_REF(_cb_combo))
+	RegisterRule("gatebreaker",   list(WANDERER_INPUT_KICK,  WANDERER_INPUT_KICK,  WANDERER_INPUT_KICK),  55, PROC_REF(_cb_combo))
+	RegisterRule("crane_fold",    list(WANDERER_INPUT_KICK,  WANDERER_INPUT_KICK,  WANDERER_INPUT_GRAB),  60, PROC_REF(_cb_combo))
+	
 /datum/component/combo_core/wanderer/OnHistoryChanged()
 	return
 
@@ -375,45 +367,50 @@ GLOBAL_LIST_INIT(wanderer_combat_skills, list(
 // ------------------------------------------------------------
 
 /datum/component/combo_core/wanderer/proc/OnAttachApplyHiddenStats()
-    var/mob/living/H = owner
-    if(!H)
-        return
+	var/mob/living/H = owner
+	if(!H)
+		return
 
-    // ===== TRAITS =====
-    ADD_TRAIT(H, TRAIT_KEENEARS, type)
-    ADD_TRAIT(H, TRAIT_NUTCRACKER, type)
-    ADD_TRAIT(H, TRAIT_GOODLOVER, type)
-    ADD_TRAIT(H, TRAIT_EMPATH, type)
-    ADD_TRAIT(H, TRAIT_NOPAINSTUN, type)
-    ADD_TRAIT(H, TRAIT_CIVILIZEDBARBARIAN, type)
+	// ===== TRAITS =====
+	ADD_TRAIT(H, TRAIT_KEENEARS, type)
+	ADD_TRAIT(H, TRAIT_NUTCRACKER, type)
+	ADD_TRAIT(H, TRAIT_GOODLOVER, type)
+	ADD_TRAIT(H, TRAIT_EMPATH, type)
+	ADD_TRAIT(H, TRAIT_NOPAINSTUN, type)
+	ADD_TRAIT(H, TRAIT_CIVILIZEDBARBARIAN, type)
 
-    // ===== STATS =====
-    H.change_stat(STATKEY_STR, 3, WANDERER_STAT_INDEX)
-    H.change_stat(STATKEY_SPD, 2, WANDERER_STAT_INDEX)
-    H.change_stat(STATKEY_WIL, 4, WANDERER_STAT_INDEX)
-    H.change_stat(STATKEY_CON, 6, WANDERER_STAT_INDEX)
+	// ===== STATS =====
+	H.change_stat(STATKEY_STR, 3)
+	H.change_stat(STATKEY_SPD, 2)
+	H.change_stat(STATKEY_WIL, 4)
+	H.change_stat(STATKEY_CON, 6)
 
-    // ===== SKILLS =====
-    H.adjust_skillrank_up_to(/datum/skill/combat/wrestling, 2, TRUE)
-    H.adjust_skillrank_up_to(/datum/skill/combat/unarmed, 5, TRUE)
-    H.adjust_skillrank_up_to(/datum/skill/misc/athletics, 4, TRUE)
-    H.adjust_skillrank_up_to(/datum/skill/misc/music, 5, TRUE)
+	// ===== SKILLS =====
+	H.adjust_skillrank_up_to(/datum/skill/combat/wrestling, 2, TRUE)
+	H.adjust_skillrank_up_to(/datum/skill/combat/unarmed, 5, TRUE)
+	H.adjust_skillrank_up_to(/datum/skill/misc/athletics, 4, TRUE)
+	H.adjust_skillrank_up_to(/datum/skill/misc/music, 5, TRUE)
 
 /datum/component/combo_core/wanderer/proc/OnDetachClearHiddenStats()
-    var/mob/living/H = owner
-    if(!H)
-        return
+	var/mob/living/H = owner
+	if(!H)
+		return
 
-    // ===== TRAITS =====
-    REMOVE_TRAIT(H, TRAIT_KEENEARS, type)
-    REMOVE_TRAIT(H, TRAIT_NUTCRACKER, type)
-    REMOVE_TRAIT(H, TRAIT_GOODLOVER, type)
-    REMOVE_TRAIT(H, TRAIT_EMPATH, type)
-    REMOVE_TRAIT(H, TRAIT_NOPAINSTUN, type)
-    REMOVE_TRAIT(H, TRAIT_CIVILIZEDBARBARIAN, type)
+	H.change_stat(STATKEY_STR, -3)
+	H.change_stat(STATKEY_SPD, -2)
+	H.change_stat(STATKEY_WIL, -4)
+	H.change_stat(STATKEY_CON, -6)
 
-    // ===== STATS =====
-    H.change_stat(null, 0, WANDERER_STAT_INDEX)
+	// ===== TRAITS =====
+	REMOVE_TRAIT(H, TRAIT_KEENEARS, type)
+	REMOVE_TRAIT(H, TRAIT_NUTCRACKER, type)
+	REMOVE_TRAIT(H, TRAIT_GOODLOVER, type)
+	REMOVE_TRAIT(H, TRAIT_EMPATH, type)
+	REMOVE_TRAIT(H, TRAIT_NOPAINSTUN, type)
+	REMOVE_TRAIT(H, TRAIT_CIVILIZEDBARBARIAN, type)
+
+	// ===== STATS =====
+	H.change_stat(null, 0, WANDERER_STAT_INDEX)
 
 // ------------------------------------------------------------
 // signals
