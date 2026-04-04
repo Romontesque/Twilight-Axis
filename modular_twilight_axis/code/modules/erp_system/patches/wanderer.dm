@@ -396,10 +396,10 @@ GLOBAL_LIST_INIT(wanderer_combat_skills, list(
     H.change_stat(STATKEY_CON, 2, WANDERER_STAT_INDEX)
 
     // ===== SKILLS =====
-    H.adjust_skillrank(/datum/skill/combat/wrestling, 2, TRUE)
-    H.adjust_skillrank(/datum/skill/combat/unarmed, 3, TRUE)
-    H.adjust_skillrank(/datum/skill/misc/athletics, 3, TRUE)
-    H.adjust_skillrank(/datum/skill/misc/music, 4, TRUE)
+    H.adjust_skillrank_up_to(/datum/skill/combat/wrestling, 2, TRUE)
+    H.adjust_skillrank_up_to(/datum/skill/combat/unarmed, 5, TRUE)
+    H.adjust_skillrank_up_to(/datum/skill/misc/athletics, 4, TRUE)
+    H.adjust_skillrank_up_to(/datum/skill/misc/music, 5, TRUE)
 
 /datum/component/combo_core/wanderer/proc/OnDetachClearHiddenStats()
     var/mob/living/H = owner
@@ -477,7 +477,7 @@ GLOBAL_LIST_INIT(wanderer_combat_skills, list(
 
 	if(!owner.cmode)
 		return
-		
+
 	last_action_success = TRUE
 	last_action_skill = skill_id
 	last_action_zone = zone || BODY_ZONE_CHEST
