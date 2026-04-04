@@ -402,6 +402,7 @@
 	icon_state = "musketball"
 	dropshrink = 0.5
 	max_integrity = 0.1
+	ammo_weight = 1
 
 /obj/item/ammo_casing/caseless/twilight_lead/runelock
 	name = "runed sphere"
@@ -464,6 +465,7 @@
 	max_integrity = 0.1
 	grid_width = 32
 	grid_height = 64
+	ammo_weight = 1
 
 /obj/item/ammo_casing/caseless/twilight_cannonball/grapeshot
 	name = "grapeshot"
