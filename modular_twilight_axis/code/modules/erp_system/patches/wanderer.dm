@@ -390,10 +390,8 @@ GLOBAL_LIST_INIT(wanderer_combat_skills, list(
     // ===== STATS =====
     H.change_stat(STATKEY_STR, 3, WANDERER_STAT_INDEX)
     H.change_stat(STATKEY_SPD, 2, WANDERER_STAT_INDEX)
-    H.change_stat(STATKEY_LCK, 2, WANDERER_STAT_INDEX)
-    H.change_stat(STATKEY_PER, 1, WANDERER_STAT_INDEX)
-    H.change_stat(STATKEY_WIL, 2, WANDERER_STAT_INDEX)
-    H.change_stat(STATKEY_CON, 2, WANDERER_STAT_INDEX)
+    H.change_stat(STATKEY_WIL, 4, WANDERER_STAT_INDEX)
+    H.change_stat(STATKEY_CON, 6, WANDERER_STAT_INDEX)
 
     // ===== SKILLS =====
     H.adjust_skillrank_up_to(/datum/skill/combat/wrestling, 2, TRUE)
