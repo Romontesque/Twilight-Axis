@@ -69,7 +69,7 @@
 		else
 			to_chat(user, "<span class='warning'>Я совершенно не понимаю, как этим пользоваться!</span>")
 	else
-		if(alt_intents)
+		if(alt_grips)
 			altgrip(user)
 		if(gripped_intents)
 			wield(user)

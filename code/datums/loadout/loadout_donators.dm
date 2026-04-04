@@ -27,7 +27,7 @@
 	ckeywhitelist = list("eekasqueak")
 	sort_category = "Donator"
 
-/datum/loadout_item/donator_strudel1
+/datum/loadout_item/donator/strudel1
 	name = "Donator Kit - Grenzelhoftian Mage Vest"
 	path = /obj/item/enchantingkit/strudel1
 	ckeywhitelist = list("toasterstrudes")
@@ -35,6 +35,16 @@
 /datum/loadout_item/donator/strudel2
 	name = "Donator Kit - Xylixian Fasching Leotard"
 	path = /obj/item/enchantingkit/strudel2
+	ckeywhitelist = list("toasterstrudes")
+
+/datum/loadout_item/donator/strudel3
+	name = "Donator Kit - Etruscan Design Cloak"
+	path = /obj/item/enchantingkit/strudel3
+	ckeywhitelist = list("toasterstrudes")
+
+/datum/loadout_item/donator/strudel4
+	name = "Donator Kit - Form-fitting Padded Gambeson"
+	path = /obj/item/enchantingkit/strudel4
 	ckeywhitelist = list("toasterstrudes")
 
 /datum/loadout_item/donator/bat
@@ -96,6 +106,16 @@
 	name = "Donator Kit - Darkwood's Embrace"
 	path = /obj/item/clothing/suit/roguetown/armor/longcoat/eiren
 	ckeywhitelist = list("eirenxiv")
+
+/datum/loadout_item/donator/eiren5
+	name = "Donator Kit - Glintstone Longsword"
+	path = /obj/item/enchantingkit/weapon/eiren_m
+	ckeywhitelist = list("eirenxiv", "magicalbard")
+
+/datum/loadout_item/donator/eiren6
+	name = "Donator Kit - Stygian Longsword"
+	path = /obj/item/enchantingkit/weapon/eirensword
+	ckeywhitelist = list("eirenxiv", "muhsollini")
 
 /datum/loadout_item/donator/waff
 	name = "Donator Kit - Weeper's Lathe"
@@ -160,7 +180,7 @@
 	path = /obj/item/enchantingkit/ryan_psyhelm
 
 /datum/loadout_item/donator/koruu
-	name = "Donator Kit - Well-Worn Bamboo Hat"
+	name = "Donator Item - Well-Worn Bamboo Hat"
 	path = /obj/item/clothing/head/roguetown/mentorhat/koruu
 	ckeywhitelist = list("koruu", "painfeeler", "poots13", "vakiova", "maesune")
 
@@ -238,5 +258,9 @@
 	path = /obj/item/enchantingkit/weapon/noire_flsword
 	ckeywhitelist = list("nerocavalier")
 
+/datum/loadout_item/donator/walkthewaste
+	name = "Donator Item - Worn Bamboo Hat"
+	path = /obj/item/clothing/head/roguetown/mentorhat/walkthewaste
+	ckeywhitelist = list("walkthewaste")
 	sort_category = "Donator"
 */

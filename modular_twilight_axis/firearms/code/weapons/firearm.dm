@@ -290,7 +290,7 @@
 	if(altgripped || wielded) //Trying to unwield it
 		ungrip(user)
 		return
-	if(alt_intents)
+	if(alt_grips)
 		altgrip(user)
 	if(gripped_intents)
 		wield(user)
