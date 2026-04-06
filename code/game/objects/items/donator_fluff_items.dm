@@ -539,3 +539,24 @@
 //WALKTHEWASTE
 /obj/item/clothing/head/roguetown/mentorhat/walkthewaste
 	armor = ARMOR_CLOTHING
+
+//SCIDRAGON
+/obj/item/rogueweapon/sword/sabre/shamshir/dono_scidragon_flame
+	name = "flametongue"
+	desc = "An eternal flame dances and flickers across the blade of this shamshir, fueled by the passion of its wielder, promising to bring the heat of the long-away desert to its victims."
+	icon = 'icons/obj/items/donor_weapons_64.dmi'
+	icon_state = "sci_firetongue"
+
+/obj/item/rogueweapon/sword/sabre/shamshir/dono_scidragon_flame/ComponentInitialize()
+	. = ..()
+	AddComponent(/datum/component/ignitable/fluff/sci_flame)
+
+/obj/item/rogueweapon/sword/sabre/shamshir/dono_scidragon_sand
+	name = "sandlash"
+	desc = "Fury of an untamable desert sandstorm, conjured along the steel of this shamshir, destined to bite and lash at the target of its owner's ire. Or perhaps just business."
+	icon = 'icons/obj/items/donor_weapons_64.dmi'
+	icon_state = "sci_sandlash"
+
+/obj/item/rogueweapon/sword/sabre/shamshir/dono_scidragon_sand/ComponentInitialize()
+	. = ..()
+	AddComponent(/datum/component/ignitable/fluff/sci_sand)
