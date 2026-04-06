@@ -7,7 +7,7 @@
 	force = 22
 	force_wielded = 25
 	possible_item_intents = list(/datum/intent/sword/cut/arming, /datum/intent/sword/thrust/arming, /datum/intent/sword/strike)
-	gripped_intents = null
+	gripped_intents = list(/datum/intent/sword/cut/arming, /datum/intent/sword/thrust/arming, /datum/intent/sword/strike)
 	damage_deflection = 14
 	icon_state = "sword1"
 	sheathe_icon = "sword1"
