@@ -24,7 +24,7 @@
 		TRAIT_TOXIMMUNE, 
 		TRAIT_SHOCKIMMUNE, 
 		TRAIT_SILVER_WEAK,
-		TRAIT_BREADY
+		TRAIT_BREADY,
 	)
 
 	subclass_skills = list(
