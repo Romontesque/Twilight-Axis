@@ -827,8 +827,13 @@
 		STAINT = 15
 
 		AddSpell(new /obj/effect/proc_holder/spell/self/twilight_dragonclaws)
-		mind.AddSpell(new /datum/action/cooldown/spell/projectile/spitfire)
-		mind.AddSpell(/datum/action/cooldown/spell/projectile/fireball)
+
+		var/datum/action/cooldown/spell/projectile/fireball/fireball = new /datum/action/cooldown/spell/projectile/fireball
+		var/datum/action/cooldown/spell/projectile/spitfire/spitfire = new /datum/action/cooldown/spell/projectile/spitfire
+		
+		fireball.Grant(src)
+		spitfire.Grant(src)
+
 		AddSpell(new /obj/effect/proc_holder/spell/targeted/woundlick)
 		src.apply_status_effect(/datum/status_effect/buff/twilight_dragon_form)
 
