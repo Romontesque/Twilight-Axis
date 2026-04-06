@@ -94,7 +94,7 @@
 			if("onbelt")
 				return list("shrink" = 0.3,"sx" = -2,"sy" = -5,"nx" = 4,"ny" = -5,"wx" = 0,"wy" = -5,"ex" = 2,"ey" = -5,"nturn" = 0,"sturn" = 0,"wturn" = 0,"eturn" = 0,"nflip" = 0,"sflip" = 0,"wflip" = 0,"eflip" = 0,"northabove" = 0,"southabove" = 1,"eastabove" = 1,"westabove" = 0)
 
-/obj/item/metal_stake/attack_obj(obj/O, mob/living/user) //Переопределяет логику разбивания вещей для стального лома.
+/obj/item/metal_stake/attack_obj(obj/O, mob/living/user)
 	. = ..()
 	if(isitem(O))
 		var/obj/item/I = O
@@ -115,7 +115,7 @@
 		if(I.anvilrepair)
 			if(!I.smeltresult || I.smeltresult == /obj/item/ash)
 				return
-			if(!do_after(user, 4 SECONDS, target = I))
+			if(!do_after(user, 2 SECONDS, target = I))
 				return
 			if(I.smeltresult == /obj/item/ingot/iron)
 				new /obj/item/scrap(get_turf(I))
@@ -164,7 +164,25 @@
 	result =
 */
 
+GLOBAL_LIST_INIT(craft_iron, (list(/obj/item/clothing/neck/roguetown/chaincoif/full/iron,
+								/obj/item/clothing/suit/roguetown/armor/chainmail/iron,
+								/obj/item/clothing/suit/roguetown/armor/chainmail/hauberk/iron,
+								/obj/item/clothing/suit/roguetown/armor/plate/cuirass/iron,
+								/obj/item/clothing/suit/roguetown/armor/plate/iron,
+								/obj/item/clothing/suit/roguetown/armor/plate/full/iron,
+								/obj/item/clothing/suit/roguetown/armor/chainmail/light/iron,
+								/obj/item/clothing/suit/roguetown/armor/brigandine/light/handmade,
+								/obj/item/clothing/wrists/roguetown/bracers/splint,
+								/obj/item/clothing/under/roguetown/chainlegs/iron,
+								/obj/item/clothing/under/roguetown/splintlegs,
+								/obj/item/clothing/under/roguetown/chainlegs/iron/kilt,
+								/obj/item/clothing/shoes/roguetown/boots/armor/iron
+								)
+))
 //helmet
+
+/obj/item/craft_kit/full_chaincoif
+	result = /obj/item/clothing/neck/roguetown/chaincoif/full/iron
 
 //armor
 
@@ -216,7 +234,22 @@
 	result =
 */
 
+GLOBAL_LIST_INIT(craft_steel, (list(/obj/item/clothing/neck/roguetown/chaincoif/full,
+								/obj/item/clothing/suit/roguetown/armor/chainmail,
+								/obj/item/clothing/suit/roguetown/armor/chainmail/hauberk,
+								/obj/item/clothing/suit/roguetown/armor/plate/cuirass,
+								/obj/item/clothing/suit/roguetown/armor/plate,
+								/obj/item/clothing/suit/roguetown/armor/plate/full,
+								/obj/item/clothing/suit/roguetown/armor/chainmail/light,
+								/obj/item/clothing/under/roguetown/chainlegs,
+								/obj/item/clothing/under/roguetown/chainlegs/kilt,
+								)
+))
+
 //helmet
+
+/obj/item/craft_kit/steel/full_chaincoif
+	result = /obj/item/clothing/neck/roguetown/chaincoif/full
 
 //armor
 

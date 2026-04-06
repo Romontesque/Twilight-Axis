@@ -67,4 +67,5 @@
 	name = "iron full chain coif"
 	icon_state = "fchaincoif"
 	icon = 'modular_twilight_axis/icons/roguetown/clothing/neck.dmi'
+	mob_overlay_icon = 'modular_twilight_axis/icons/roguetown/clothing/onmob/neck.dmi'
 	max_integrity = ARMOR_INT_SIDE_IRON

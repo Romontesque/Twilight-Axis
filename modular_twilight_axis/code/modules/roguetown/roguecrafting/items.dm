@@ -144,7 +144,7 @@
 
 /datum/crafting_recipe/roguetown/survival/chaincoif_full
 	name = "iron full chaincoif"
-	result = list(/obj/item/clothing/neck/roguetown/chaincoif/full/iron = 1)
+	result = list(/obj/item/craft_kit/full_chaincoif = 1)
 	reqs = list(/obj/item/scrap = 3, /obj/item/clothing/neck/roguetown/chaincoif/iron = 1)
 	craftdiff = 4
 	req_table = TRUE
@@ -318,6 +318,14 @@
 	craftdiff = 3
 	req_table = TRUE
 
+/datum/crafting_recipe/roguetown/survival/shortsachel
+	name = "cut sachel to shortsachel"
+	result = list(/obj/item/storage/backpack/rogue/satchel/short = 1)
+	reqs = list(/obj/item/scrap = 2, /obj/item/storage/backpack/rogue/satchel = 1)
+	tools = list(/obj/item/rogueweapon/huntingknife)
+	craftdiff = 4
+	req_table = TRUE
+
 //////////////////////////////////////// WEAPONS ////////////////////////////////////////
 
 /datum/crafting_recipe/roguetown/survival/peasantry/peasantwarflail_scrap
@@ -394,15 +402,15 @@
 /datum/crafting_recipe/roguetown/survival/chaincoif_steel
 	name = "steel chaincoif"
 	result = list(/obj/item/clothing/neck/roguetown/chaincoif = 1)
-	reqs = list(/obj/item/steel_scrap = 3)
+	reqs = list(/obj/item/steel_scrap = 5)
 	craftdiff = 3
 	req_table = TRUE
 	bypass_dupe_test = TRUE
 
 /datum/crafting_recipe/roguetown/survival/chaincoif_full_steel
 	name = "steel full chaincoif"
-	result = list(/obj/item/clothing/neck/roguetown/chaincoif/full = 1)
-	reqs = list(/obj/item/steel_scrap = 3, /obj/item/clothing/neck/roguetown/chaincoif = 1)
+	result = list(/obj/item/craft_kit/steel/full_chaincoif = 1)
+	reqs = list(/obj/item/steel_scrap = 2, /obj/item/clothing/neck/roguetown/chaincoif = 1)
 	craftdiff = 4
 	req_table = TRUE
 	bypass_dupe_test = TRUE
