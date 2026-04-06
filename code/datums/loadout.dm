@@ -2618,6 +2618,13 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 	path = /obj/item/clothing/neck/roguetown/collar/woolen
 	donatitem = TRUE
 
+/datum/loadout_item/chess
+	name = "Набор с шахматами, шашками и нардами"
+	category = list("Разное", "Донат")
+	path = /obj/item/chessboard_folded
+	donat_tier = 2
+	donatitem = TRUE
+
 /datum/loadout_item/donat/loveamulet
 	name = "Амулет Слез Любви"
 	category = list("Аксессуары", "Донат")
