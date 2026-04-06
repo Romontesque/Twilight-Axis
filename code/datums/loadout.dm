@@ -1911,6 +1911,20 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 	donatitem = TRUE
 	donat_tier = 2
 
+/datum/loadout_item/donator/sci_flamesword
+	name = "Donator Item - Flametongue - Required: Shamshir"
+	path = /obj/item/enchantingkit/sci_flame
+	category = list("Оружие", "Донат")
+	donatitem = TRUE
+	donat_tier = 2
+
+/datum/loadout_item/donator/sci_sandsword
+	name = "Donator Item - Sandlash - Required: Shamshir"
+	path = /obj/item/enchantingkit/sci_sand
+	category = list("Оружие", "Донат")
+	donatitem = TRUE
+	donat_tier = 2
+
 // Разное
 /datum/loadout_item/donat
 	name = "Музыкальная коробка"
