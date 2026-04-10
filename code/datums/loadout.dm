@@ -1582,6 +1582,18 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 	path = /obj/item/clothing/mask/rogue/iamcrystalclear
 	donatitem = TRUE
 
+/datum/loadout_item/donator_zydrashauberk
+	name = "Donator Kit - Iron Gardbrace & Fauld - Required: Iron Mailled Hauberk"
+	path = /obj/item/enchantingkit/zydrashauberk
+	category = list("Броня", "Донат")
+	donatitem = TRUE
+
+/datum/loadout_item/donator_zydrasgreataxe
+	name = "Donator Kit - Bourreau - Required: Greataxe"
+	path = /obj/item/enchantingkit/zydrasgreataxe
+	category = list("Оружие", "Донат")
+	donatitem = TRUE
+
 /*
 /datum/loadout_item/donator_zydrasiconosash
 	name = "Donator Kit - Iconoclast Sash - Required: Hauberk(Only men, no small races)"
