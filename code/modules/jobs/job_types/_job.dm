@@ -751,10 +751,10 @@
 			if(length(subclass.origin_limits)) //TA EDIT START
 				var/correlation = FALSE
 				for(var/origintype in subclass.origin_limits)
-					if(istype(player.prefs.origin_virtue, origintype))
+					if(istype(player.prefs.virtue_origin, origintype))
 						correlation = TRUE
 				if(!correlation)
-					advdat += "[player.prefs.origin_virtue.name]<br>"
+					advdat += "[player.prefs.virtue_origin.name]<br>"
 					found_issue = TRUE //TA EDIT END
 			if(found_issue)
 				dat += "<font color = '#e4e1e1'><b>[subclass::name]</b></font><br>"
@@ -799,7 +799,7 @@
 		if(length(subclass.origin_limits)) //TA EDIT START
 			var/correlation = FALSE
 			for(var/origintype in subclass.origin_limits)
-				if(istype(player.prefs.origin_virtue, origintype))
+				if(istype(player.prefs.virtue_origin, origintype))
 					correlation = TRUE
 			if(!correlation)
 				return TRUE //TA EDIT END
