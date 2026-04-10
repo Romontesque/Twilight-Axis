@@ -197,7 +197,7 @@
 			if(istype(H.client.prefs?.virtue_origin, origintype))
 				correlation = TRUE
 		if(!correlation)
-				return FALSE //TA EDIT END
+			return FALSE //TA EDIT END
 
 	if(maximum_possible_slots > -1)
 		if(total_slots_occupied >= maximum_possible_slots)
