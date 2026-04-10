@@ -1541,7 +1541,7 @@ SUBSYSTEM_DEF(gamemode)
 	dat += "<BR>&nbsp;&nbsp;Garrison: [wretch_scaling["garrison"]], Holy Warriors: [wretch_scaling["holy_warrior"]], Acolytes: [wretch_scaling["acolyte"]] (half weight), Combat Total: [wretch_scaling["combat_total"]] (need > 10 for T2)"
 	if(wretch_scaling["major_antag_active"])
 		dat += "<BR>&nbsp;&nbsp;<font color='red'>MAJOR ANTAG ACTIVE (VL/LICH) — Tier 2 locked, max 10</font>"
-
+/*
 	var/list/adv_scaling = calculate_adventurer_scaling()
 	var/datum/job/adv_job = SSjob.GetJob("Adventurer")
 	dat += "<BR>Adventurer Slots: [adv_job?.current_positions]/[adv_job?.total_positions] (Calculated: [adv_scaling["final_slots"]])"

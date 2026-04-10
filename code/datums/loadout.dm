@@ -1575,6 +1575,13 @@ GLOBAL_LIST_EMPTY(loadout_items_by_category)
 	category = list("Головные уборы", "Донат")
 	path = /obj/item/clothing/head/roguetown/duelhat/pretzel
 	donatitem = TRUE
+
+/datum/loadout_item/donator/porcelainmask
+	name = "Donator Item - Porcelain Mask"
+	category = list("Головные уборы", "Донат")
+	path = /obj/item/clothing/mask/rogue/iamcrystalclear
+	donatitem = TRUE
+
 /*
 /datum/loadout_item/donator_zydrasiconosash
 	name = "Donator Kit - Iconoclast Sash - Required: Hauberk(Only men, no small races)"
