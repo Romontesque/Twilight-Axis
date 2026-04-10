@@ -3335,6 +3335,7 @@
 #include "modular_twilight_axis\code\modules\cargo\packsrogue\Mage.dm"
 #include "modular_twilight_axis\code\modules\cargo\packsrogue\merch_armor_exotic.dm"
 #include "modular_twilight_axis\code\modules\cargo\packsrogue\merch_armor_heavy.dm"
+#include "modular_twilight_axis\code\modules\jobs\job_types\roguetown\adventurer\types\mage.dm"
 #include "modular_twilight_axis\code\modules\cargo\packsrogue\merch_armor_light.dm"
 #include "modular_twilight_axis\code\modules\spell\spell_types\wizard\aspects\minor\traps.dm"
 #include "modular_twilight_axis\code\modules\cargo\packsrogue\merch_armor_medium.dm"
