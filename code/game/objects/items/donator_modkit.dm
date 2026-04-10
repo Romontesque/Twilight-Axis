@@ -622,12 +622,14 @@
 	result_item = /obj/item/rogueweapon/nerocavalier/flsword
 
 /obj/item/enchantingkit/aisuwand
-    name = "Crystalline Wand morphing elixir"
-    target_items = list(/obj/item/rogueweapon/wand)
-    result_item = /obj/item/rogueweapon/wand/aisu
+	name = "Crystalline Wand morphing elixir"
+	desc = "A small container of special morphing dust, perfect to make a specifc item. Required: Wand"
+	target_items = list(/obj/item/rogueweapon/wand)
+	result_item = /obj/item/rogueweapon/wand/aisu
 
 /obj/item/enchantingkit/weapon/regnum
 	name = "'Regnum' morphing elixir"
+	desc = "A small container of special morphing dust, perfect to make a specifc item. Required: Longsword Or Judgement"
 	target_items = list(
 		/obj/item/rogueweapon/sword/long,
 		/obj/item/rogueweapon/sword/long/judgement
@@ -636,6 +638,7 @@
 
 /obj/item/enchantingkit/weapon/aeternum
 	name = "'Aeternum' morphing elixir"
+	desc = "A small container of special morphing dust, perfect to make a specifc item. Required: Greatsword, Claymore, Or Zweihander"
 	target_items = list(
 		/obj/item/rogueweapon/greatsword,
 		/obj/item/rogueweapon/greatsword/zwei,
