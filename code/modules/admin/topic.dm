@@ -1633,16 +1633,16 @@
 			alert(usr, "[M] does not have a key.")
 			return
 
-		if(M.ckey == usr.ckey)
-			to_chat(src, span_boldwarning("Самому себе триумфы выдавать нельзя."))
-			return
-
 		var/amt2change = input(usr, "How much to modify the Triumphs by? (100 to -100)") as null|num
 		amt2change = clamp(amt2change, -100, 100)
 		var/raisin = stripped_input(usr, "State a short reason for this change", "Game Master", null, null)
 		if(!amt2change || !raisin)
 			return
+		if(M.ckey == usr.ckey)
+			to_chat(src, span_boldwarning("Самому себе триумфы выдавать нельзя."))
+			return
 		M.adjust_triumphs(amt2change, FALSE, raisin)
+		world.TgsAnnounceTriumphChanges(amt2change, M.ckey, usr.ckey, raisin)
 		message_admins("[usr.key] adjusted [M.key]'s triumphs by [amt2change] with [!raisin ? "no reason given" : "reason: [raisin]"].")
 		log_admin("[usr.key] adjusted [M.key]'s triumphs by [amt2change] with [!raisin ? "no reason given" : "reason: [raisin]"].")
 
